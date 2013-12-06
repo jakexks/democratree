@@ -2,9 +2,9 @@
 <widget id="uk.co.democratree" version="0.0.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
     <name>Democratree</name>
     <description>
-        A sample Apache Cordova application that responds to the deviceready event.
+        An application to determine the best location to plant 1000 trees in Bristol, using crowdsourced votes.
     </description>
-    <author email="dev@cordova.apache.org" href="http://cordova.io">
+    <author email="js9938@my.bristol.ac.uk" href="http://democratree.co.uk">
         Apache Cordova Team
     </author>
     <content src="index.html" />
