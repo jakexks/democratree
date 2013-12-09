@@ -1,0 +1,9 @@
+platforms
+platforms/*
+merges
+merges/*
+plugins
+plugins/*
+.cordova
+.cordova/*
+build.sh
