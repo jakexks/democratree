@@ -16,6 +16,9 @@
             $(document).bind('mobileinit', function () {
                 jqd.resolve();
             });
+            function doInit() {
+                document.getElementById('AAAAA').innerHTML="Ready";
+            }
         </script>
         <script type="text/javascript" src="js/jquery.mobile-1.3.2.min.js"></script>
         <script type="text/javascript" src="cordova.js"></script>
@@ -23,10 +26,6 @@
             document.addEventListener('deviceready', deviceReady, false);
             function deviceReady() {
                 dd.resolve();
-            }
-
-            function doInit() {
-                document.getElementById('AAAAA').innerHTML="Ready";
             }
         </script>
         <title>Democratree</title>
