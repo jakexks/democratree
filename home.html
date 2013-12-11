@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+    <style type="text/css">
+      html { height: 100% }
+      body { height: 100%; margin: 0; padding: 0 }
+      #map-canvas { height: 100% }
+    </style>
+    <script type="text/javascript"
+      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDb1xlbN5xo9lZcWAIn-OQKm1jH56xs904&sensor=false">
+    </script>
+    <script type="text/javascript">
+      var startLat = 51.422331;
+      var startLong = -2.600552;
+      var endLat = 51.420163;
+      var endLong = -2.598127;
+
+      function initialize()
+      {
+        var mapOptions = {
+          center : new google.maps.LatLng(51.45307, -2.58877),
+          zoom: 12 
+        };
+
+	var shading;
+
+        var map = new google.maps.Map(document.getElementById("map-canvas"), mapOptions);	
+
+	var squareCoords = [
+	  new google.maps.LatLng(51.422331, -2.600552),
+	  new google.maps.LatLng(51.422331, -2.598127),
+	  new google.maps.LatLng(51.420163, -2.598127),
+	  new google.maps.LatLng(51.420163, -2.600552)
+	];
+
+	shading = new google.maps.Polygon({
+	  paths: squareCoords,
+	  strokeColor: '#FF0000',
+	  strokeOpacity: 0.5,
+	  strokeWeight: 1,
+	  fillColour: '#FF0000',
+	  fillOpacity: 0.3
+	});
+      shading.setMap(map);
+
+        google.maps.event.addListener(map, 'click', function(event) {
+          if(checkLoc(event.latLng)) placeMarker(event.latLng, map);
+        });
+
+
+      }
+      function checkLoc(location)
+      {
+	var temp;
+	if(startLat > endLat)
+	{
+	  temp = endLat;
+	  endLat = startLat;
+	  startLat = temp;
+	}
+	if(startLong > endLong)
+	{
+	  temp = endLong;
+	  endLong = startLong;
+	  startLong = temp;
+	}
+	if(location.lat() > startLat && location.lat() < endLat && location.lng() > startLong && location.lng() < endLong)
+	{
+	  return false;
+	}
+	else
+	{
+	  return true;
+	}
+      }
+      function placeMarker(location, map)
+      {
+        var marker = new google.maps.Marker({
+	position: location,
+	map: map
+        });
+      }
+      
+      google.maps.event.addDomListener(window, 'load', initialize);
+    </script>
+  </head>
+  <body>
+    <div id="map-canvas" style="height:100%"/></div>
+  </body>
+</html>
+
+
+
+
