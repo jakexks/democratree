@@ -8,7 +8,10 @@
       #map-canvas { height: 100% }
     </style>
     <script type="text/javascript"
-      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDb1xlbN5xo9lZcWAIn-OQKm1jH56xs904&sensor=false">
+      src= "https://maps.googleapis.com/maps/api/js?key=AIzaSyDb1xlbN5xo9lZcWAIn-OQKm1jH56xs904&sensor=false">
+    </script>
+    <script type ="text/javascript" 
+      src = "maps.google.polygon.containsLatLng.js">
     </script>
     <script type="text/javascript">
       var startLat = 51.422331;
@@ -27,15 +30,17 @@
 
         var map = new google.maps.Map(document.getElementById("map-canvas"), mapOptions);	
 
-	var squareCoords = [
-	  new google.maps.LatLng(51.422331, -2.600552),
-	  new google.maps.LatLng(51.422331, -2.598127),
-	  new google.maps.LatLng(51.420163, -2.598127),
-	  new google.maps.LatLng(51.420163, -2.600552)
+	var polyCoords = [
+	  new google.maps.LatLng(51.422323, -2.600552),
+	  new google.maps.LatLng(51.422296, -2.598835),
+	  new google.maps.LatLng(51.421881, -2.598213),
+	  new google.maps.LatLng(51.420182, -2.599243),
+	  new google.maps.LatLng(51.420289, -2.600101),
+	  new google.maps.LatLng(51.420918, -2.600552)
 	];
 
 	shading = new google.maps.Polygon({
-	  paths: squareCoords,
+	  paths: polyCoords,
 	  strokeColor: '#FF0000',
 	  strokeOpacity: 0.5,
 	  strokeWeight: 1,
@@ -45,7 +50,9 @@
       shading.setMap(map);
 
         google.maps.event.addListener(map, 'click', function(event) {
-          if(checkLoc(event.latLng)) placeMarker(event.latLng, map);
+         // if(checkLoc(event.latLng)) placeMarker(event.latLng, map);
+	   if(shading.containsLatLng(event.latLng)) placeMarker (event.latLng, map);
+	   else placeMarker (event.latLng, map);
         });
 
 
@@ -83,6 +90,7 @@
       }
       
       google.maps.event.addDomListener(window, 'load', initialize);
+
     </script>
   </head>
   <body>
