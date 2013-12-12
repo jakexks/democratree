@@ -45,12 +45,12 @@
 		<script type="text/javascript">
 			function set_map_height(){
 				h = $(window).height();
-				document.getElementById('map-canvas').style.height= h-120+"px"; <!-- Under the assumption header/footer are 60px tall, may need changing -->
+				document.getElementById('map-canvas').style.height= h-120+"px"; // Under the assumption header/footer are 60px tall, may need changing
 				return true;
 			}
 		</script>
 		<script type="text/javascript"
-		  src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDb1xlbN5xo9lZcWAIn-OQKm1jH56xs904&sensor=false">
+		  src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDb1xlbN5xo9lZcWAIn-OQKm1jH56xs904&amp;sensor=false">
 		</script>
 		<script type="text/javascript">
 		  function initialize() {
@@ -61,10 +61,11 @@
 			var map = new google.maps.Map(document.getElementById("map-canvas"),mapOptions);
 		  }
 		  google.maps.event.addDomListener(window, 'load', initialize);
+		  google.maps.event.addDomListener(window, 'load', set_map_height);
 		</script>
         <title>Democratree</title>
     </head>
-    <body onload="set_map_height();"> 
+    <body> 
 
         <!-- map page -->
         <div data-role="page" id="map_page">
