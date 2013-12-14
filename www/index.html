@@ -49,9 +49,25 @@
             function initialize() {
                 var mapOptions = {
                     center: new google.maps.LatLng(51.455, -2.588),
-                    zoom: 13
+                    zoom: 13,
+                    minZoom: 13
                 };
                 var map = new google.maps.Map(document.getElementById("map-canvas"),mapOptions);
+	  
+                // Rough BS1-16 (Bristol council jurisdiction) postcode bounds, needs refining to a polygon
+                var allowedBounds = new google.maps.LatLngBounds(
+                new google.maps.LatLng(51.389244, -2.709939), 
+                new google.maps.LatLng(51.552326,-2.41893));
+
+                var lastValidCenter = map.getCenter();
+
+                google.maps.event.addListener(map, 'center_changed', function() {
+                    if (allowedBounds.contains(map.getCenter())) {
+                        lastValidCenter = map.getCenter();
+                        return; 
+                    }
+                    map.panTo(lastValidCenter);
+                });
                 
                 // Create the search box and link it to the UI element.
                 var input = document.getElementById('search-input');
@@ -64,7 +80,7 @@
                 google.maps.event.addListener(searchBox, 'place_changed', function() {
                     var place = searchBox.getPlace();
                     map.setCenter(place.geometry.location);
-                    map.setZoom(17);
+                    map.setZoom(16);
                 });
                 
                 // Bias the SearchBox results towards places that are within the bounds of the
