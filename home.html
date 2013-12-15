@@ -30,6 +30,12 @@
 
         var map = new google.maps.Map(document.getElementById("map-canvas"), mapOptions);	
 
+        var badArea = 'Sorry, this area is unsuitable for tree planting';
+
+        var infowindow = new google.maps.InfoWindow({ 
+            content: badArea
+            });
+
 	var polyCoords = [
 	  new google.maps.LatLng(51.422323, -2.600552),
 	  new google.maps.LatLng(51.422296, -2.598835),
@@ -48,11 +54,16 @@
 	  fillOpacity: 0.3
 	});
       shading.setMap(map);
+      
+      google.maps.event.addListener(shading, 'click', function(event)
+          {
+          infowindow.open(map);
+          infowindow.setPosition(event.latLng);
+          });
+
 
         google.maps.event.addListener(map, 'click', function(event) {
-         // if(checkLoc(event.latLng)) placeMarker(event.latLng, map);
-	   if(shading.containsLatLng(event.latLng)) placeMarker (event.latLng, map);
-	   else placeMarker (event.latLng, map);
+	  placeMarker(event.latLng, map);
         });
 
 
