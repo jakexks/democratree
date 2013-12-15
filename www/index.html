@@ -45,6 +45,7 @@
 		<script type="text/javascript"
 		  src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDb1xlbN5xo9lZcWAIn-OQKm1jH56xs904&libraries=places&amp;sensor=false">
 		</script>
+        <script type="text/javascript" src="http://google-maps-utility-library-v3.googlecode.com/svn/trunk/infobox/src/infobox.js"></script>
 		<script type="text/javascript">
             function initialize() {
                 var mapOptions = {
@@ -52,6 +53,12 @@
                     zoom: 13
                 };
                 var map = new google.maps.Map(document.getElementById("map-canvas"),mapOptions);
+
+                // Listen for clicks to add labels
+                google.maps.event.addListener(map, 'click', function(event) {
+                    placeMarker(event.latLng, map);
+                });
+
                 
                 // Create the search box and link it to the UI element.
                 var input = document.getElementById('search-input');
@@ -73,15 +80,77 @@
                     var bounds = map.getBounds();
                     searchBox.setBounds(bounds);
                 });
+
+
+
                 
                 // Set height
                 h = $(window).height();
 				document.getElementById('map-canvas').style.height = h-120+"px"; // Under the assumption header/footer are 60px tall, may need changing
             }
+
+            
+
+            // Function to place marker
+            function placeMarker(location, map) {
+                var marker = new google.maps.Marker({
+                    position: location,
+                    map: map,
+                    title: 'Tree/username',    
+                    animation: google.maps.Animation.DROP,
+                    icon: 'img/tree1.png'
+                });
+                attachMessage(marker);
+                map.panTo(position);
+            }
+
+            // Attaches infowindow to each marker
+            function attachMessage(marker) {
+                var msggg = 'You have voted for me!';
+                var contentString = '<p><b>First tree</b><p>The first tree to be planted in Bristol will be a large Ash tree in the city centre.<button type="button" onclick="prompt("gg")">Vote for me!</button>';
+
+                // var boxText = document.createElement("div");
+                // boxText.style.cssText = "border: 2px solid black; margin-top: 10px; background: grey; padding: 10px;";
+                // boxText.innerHTML = "<p><b>First tree</b><p>The first tree to be planted in Bristol will be a large Ash tree in the city centre.";        
+                // infobox = new InfoBox({
+                //      content: boxText,
+                //      disableAutoPan: false,
+                //      maxWidth: 150,
+                //      pixelOffset: new google.maps.Size(-140, 0),
+                //      zIndex: null,
+                //      boxStyle: {
+                //         background: "url('http://google-maps-utility-library-v3.googlecode.com/svn/trunk/infobox/examples/tipbox.gif') no-repeat",
+                //         opacity: 0.75,
+                //         width: "280px"
+                //     },
+                //     closeBoxMargin: "16px 8px 6px 6px",
+                //     closeBoxURL: "http://www.google.com/intl/en_us/mapfiles/close.gif",
+                //     infoBoxClearance: new google.maps.Size(1, 1)
+                // });
+
+                var infowindow = new google.maps.InfoWindow({
+                    content: contentString
+                })
+
+                // google.maps.event.addListener(marker, 'click', function() {
+                //     infobox.open(marker.get('map'), this);
+                //     map.panTo(loc);
+                // });
+                
+                google.maps.event.addListener(marker, 'click', function() {
+                    infowindow.open(marker.get('map'),marker);
+                });
+                
+            }
+
+            
+
+
             google.maps.event.addDomListener(window, 'load', initialize);
 		</script>
         <title>Democratree</title>
     </head>
+
     <body> 
 
         <!-- map page -->
