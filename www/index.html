@@ -131,15 +131,16 @@
                 if(map.getZoom() > 15) shading.setMap(map);
                 else shading.setMap(null);
                 });
-
+            
+            var warning = new google.maps.InfoWindow({ 
+                            content: "Please finish placing your previous tree first"
+                        });
+            
             google.maps.event.addListener(plantArea, 'click', function(event)
             {
                 if(map.getZoom() > 15) {
                     if (markerCount != treeCount) {
-                        var warning = new google.maps.InfoWindow({ 
-                            content: "Please finish placing your previous tree first"
-                        });
-                        warning.open(map);
+                        if(warning.getMap() == null) warning.open(map);
                         warning.setPosition(event.latLng);
                     } else placeMarker(event.latLng, map);
                 }
