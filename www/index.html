@@ -57,7 +57,7 @@
 
                 // Listen for clicks to add labels
                 google.maps.event.addListener(map, 'click', function(event) {
-                    placeMarker(event.latLng, map);
+                    if(map.getZoom() > 15) placeMarker(event.latLng, map);
                 });
  
                 // Rough BS1-16 (Bristol council jurisdiction) postcode bounds, needs refining to a polygon
@@ -84,12 +84,11 @@
 
                 // Coordinates for disallowed area
                 var polyCoords = [
-                    new google.maps.LatLng(51.422323, -2.600552),
-                    new google.maps.LatLng(51.422296, -2.598835),
-                    new google.maps.LatLng(51.421881, -2.598213),
-                    new google.maps.LatLng(51.420182, -2.599243),
-                    new google.maps.LatLng(51.420289, -2.600101),
-                    new google.maps.LatLng(51.420918, -2.600552)
+                    new google.maps.LatLng(51.422368, -2.600615), new google.maps.LatLng(51.422281, -2.599920), new google.maps.LatLng(51.422303, -2.598823), 
+                    new google.maps.LatLng(51.421931, -2.598190), new google.maps.LatLng(51.421291, -2.598362), new google.maps.LatLng(51.420220, -2.599207), 
+                    new google.maps.LatLng(51.420162, -2.599341), new google.maps.LatLng(51.420210, -2.599928), new google.maps.LatLng(51.420321, -2.600121), 
+                    new google.maps.LatLng(51.420759, -2.600387), new google.maps.LatLng(51.420884, -2.600556), new google.maps.LatLng(51.421294, -2.600470), 
+                    new google.maps.LatLng(51.421716, -2.600202), new google.maps.LatLng(51.421925, -2.600481), new google.maps.LatLng(51.421946, -2.600620), 
                 ];
 
                 // Polygon for disallowed area
@@ -101,8 +100,12 @@
                     fillColour: '#FF0000',
                     fillOpacity: 0.3
                 });
-                
-                shading.setMap(map);
+
+                // Makes disallowed area polygon only appear above a certain zoom level 
+                google.maps.event.addListener(map, "zoom_changed", function() { 
+                    if(map.getZoom() > 15) shading.setMap(map);
+                    else shading.setMap(null);
+                    });
 
                 google.maps.event.addListener(shading, 'click', function(event)
                 {
@@ -131,9 +134,6 @@
                     searchBox.setBounds(bounds);
                 });
 
-
-
-                
                 // Set height
                 h = $(window).height();
 				document.getElementById('map-canvas').style.height = h-120+"px"; // Under the assumption header/footer are 60px tall, may need changing
