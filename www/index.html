@@ -149,7 +149,6 @@
                                         function detailsresult(detailsResult, placesServiceStatus) {
                                             // Here's the first result in the AutoComplete with the exact
                                             // same data format as you get from the AutoComplete.
-                                            console.log(detailsResult);
                                             document.getElementById('search-input').value = detailsResult.formatted_address;
                                             map.setCenter(detailsResult.geometry.location);
                                             map.setZoom(16);
