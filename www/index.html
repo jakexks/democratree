@@ -216,10 +216,10 @@
                 animation: google.maps.Animation.DROP,
                 icon: 'img/tree1.png'
             });
-            attachMessage(marker, map);
             markerCount++;
             gmarkers.push(marker);
             map.panTo(location);
+            attachMessage(marker, map);
         }
         
         function cancelTree(i) {
@@ -252,10 +252,13 @@
             treeArray.push(treeInfo);
             treeCount++;
 
-            var y=document.getElementById("textInfoWindow");
+            var y=document.getElementById("textInfoWindow"+markerCount);
             y.innerHTML = 'Tree submitted.<p>User Name: ' + fName + '<p>Tree Story: ' + fStory + '<p><button id="btnVoteUp" onclick="return voteUp(treeInfo)">Vote Up</button>'
 
             var z=document.getElementById("btnSubmitTree");
+            z.parentNode.removeChild(z);
+            
+            var z=document.getElementById("btnCancelTree");
             z.parentNode.removeChild(z);
 
             var a=document.getElementById("myForm");
@@ -268,9 +271,7 @@
 
             // Attaches infowindow to each marker
             function attachMessage(marker, map) {
-                
-            	var contentString = '<p id="textInfoWindow"+markerCount><b>New Tree Placed</b><p><form id="myForm"+markerCount> User Name: <input type="text" name="Name"><br> Story: <input type="text" name="Story"><br></form><p><button id="btnSubmitTree" onclick="return addNewTree()">Submit</button><button id="btnCancelTree" onclick="return cancelTree(markerCount-1)">Cancel</button></p>'
-
+            	var contentString = '<p id="textInfoWindow"><b>New Tree Placed</b><p><form id="myForm"> User Name: <input type="text" name="Name"><br> Story: <input type="text" name="Story"><br></form><p><button id="btnSubmitTree" onclick="return addNewTree()">Submit</button><button id="btnCancelTree" onclick="return cancelTree(markerCount-1)">Cancel</button></p>'
                 //var msggg = 'You have voted for me!';
                 //var contentString = '<p><b>First tree</b><p>The first tree to be planted in Bristol will be a large Ash tree in the city centre.   <button type="button" onclick="alert("msggg")">Vote for me!</button>';
 
