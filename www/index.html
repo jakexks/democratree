@@ -236,8 +236,8 @@
 
         function addNewTree() {
             //alert("running");
-            var fName=document.forms["myForm"]["Name"].value;
-            var fStory=document.forms["myForm"]["Story"].value;
+            var fName=document.forms["myForm"+markerCount]["Name"].value;
+            var fStory=document.forms["myForm"+markerCount]["Story"].value;
             //alert(fName + fStory);
             //alert("past1");
 
@@ -272,7 +272,10 @@
 
             // Attaches infowindow to each marker
             function attachMessage(marker, map) {
-            	var contentString = '<p id="textInfoWindow"><b>New Tree Placed</b><p><form id="myForm"> User Name: <input type="text" name="Name"><br> Story: <input type="text" name="Story"><br></form><p><button id="btnSubmitTree" onclick="return addNewTree()">Submit</button><button id="btnCancelTree" onclick="return cancelTree(markerCount-1)">Cancel</button></p>'
+                var formID = "myForm"+markerCount;
+                var textInfoWindow = "textInfoWindow"+markerCount;
+            	var contentString = '<p id=' + textInfoWindow + '><b>New Tree Placed</b><p><form id=' + formID + '> User Name: <input type="text" name="Name"><br> Story: <input type="text" name="Story"><br></form><p><button id="btnSubmitTree" onclick="return addNewTree()">Submit</button><button id="btnCancelTree" onclick="return cancelTree(markerCount-1)">Cancel</button></p>'
+                
                 //var msggg = 'You have voted for me!';
                 //var contentString = '<p><b>First tree</b><p>The first tree to be planted in Bristol will be a large Ash tree in the city centre.   <button type="button" onclick="alert("msggg")">Vote for me!</button>';
 
