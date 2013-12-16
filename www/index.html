@@ -74,6 +74,41 @@
                     }
                     map.panTo(lastValidCenter);
                 });
+                // String to display when user tries to place tree in disallowed area
+                var badArea = 'Sorry, this area is unsuitable for tree planting';
+
+                // Infowindow to display when tree planting is attempted in disallowed area
+                var infowindow = new google.maps.InfoWindow({ 
+                content: badArea
+                });
+
+                // Coordinates for disallowed area
+                var polyCoords = [
+                    new google.maps.LatLng(51.422323, -2.600552),
+                    new google.maps.LatLng(51.422296, -2.598835),
+                    new google.maps.LatLng(51.421881, -2.598213),
+                    new google.maps.LatLng(51.420182, -2.599243),
+                    new google.maps.LatLng(51.420289, -2.600101),
+                    new google.maps.LatLng(51.420918, -2.600552)
+                ];
+
+                // Polygon for disallowed area
+                shading = new google.maps.Polygon({
+                    paths: polyCoords,
+                    strokeColor: '#FF0000',
+                    strokeOpacity: 0.5,
+                    strokeWeight: 1,
+                    fillColour: '#FF0000',
+                    fillOpacity: 0.3
+                });
+                
+                shading.setMap(map);
+
+                google.maps.event.addListener(shading, 'click', function(event)
+                {
+                    infowindow.open(map);
+                    infowindow.setPosition(event.latLng);
+                });
                 
                 // Create the search box and link it to the UI element.
                 var input = document.getElementById('search-input');
