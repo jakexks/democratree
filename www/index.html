@@ -51,6 +51,7 @@
         var markerCount = 0;
         var treeArray = new Array();
         var gmarkers = new Array();
+        var infoWindowArray = new Array();
         function initialize() {
             var mapOptions = {
                 center: new google.maps.LatLng(51.455, -2.588),
@@ -236,8 +237,8 @@
 
         function addNewTree() {
             //alert("running");
-            var fName=document.forms["myForm"+markerCount]["Name"].value;
-            var fStory=document.forms["myForm"+markerCount]["Story"].value;
+            var fName=document.forms["myForm"]["Name"].value;
+            var fStory=document.forms["myForm"]["Story"].value;
             //alert(fName + fStory);
             //alert("past1");
 
@@ -250,10 +251,13 @@
             //alert("past2");
             //alert(treeCount + fName + fStory);
 
+            infoWindowArray[treeCount].setContent('Tree submitted.<p>User Name: ' + fName + '<p>Tree Story: ' + fStory + '<p><button id="btnVoteUp" onclick="return voteUp(treeInfo)">Vote Up</button>');
+            
+            
             treeArray.push(treeInfo);
             treeCount++;
 
-            var y=document.getElementById("textInfoWindow"+markerCount);
+            /*var y=document.getElementById("textInfoWindow"+markerCount);
             y.innerHTML = 'Tree submitted.<p>User Name: ' + fName + '<p>Tree Story: ' + fStory + '<p><button id="btnVoteUp" onclick="return voteUp(treeInfo)">Vote Up</button>'
 
             var z=document.getElementById("btnSubmitTree");
@@ -266,15 +270,13 @@
 
             if (a && a.parentNode && a.parentNode.removeChild) {
     			a.parentNode.removeChild(a);
-            }
+            }*/
             return;
         }
 
             // Attaches infowindow to each marker
             function attachMessage(marker, map) {
-                var formID = "myForm"+markerCount;
-                var textInfoWindow = "textInfoWindow"+markerCount;
-            	var contentString = '<p id=' + textInfoWindow + '><b>New Tree Placed</b><p><form id=' + formID + '> User Name: <input type="text" name="Name"><br> Story: <input type="text" name="Story"><br></form><p><button id="btnSubmitTree" onclick="return addNewTree()">Submit</button><button id="btnCancelTree" onclick="return cancelTree(markerCount-1)">Cancel</button></p>'
+            	var contentString = '<p id="textInfoWindow"><b>New Tree Placed</b><p><form id="myForm"> User Name: <input type="text" name="Name"><br> Story: <input type="text" name="Story"><br></form><p><button id="btnSubmitTree" onclick="return addNewTree()">Submit</button><button id="btnCancelTree" onclick="return cancelTree(markerCount-1)">Cancel</button></p>'
                 
                 //var msggg = 'You have voted for me!';
                 //var contentString = '<p><b>First tree</b><p>The first tree to be planted in Bristol will be a large Ash tree in the city centre.   <button type="button" onclick="alert("msggg")">Vote for me!</button>';
@@ -301,6 +303,8 @@
                 var infowindow = new google.maps.InfoWindow({
                     content: contentString
                 })
+                
+                infoWindowArray.push(infowindow);
                 
                 infowindow.open(map, marker);
 
