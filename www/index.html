@@ -59,9 +59,11 @@
 
                 // Listen for clicks to add labels
                 google.maps.event.addListener(map, 'click', function(event) {
-                    if(map.getZoom() > 15) placeMarker(event.latLng, map);
+                    infowindow.open(map);
+                    infowindow.setPosition(event.latLng);
                 });
- 
+
+
                 // Rough BS1-16 (Bristol council jurisdiction) postcode bounds, needs refining to a polygon
                 var allowedBounds = new google.maps.LatLngBounds(
                 new google.maps.LatLng(51.389244, -2.709939), 
@@ -93,6 +95,19 @@
                     new google.maps.LatLng(51.421716, -2.600202), new google.maps.LatLng(51.421925, -2.600481), new google.maps.LatLng(51.421946, -2.600620), 
                 ];
 
+                var circleOptions = {
+                    strokeColor: '#FF0000',
+                    strokeOpacity: 0.1,
+                    strokeWeight: 2,
+                    fillColor: '#66FF66',
+                    fillOpacity: 0.1,
+                    map: map,
+                    center: new google.maps.LatLng(51.421274, -2.599345),
+                    radius: 2500
+                    };
+
+                plantArea = new google.maps.Circle(circleOptions);
+
                 // Polygon for disallowed area
                 shading = new google.maps.Polygon({
                     paths: polyCoords,
@@ -103,16 +118,20 @@
                     fillOpacity: 0.3
                 });
 
+                google.maps.event.addListener(shading, 'click', function(event) {
+                    infowindow.open(map);
+                    infowindow.setPosition(event.latLng);
+                });
+
                 // Makes disallowed area polygon only appear above a certain zoom level 
                 google.maps.event.addListener(map, "zoom_changed", function() { 
                     if(map.getZoom() > 15) shading.setMap(map);
                     else shading.setMap(null);
                     });
 
-                google.maps.event.addListener(shading, 'click', function(event)
+                google.maps.event.addListener(plantArea, 'click', function(event)
                 {
-                    infowindow.open(map);
-                    infowindow.setPosition(event.latLng);
+                    if(map.getZoom() > 15) placeMarker(event.latLng, map);
                 });
                 
                 // Create the search box and link it to the UI element.
@@ -280,8 +299,9 @@
             <div data-role="panel" id="map_left_panel">
                 <ul data-role="listview">
                     <li data-role="list-divider">Democratree</li>
-                    <li><a href="#leaderboard_page">Leaderboard</a></li>
+                    <!-- <li><a href="#map_page">Map</a></li> -->
                     <li><input id="search-input" data-mini="true" data-clear-btn="true" type="text" placeholder="Search"></li>
+                    <li><a href="#leaderboard_page">Leaderboard</a></li>
                 </ul>
                 
             </div><!-- /panel -->
@@ -322,6 +342,7 @@
                 <ul data-role="listview">
                     <li data-role="list-divider">Democratree</li>
                     <li><a href="#map_page">Map</a></li>
+                    <li><a href="#leaderboard_page">Leaderboard</a></li>
                 </ul>
             </div><!-- /panel -->
         </div><!-- /page -->
