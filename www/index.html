@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-
 <html>
     <head>
         <meta charset="utf-8" />
@@ -47,6 +46,13 @@
 		</script>
         <script type="text/javascript" src="http://google-maps-utility-library-v3.googlecode.com/svn/trunk/infobox/src/infobox.js"></script>
 		<script type="text/javascript">
+
+                var nextID = 1;
+
+                var tempVote = 0;
+
+                var votes = 0;
+
             function initialize() {
                 var mapOptions = {
                     center: new google.maps.LatLng(51.455, -2.588),
@@ -55,7 +61,7 @@
                 };
                 var map = new google.maps.Map(document.getElementById("map-canvas"),mapOptions);
 
-                // Listen for clicks to add labels
+                // Listen for clicks to add trees 
                 google.maps.event.addListener(map, 'click', function(event) {
                     if(map.getZoom() > 15) placeMarker(event.latLng, map);
                 });
@@ -148,17 +154,23 @@
                     map: map,
                     title: 'Tree/username',    
                     animation: google.maps.Animation.DROP,
-                    icon: 'img/tree1.png'
+                    icon: 'img/tree1.png',
+                    id: nextID,
+                    votes: 0
                 });
+                nextID++;
                 attachMessage(marker);
-                map.panTo(position);
             }
 
             // Attaches infowindow to each marker
             function attachMessage(marker) {
                 var msggg = 'You have voted for me!';
-                var contentString = '<p><b>First tree</b><p>The first tree to be planted in Bristol will be a large Ash tree in the city centre.<button type="button" onclick="prompt("gg")">Vote for me!</button>';
+                var id = marker.get('id');
+                votes = marker.get('votes');
+                var contentString = '<p><b>First tree</b><p>The first tree to be planted in Bristol will be a large Ash tree in the city centre. ' + votes +
+                  '<button type="button" onclick="addVote(votes);">Vote for me!</button>';
 
+                marker.set('votes', tempVote);
                 // var boxText = document.createElement("div");
                 // boxText.style.cssText = "border: 2px solid black; margin-top: 10px; background: grey; padding: 10px;";
                 // boxText.innerHTML = "<p><b>First tree</b><p>The first tree to be planted in Bristol will be a large Ash tree in the city centre.";        
@@ -178,6 +190,7 @@
                 //     infoBoxClearance: new google.maps.Size(1, 1)
                 // });
 
+
                 var infowindow = new google.maps.InfoWindow({
                     content: contentString
                 })
@@ -192,6 +205,10 @@
                 });
                 
             }
+
+                function addVote(votes) {
+                  tempVote = votes++;
+                }
 
             
 
