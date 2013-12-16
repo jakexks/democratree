@@ -138,21 +138,55 @@
                 var input = document.getElementById('search-input');
                 //map.controls[google.maps.ControlPosition.TOP_LEFT].push(input);
 
-                var searchBox = new google.maps.places.Autocomplete(input);
+                var autoComplete = new google.maps.places.Autocomplete(input);
+                autoComplete.setComponentRestrictions({'country': 'uk'});
 
                 // Listen for the event fired when the user selects an item from the
                 // pick list. Retrieve the matching place for that item.
-                google.maps.event.addListener(searchBox, 'place_changed', function() {
-                    var place = searchBox.getPlace();
-                    map.setCenter(place.geometry.location);
-                    map.setZoom(16);
+                google.maps.event.addListener(autoComplete, 'place_changed', function() {
+                    var result = autoComplete.getPlace();
+                    if(typeof result.address_components == 'undefined') {
+                        // The user pressed enter in the input 
+                        // without selecting a result from the list
+                        var bounds = map.getBounds();
+                        autocompleteService = new google.maps.places.AutocompleteService();
+                        autocompleteService.getPlacePredictions(
+                            {
+                                'input': result.name,
+                                'offset': result.name.length,
+                                'bounds': bounds,
+                                'componentRestrictions': {'country': 'uk'}
+                            },
+                            function listentoresult(list, status) {
+                                if(list == null || list.length == 0) {
+                                    // There are no suggestions available.
+                                } else {
+                                    // Here's the first result that the user saw in the list.
+                                    placesService = new google.maps.places.PlacesService(document.getElementById('search-input'));
+                                    placesService.getDetails(
+                                        {'reference': list[0].reference},
+                                        function detailsresult(detailsResult, placesServiceStatus) {
+                                            // Here's the first result in the AutoComplete with the exact
+                                            // same data format as you get from the AutoComplete.
+                                            document.getElementById('search-input').value = detailsResult.formatted_address;
+                                            map.setCenter(detailsResult.geometry.location);
+                                            map.setZoom(16);
+                                        }
+                                    );
+                                }
+                            }
+                        );
+                    } else {
+                        map.setCenter(result.geometry.location);
+                        map.setZoom(16);
+                    }
                 });
                 
                 // Bias the SearchBox results towards places that are within the bounds of the
                 // current map's viewport.
                 google.maps.event.addListener(map, 'bounds_changed', function() {
                     var bounds = map.getBounds();
-                    searchBox.setBounds(bounds);
+                    autoComplete.setBounds(bounds);
                 });
 
                 // Set height
