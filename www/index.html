@@ -227,6 +227,7 @@
         function cancelTree(i) {
             gmarkers[i].setMap(null);
             gmarkers.pop();
+            infoWindowArray.pop();
             markerCount--;
         }
 
@@ -253,10 +254,10 @@
 
             infoWindowArray[treeCount].setContent('Tree submitted.<p>User Name: ' + fName + '<p>Tree Story: ' + fStory + '<p><button id="btnVoteUp" onclick="return voteUp(treeInfo)">Vote Up</button>');
             
-            
+            console.log(treeInfo);
             treeArray.push(treeInfo);
             treeCount++;
-
+            console.log(treeCount);
             /*var y=document.getElementById("textInfoWindow"+markerCount);
             y.innerHTML = 'Tree submitted.<p>User Name: ' + fName + '<p>Tree Story: ' + fStory + '<p><button id="btnVoteUp" onclick="return voteUp(treeInfo)">Vote Up</button>'
 
