@@ -208,7 +208,27 @@
             h = $(window).height();
             document.getElementById('map-canvas').style.height = h-120+"px"; // Under the assumption header/footer are 60px tall, may need changing
             // Set cache reset for jStorage
-            document.getElementById("resetCache").onclick = function() { $.jStorage.flush(); };
+            document.getElementById("resetCache").onclick = function() { 
+                for(var i = treeCount-1; i >= 0; i--) {
+                    treeArray[i].id = null;
+                    treeArray[i] = null;
+                    // Remove from map before removing reference
+                    gmarkers[i].setMap(null);
+                    gmarkers[i] = null;
+                    infoWindowArray[i] = null;
+                }
+                // Check if a tree is in the process of being placed, treeCount should only ever be one less or equal
+                if(treeCount != markerCount) {
+                    gmarkers[markerCount-1].setMap(null);
+                    infoWindowArray[markerCount-1] = null;
+                }
+                treeArray = [];
+                infoWindowArray = [];
+                gmarkers = [];
+                treeCount = 0;
+                markerCount = 0;
+                $.jStorage.flush();
+            };
             document.getElementById("cacheSize").onclick = function() { console.log($.jStorage.storageSize()); };
             initializeArrays(map);
         }
@@ -227,7 +247,7 @@
                     icon: 'img/tree1.png'
                 });
                 gmarkers.push(marker);
-                attachMessageInit(marker, map, tree.infoWindow);
+                attachMessageInit(marker, map, tree.tree, i);
                 treeArray.push(tree.tree);
             }
             treeCount = index.length;
@@ -256,17 +276,19 @@
             markerCount--;
         }
 
-        function voteUp(tree) {
-         	tree.votes++;
-          	alert(tree.votes);
+        function voteUp(treeInfo, infowindow) {
+         	treeInfo.votes++;
+            infowindow.setContent('Tree submitted.<p>User Name: ' + treeInfo.username + '<p>Tree Story: ' + treeInfo.story + '<p><p>Votes : ' + treeInfo.votes + '<p><button id="btnVoteUp' + treeInfo.id + '">Vote Up</button>');
+            var fullTree={
+                    tree : treeInfo,
+                    loc : gmarkers[treeInfo.id].position,
+            };
+            $.jStorage.set("tree"+treeInfo.id, fullTree);
         }
 
         function addNewTree() {
-            //alert("running");
             var fName=document.forms["myForm"]["Name"].value;
             var fStory=document.forms["myForm"]["Story"].value;
-            //alert(fName + fStory);
-            //alert("past1");
 
             var treeInfo={
                 id : treeCount,
@@ -274,17 +296,12 @@
                 story : fStory,
                 votes : 0
             };
-            //alert("past2");
-            //alert(treeCount + fName + fStory);
-
-            infoWindowArray[treeCount].setContent('Tree submitted.<p>User Name: ' + fName + '<p>Tree Story: ' + fStory + '<p><button id="btnVoteUp" onclick="return voteUp(treeInfo)">Vote Up</button>');
-            
+            infoWindowArray[treeCount].setContent('Tree submitted.<p>User Name: ' + fName + '<p>Tree Story: ' + fStory + '<p><p>Votes: 0<p><button id="btnVoteUp'+treeCount+'">Vote Up</button>');
             treeArray.push(treeInfo);
             if ($.jStorage.storageAvailable() == true) {
                 var fullTree={
                     tree : treeInfo,
                     loc : gmarkers[treeCount].position,
-                    infoWindow : infoWindowArray[treeCount].content
                 };
                 $.jStorage.set("tree"+treeCount, fullTree);
             }
@@ -338,7 +355,6 @@
                 var infowindow = new google.maps.InfoWindow({
                     content: contentString
                 })
-                
                 infoWindowArray.push(infowindow);
                 
                 infowindow.open(map, marker);
@@ -351,23 +367,49 @@
                 google.maps.event.addListener(marker, 'click', function() {
                     infowindow.open(map,marker);
                 });
+                google.maps.event.addListener(infowindow, 'domready', function(){
+                    var contentStr = '<p id="textInfoWindow"><b>New Tree Placed</b><p><form id="myForm"> User Name: <input type="text" name="Name"><br> Story: <input type="text" name="Story"><br></form><p><button id="btnSubmitTree" onclick="return addNewTree()">Submit</button><button id="btnCancelTree" onclick="return cancelTree(markerCount-1)">Cancel</button></p>'
+                    // Check to make sure it has been submitted
+                    if(infowindow.content == contentStr) {}
+                    else {
+                        var str = infowindow.content;
+                        // Find the ID
+                        var n = str.length-18;  // If content string changes after <button id="btnVoteUp##..., needs changing
+                        var m = n;
+                        while(str[n] != 'p') {
+                            n--;
+                        }
+                        n++
+                        var i = parseInt(str.substring(n, m));
+                        // Attach listener
+                        var btn = document.getElementById("btnVoteUp"+i);
+                        btn.addEventListener('click', function() {
+                            voteUp(treeArray[i], infowindow);
+                        });
+                    }
+                });
                 
             }
             
             // Create infoWindows when loading from jStorage
-            function attachMessageInit(marker, map, string) {
+            function attachMessageInit(marker, map, tree, i) {
                 var infowindow = new google.maps.InfoWindow({
-                    content: string
+                    content: 'Tree submitted.<p>User Name: ' + tree.username + '<p>Tree Story: ' + tree.story + '<p>Votes: ' + tree.votes + '<p><button id="btnVoteUp'+i+'">Vote Up</button>'
                 })
                 
                 infoWindowArray.push(infowindow);
-
                 google.maps.event.addListener(marker, 'click', function() {
                     infowindow.open(map,marker);
                 });
-            
+                google.maps.event.addListener(infowindow, 'domready', function(){
+                    // Attach listener
+                    var btn = document.getElementById("btnVoteUp"+i);
+                    btn.addEventListener('click', function() {
+                        voteUp(treeArray[i], infowindow);
+                    });
+                });
             }
-
+            
         function compare(a,b) {
             if (a.votes < b.votes)
      			return -1;
