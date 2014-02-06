@@ -36,6 +36,8 @@
         <script type="text/javascript" src="js/jquery.mobile-1.3.2.min.js"></script>
         <script type="application/javascript" src="js/fastclick.min.js"></script>
         <script type="text/javascript" src="cordova.js"></script>
+        <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+        <script type="text/javascript" src="http://www.parsecdn.com/js/parse-1.2.16.min.js"></script>
         <script type="text/javascript" src="js/json2.js"></script>
         <script type="text/javascript" src="js/jstorage.js"></script>
         <script type="text/javascript">
@@ -48,7 +50,10 @@
 		  src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDb1xlbN5xo9lZcWAIn-OQKm1jH56xs904&libraries=places&amp;sensor=false">
 		</script>
         <script type="text/javascript" src="http://google-maps-utility-library-v3.googlecode.com/svn/trunk/infobox/src/infobox.js"></script>
-		<script type="text/javascript">
+	<script type="text/javascript">
+
+        Parse.initialize("Pw7r5n6AfEqyu1qCWzPGFveMWwfkBDiNSAE33dnL", "eTo4A3yQclInUHyVSj96zDP45Hdy6XIxHtfl2yIe");
+
 	    var treeCount = 0;
         var markerCount = 0;
         var treeArray = new Array();
@@ -67,7 +72,6 @@
                 infowindow.open(map);
                 infowindow.setPosition(event.latLng);
             });
-
 
             // Rough BS1-16 (Bristol council jurisdiction) postcode bounds, needs refining to a polygon
             var allowedBounds = new google.maps.LatLngBounds(
@@ -231,28 +235,37 @@
             };
             document.getElementById("cacheSize").onclick = function() { console.log($.jStorage.storageSize()); };
             initializeArrays(map);
-        }
+        } 
 
         function initializeArrays(map) {
-            var index = $.jStorage.index();
-            // Load each tree
-            for (var i = 0; i < index.length; i++) {
-                var tree = $.jStorage.get("tree"+i);
-                var latlng = new google.maps.LatLng(tree.loc.d, tree.loc.e);
-                var marker = new google.maps.Marker({
-                    position: latlng,
-                    map: map,
-                    title: ""+i,
-                    animation: google.maps.Animation.DROP,
-                    icon: 'img/tree1.png'
-                });
-                gmarkers.push(marker);
-                attachMessageInit(marker, map, tree.tree, i);
-                treeArray.push(tree.tree);
-            }
-            treeCount = index.length;
-            markerCount = treeCount;
-        }
+            var results;
+            var Tree = Parse.Object.extend("Tree");
+            var query = new Parse.Query("Tree");
+            query.find({
+                // Load each tree
+                success: function(results) {
+                    for (var i = 0; i < results.length; i++) {
+                        var tree = results[i];
+                        var latlng = new google.maps.LatLng(tree.get("lat"), tree.get("lng"));
+                        var marker = new google.maps.Marker({
+                            position: latlng,
+                            map: map,
+                            title: ""+i,
+                            animation: google.maps.Animation.DROP,
+                            icon: 'img/tree1.png'
+                        });
+                        gmarkers.push(marker);
+                        attachMessageInit(marker, map, tree, i);
+                        treeArray.push(tree.tree);
+                    }
+                    treeCount = results.length;
+                    markerCount = treeCount;
+                },
+                error: function(error) {
+                    alert("failure");
+                }
+            });
+       }
 
         // Function to place marker
         function placeMarker(location, map) {
@@ -263,10 +276,19 @@
                 animation: google.maps.Animation.DROP,
                 icon: 'img/tree1.png'
             });
+            var Tree = Parse.Object.extend("Tree");
+            var tree = new Tree();
+            tree.set("lat", location.lat());
+            tree.set("lng", location.lng());
+            tree.set("type", "default");
+            tree.set("username", "none");
+            tree.set("votes", 0); // Do we want this to default to 0 or 1?
+            tree.set("story", "none");
+            tree.save();
             markerCount++;
             gmarkers.push(marker);
             map.panTo(location);
-            attachMessage(marker, map);
+            attachMessage(marker, map, tree);
         }
         
         function cancelTree(i) {
@@ -277,7 +299,7 @@
         }
 
         function voteUp(treeInfo, infowindow) {
-         	treeInfo.votes++;
+            //treeInfo.votes++;
             infowindow.setContent('Tree submitted.<p>User Name: ' + treeInfo.username + '<p>Tree Story: ' + treeInfo.story + '<p><p>Votes : ' + treeInfo.votes + '<p><button id="btnVoteUp' + treeInfo.id + '">Vote Up</button>');
             var fullTree={
                     tree : treeInfo,
@@ -296,6 +318,9 @@
                 story : fStory,
                 votes : 0
             };
+            /*tree.set("story", fStory);
+            tree.set("username", fName);
+            tree.save();*/
             infoWindowArray[treeCount].setContent('Tree submitted.<p>User Name: ' + fName + '<p>Tree Story: ' + fStory + '<p><p>Votes: 0<p><button id="btnVoteUp'+treeCount+'">Vote Up</button>');
             treeArray.push(treeInfo);
             if ($.jStorage.storageAvailable() == true) {
@@ -309,106 +334,60 @@
                 console.log("Error - no storage available in jStorage");
             }
             treeCount++;
-            /*var y=document.getElementById("textInfoWindow"+markerCount);
-            y.innerHTML = 'Tree submitted.<p>User Name: ' + fName + '<p>Tree Story: ' + fStory + '<p><button id="btnVoteUp" onclick="return voteUp(treeInfo)">Vote Up</button>'
-
-            var z=document.getElementById("btnSubmitTree");
-            z.parentNode.removeChild(z);
-            
-            var z=document.getElementById("btnCancelTree");
-            z.parentNode.removeChild(z);
-
-            var a=document.getElementById("myForm");
-
-            if (a && a.parentNode && a.parentNode.removeChild) {
-    			a.parentNode.removeChild(a);
-            }*/
             return;
         }
 
-            // Attaches infowindow to each marker
-            function attachMessage(marker, map) {
-            	var contentString = '<p id="textInfoWindow"><b>New Tree Placed</b><p><form id="myForm"> User Name: <input type="text" name="Name"><br> Story: <input type="text" name="Story"><br></form><p><button id="btnSubmitTree" onclick="return addNewTree()">Submit</button><button id="btnCancelTree" onclick="return cancelTree(markerCount-1)">Cancel</button></p>'
-                
-                //var msggg = 'You have voted for me!';
-                //var contentString = '<p><b>First tree</b><p>The first tree to be planted in Bristol will be a large Ash tree in the city centre.   <button type="button" onclick="alert("msggg")">Vote for me!</button>';
-
-                // var boxText = document.createElement("div");
-                // boxText.style.cssText = "border: 2px solid black; margin-top: 10px; background: grey; padding: 10px;";
-                // boxText.innerHTML = "<p><b>First tree</b><p>The first tree to be planted in Bristol will be a large Ash tree in the city centre.";        
-                // infobox = new InfoBox({
-                //      content: boxText,
-                //      disableAutoPan: false,
-                //      maxWidth: 150,
-                //      pixelOffset: new google.maps.Size(-140, 0),
-                //      zIndex: null,
-                //      boxStyle: {
-                //         background: "url('http://google-maps-utility-library-v3.googlecode.com/svn/trunk/infobox/examples/tipbox.gif') no-repeat",
-                //         opacity: 0.75,
-                //         width: "280px"
-                //     },
-                //     closeBoxMargin: "16px 8px 6px 6px",
-                //     closeBoxURL: "http://www.google.com/intl/en_us/mapfiles/close.gif",
-                //     infoBoxClearance: new google.maps.Size(1, 1)
-                // });
-
-                var infowindow = new google.maps.InfoWindow({
-                    content: contentString
-                })
-                infoWindowArray.push(infowindow);
-                
-                infowindow.open(map, marker);
-
-                // google.maps.event.addListener(marker, 'click', function() {
-                //     infobox.open(marker.get('map'), this);
-                //     map.panTo(loc);
-                // });
-                
-                google.maps.event.addListener(marker, 'click', function() {
-                    infowindow.open(map,marker);
-                });
-                google.maps.event.addListener(infowindow, 'domready', function(){
-                    var contentStr = '<p id="textInfoWindow"><b>New Tree Placed</b><p><form id="myForm"> User Name: <input type="text" name="Name"><br> Story: <input type="text" name="Story"><br></form><p><button id="btnSubmitTree" onclick="return addNewTree()">Submit</button><button id="btnCancelTree" onclick="return cancelTree(markerCount-1)">Cancel</button></p>'
-                    // Check to make sure it has been submitted
-                    if(infowindow.content == contentStr) {}
-                    else {
-                        var str = infowindow.content;
-                        // Find the ID
-                        var n = str.length-18;  // If content string changes after <button id="btnVoteUp##..., needs changing
-                        var m = n;
-                        while(str[n] != 'p') {
-                            n--;
-                        }
-                        n++
-                        var i = parseInt(str.substring(n, m));
-                        // Attach listener
-                        var btn = document.getElementById("btnVoteUp"+i);
-                        btn.addEventListener('click', function() {
-                            voteUp(treeArray[i], infowindow);
-                        });
+        // Attaches infowindow to each marker
+        function attachMessage(marker, map, tree) {           
+            var contentString = '<p id="textInfoWindow"><b>New Tree Placed</b><p><form id="myForm"> User Name: <input type="text" name="Name"><br> Story: <input type="text" name="Story"><br></form><p><button id="btnSubmitTree" onclick="return addNewTree()">Submit</button><button id="btnCancelTree" onclick="return cancelTree(markerCount-1)">Cancel</button></p>'
+            var infowindow = new google.maps.InfoWindow({
+                content: contentString
+            });
+            infoWindowArray.push(infowindow);
+            infowindow.open(map, marker);
+            google.maps.event.addListener(marker, 'click', function() {
+                infowindow.open(map,marker);
+            });
+            google.maps.event.addListener(infowindow, 'domready', function(){
+                var contentStr = '<p id="textInfoWindow"><b>New Tree Placed</b><p><form id="myForm"> User Name: <input type="text" name="Name"><br> Story: <input type="text" name="Story"><br></form><p><button id="btnSubmitTree" onclick="return addNewTree()">Submit</button><button id="btnCancelTree" onclick="return cancelTree(markerCount-1)">Cancel</button></p>'
+                // Check to make sure it has been submitted
+                if(infowindow.content == contentStr) {}
+                else {
+                    var str = infowindow.content;
+                    // Find the ID
+                    var n = str.length-18;  // If content string changes after <button id="btnVoteUp##..., needs changing
+                    var m = n;
+                    while(str[n] != 'p') {
+                        n--;
                     }
-                });
-                
-            }
-            
-            // Create infoWindows when loading from jStorage
-            function attachMessageInit(marker, map, tree, i) {
-                var infowindow = new google.maps.InfoWindow({
-                    content: 'Tree submitted.<p>User Name: ' + tree.username + '<p>Tree Story: ' + tree.story + '<p>Votes: ' + tree.votes + '<p><button id="btnVoteUp'+i+'">Vote Up</button>'
-                })
-                
-                infoWindowArray.push(infowindow);
-                google.maps.event.addListener(marker, 'click', function() {
-                    infowindow.open(map,marker);
-                });
-                google.maps.event.addListener(infowindow, 'domready', function(){
+                    n++
+                    var i = parseInt(str.substring(n, m));
                     // Attach listener
                     var btn = document.getElementById("btnVoteUp"+i);
                     btn.addEventListener('click', function() {
                         voteUp(treeArray[i], infowindow);
                     });
+                }
+            });
+        }
+            
+        // Create infoWindows when loading from jStorage
+        function attachMessageInit(marker, map, tree, i) {
+            var infowindow = new google.maps.InfoWindow({
+                content: 'Tree submitted.<p>User Name: ' + tree.get("username") + '<p>Tree Story: ' + tree.get("story") + '<p>Votes: ' + tree.get("votes") + '<p><button id="btnVoteUp'+i+'">Vote Up</button>'
+            })
+            infoWindowArray.push(infowindow);
+            google.maps.event.addListener(marker, 'click', function() {
+            infowindow.open(map,marker);
+            });
+            google.maps.event.addListener(infowindow, 'domready', function(){
+                // Attach listener
+                var btn = document.getElementById("btnVoteUp"+i);
+                btn.addEventListener('click', function() {
+                    voteUp(treeArray[i], infowindow);
                 });
-            }
+            });
+        }
             
         function compare(a,b) {
             if (a.votes < b.votes)
@@ -504,3 +483,10 @@
         </div><!-- /page -->
     </body>
 </html>
+    function Tree(Latitude, Longitude, Score, Type)
+    {
+        this.Latitude = Latitude;
+        this.Longitude = Longitude;
+        this.Score = Score;
+        this.Type = Type;
+    }
