@@ -105,6 +105,8 @@
                 new google.maps.LatLng(51.421716, -2.600202), new google.maps.LatLng(51.421925, -2.600481), new google.maps.LatLng(51.421946, -2.600620), 
             ];
 
+            var objectId = "xxxxxxx";
+            
             var circleOptions = {
                 strokeColor: '#FF0000',
                 strokeOpacity: 0.1,
@@ -282,63 +284,83 @@
             tree.set("lng", location.lng());
             tree.set("type", "default");
             tree.set("username", "none");
-            tree.set("votes", 0); // Do we want this to default to 0 or 1?
+            tree.set("votes", 0); 
             tree.set("story", "none");
-            tree.save();
-            markerCount++;
-            gmarkers.push(marker);
-            map.panTo(location);
-            attachMessage(marker, map, tree);
+            tree.save(null, {
+                success: function(tree) {
+                    objectId = tree.id;
+                    markerCount++;
+                    gmarkers.push(marker);
+                    map.panTo(location);
+                    attachMessage(marker, map);
+                },
+                error: function(error) {
+                    alert("error");
+                }
+            });
+            
         }
         
         function cancelTree(i) {
-            gmarkers[i].setMap(null);
-            gmarkers.pop();
-            infoWindowArray.pop();
-            markerCount--;
+            var Tree = Parse.Object.extend("Tree");
+            var query = new Parse.Query("Tree");
+            query.equalTo("objectId", objectId);
+            query.first({
+                success: function(tree) {
+                    gmarkers[i].setMap(null);
+                    gmarkers.pop();
+                    infoWindowArray.pop();
+                    markerCount--;
+                    tree.destroy();
+                },
+                error: function(error) {
+                    alert("error destroying tree");
+                }
+            });
         }
 
-        function voteUp(treeInfo, infowindow) {
-            //treeInfo.votes++;
-            infowindow.setContent('Tree submitted.<p>User Name: ' + treeInfo.username + '<p>Tree Story: ' + treeInfo.story + '<p><p>Votes : ' + treeInfo.votes + '<p><button id="btnVoteUp' + treeInfo.id + '">Vote Up</button>');
-            var fullTree={
-                    tree : treeInfo,
-                    loc : gmarkers[treeInfo.id].position,
-            };
-            $.jStorage.set("tree"+treeInfo.id, fullTree);
+        function voteUp(objectId, infowindow) {
+            var Tree = Parse.Object.extend("Tree");
+            var query = new Parse.Query("Tree");
+            query.equalTo("objectId", objectId);
+            query.first({
+                success: function(tree) {
+                    var score = tree.get("votes");
+                    tree.set("votes", score + 1);
+                    tree.save();
+                    infowindow.setContent('<p>User Name: ' + tree.get("username") + '<p>Tree Story: ' + tree.get("story") + '<p><p>Votes: ' + tree.get("votes") + '<p><button id="btnVoteUp' + tree.id + '">Vote Up</button>');
+                },
+                error: function(error) {
+                    alert("voteup error");
+                }
+            });
         }
 
         function addNewTree() {
             var fName=document.forms["myForm"]["Name"].value;
             var fStory=document.forms["myForm"]["Story"].value;
-
-            var treeInfo={
-                id : treeCount,
-                username : fName,
-                story : fStory,
-                votes : 0
-            };
-            /*tree.set("story", fStory);
-            tree.set("username", fName);
-            tree.save();*/
-            infoWindowArray[treeCount].setContent('Tree submitted.<p>User Name: ' + fName + '<p>Tree Story: ' + fStory + '<p><p>Votes: 0<p><button id="btnVoteUp'+treeCount+'">Vote Up</button>');
-            treeArray.push(treeInfo);
-            if ($.jStorage.storageAvailable() == true) {
-                var fullTree={
-                    tree : treeInfo,
-                    loc : gmarkers[treeCount].position,
-                };
-                $.jStorage.set("tree"+treeCount, fullTree);
-            }
-            else {
-                console.log("Error - no storage available in jStorage");
-            }
-            treeCount++;
+            var Tree = Parse.Object.extend("Tree");
+            var tree = new Tree();
+            var query = new Parse.Query("Tree");
+            query.equalTo("objectId", objectId);
+            query.first({
+                success: function(tree) {
+                    tree.set("story", fStory);
+                    tree.set("username", fName);
+                    tree.save();
+                    infoWindowArray[treeCount].setContent('Tree submitted.<p>User Name: ' + fName + '<p>Tree Story: ' + fStory + '<p><p>Votes: 0<p><button id="btnVoteUp'+treeCount+'">Vote Up</button>');
+                    //treeArray.push(treeInfo); //Needed?
+                    treeCount++;
+                },
+                error: function(error) {
+                    alert("tree story saving error");
+                }
+            });
             return;
         }
 
         // Attaches infowindow to each marker
-        function attachMessage(marker, map, tree) {           
+        function attachMessage(marker, map) {           
             var contentString = '<p id="textInfoWindow"><b>New Tree Placed</b><p><form id="myForm"> User Name: <input type="text" name="Name"><br> Story: <input type="text" name="Story"><br></form><p><button id="btnSubmitTree" onclick="return addNewTree()">Submit</button><button id="btnCancelTree" onclick="return cancelTree(markerCount-1)">Cancel</button></p>'
             var infowindow = new google.maps.InfoWindow({
                 content: contentString
@@ -363,28 +385,31 @@
                     n++
                     var i = parseInt(str.substring(n, m));
                     // Attach listener
+                    //alert("attach i is "+i);
                     var btn = document.getElementById("btnVoteUp"+i);
                     btn.addEventListener('click', function() {
-                        voteUp(treeArray[i], infowindow);
+                        voteUp(objectId, infowindow);
                     });
                 }
             });
         }
             
-        // Create infoWindows when loading from jStorage
+        // Create infoWindows when loading from Parse Cloud
         function attachMessageInit(marker, map, tree, i) {
             var infowindow = new google.maps.InfoWindow({
-                content: 'Tree submitted.<p>User Name: ' + tree.get("username") + '<p>Tree Story: ' + tree.get("story") + '<p>Votes: ' + tree.get("votes") + '<p><button id="btnVoteUp'+i+'">Vote Up</button>'
+                content: '<p>User Name: ' + tree.get("username") + '<p>Tree Story: ' + tree.get("story") + '<p>Votes: ' + tree.get("votes") + '<p><button id="btnVoteUp'+i+'">Vote Up</button>'
             })
+            var idForVote = tree.id;
             infoWindowArray.push(infowindow);
             google.maps.event.addListener(marker, 'click', function() {
-            infowindow.open(map,marker);
+                infowindow.open(map,marker);
             });
+            //alert("init i is "+i);
             google.maps.event.addListener(infowindow, 'domready', function(){
                 // Attach listener
                 var btn = document.getElementById("btnVoteUp"+i);
                 btn.addEventListener('click', function() {
-                    voteUp(treeArray[i], infowindow);
+                    voteUp(idForVote, infowindow);
                 });
             });
         }
