@@ -257,7 +257,7 @@
                             icon: 'img/tree1.png'
                         });
                         gmarkers.push(marker);
-                        attachMessageInit(marker, map, tree, i);
+                        attachMessageInit(marker, map, tree);
                         treeArray.push(tree.tree);
                     }
                     treeCount = results.length;
@@ -348,7 +348,7 @@
                     tree.set("story", fStory);
                     tree.set("username", fName);
                     tree.save();
-                    infoWindowArray[treeCount].setContent('Tree submitted.<p>User Name: ' + fName + '<p>Tree Story: ' + fStory + '<p><p>Votes: 0<p><button id="btnVoteUp'+treeCount+'">Vote Up</button>');
+                    infoWindowArray[treeCount].setContent('Tree submitted.<p>User Name: ' + fName + '<p>Tree Story: ' + fStory + '<p><p>Votes: 0<p><button id="btnVoteUp'+tree.id+'">Vote Up</button>');
                     //treeArray.push(treeInfo); //Needed?
                     treeCount++;
                 },
@@ -376,38 +376,29 @@
                 if(infowindow.content == contentStr) {}
                 else {
                     var str = infowindow.content;
-                    // Find the ID
-                    var n = str.length-18;  // If content string changes after <button id="btnVoteUp##..., needs changing
-                    var m = n;
-                    while(str[n] != 'p') {
-                        n--;
-                    }
-                    n++
-                    var i = parseInt(str.substring(n, m));
+                    var id = str.slice(-28, -18); // If content string changes after <button id="btnVoteUp####..., needs changing
                     // Attach listener
-                    //alert("attach i is "+i);
-                    var btn = document.getElementById("btnVoteUp"+i);
+                    var btn = document.getElementById("btnVoteUp"+id);
                     btn.addEventListener('click', function() {
-                        voteUp(objectId, infowindow);
+                        voteUp(id, infowindow);
                     });
                 }
             });
         }
             
         // Create infoWindows when loading from Parse Cloud
-        function attachMessageInit(marker, map, tree, i) {
+        function attachMessageInit(marker, map, tree) {
             var infowindow = new google.maps.InfoWindow({
-                content: '<p>User Name: ' + tree.get("username") + '<p>Tree Story: ' + tree.get("story") + '<p>Votes: ' + tree.get("votes") + '<p><button id="btnVoteUp'+i+'">Vote Up</button>'
+                content: '<p>User Name: ' + tree.get("username") + '<p>Tree Story: ' + tree.get("story") + '<p>Votes: ' + tree.get("votes") + '<p><button id="btnVoteUp'+tree.id+'">Vote Up</button>'
             })
             var idForVote = tree.id;
             infoWindowArray.push(infowindow);
             google.maps.event.addListener(marker, 'click', function() {
                 infowindow.open(map,marker);
             });
-            //alert("init i is "+i);
             google.maps.event.addListener(infowindow, 'domready', function(){
                 // Attach listener
-                var btn = document.getElementById("btnVoteUp"+i);
+                var btn = document.getElementById("btnVoteUp"+tree.id);
                 btn.addEventListener('click', function() {
                     voteUp(idForVote, infowindow);
                 });
