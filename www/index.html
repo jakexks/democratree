@@ -1,6 +1,11 @@
 <!DOCTYPE html>
-
-<html>
+<!-- TODO:  Facebook profile info + access revoke 
+            Twitter login
+            Google android login
+            Facebook android login
+            Twitter android login
+            When a user returns, confirm they want to use current account -->
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" xmlns:fb="http://www.facebook.com/2008/fbml" xmlns:og="http://opengraphprotocol.org/schema/" lang="en">
     <head>
         <meta charset="utf-8" />
         <meta name="format-detection" content="telephone=no" />
@@ -61,13 +66,15 @@
         var gmarkers = new Array();
         var infoWindowArray = new Array();
         var loginStatus = 'none';
+        var ignoreHashChange = false;
         
         // G+ callback
-        function signinCallback(authResult) {
+        function onSignInCallback(authResult) {
           if (authResult['status']['signed_in']) {
             // Update the app to reflect a signed in user
             // Hide the sign-in button now that the user is authorized, for example:
-            document.getElementById('googleplusSigninButton').setAttribute('style', 'display: none');
+            gapi.client.load('plus','v1');
+            $('#googleplusSigninButton').hide();
             loginStatus = 'googleplus';
             openMapPage();
           } else {
@@ -82,19 +89,76 @@
         
         <!-- Initialize login page -->
         function initialize() {
+            if (window.location.hash != '#login_page' && window.location.hash != '') {
+                alert('Please login first to use Democratree');
+                _ignoreHashChange = true;
+                window.location.hash = '';
+            }
+            $(window).bind( 'hashchange', hashChanged );
             document.getElementById("guestLoginButton").addEventListener('click', function() {
                 loginStatus = 'guest';
                 openMapPage();
             });
-            document.getElementById("logoutButton").addEventListener('click', function() {
-                if(loginStatus == 'googleplus') {
-                    gapi.auth.signOut();
-                    document.getElementById('googleplusSigninButton').setAttribute('style', 'display: ');
-                }
-                loginStatus = 'none';
-                window.location.hash = 'login_page';
+            $('#facebookSigninButton').bind('click', function(){
+                FB.login(function(response) {
+                    if (response.authResponse) {
+                        loginStatus = 'facebook';
+                        openMapPage();
+                    }
+                    else {
+                        console.log(response);
+                    }
+                });
             });
+            $('.logoutButton').bind('click', logout);
         }
+        
+        function logout(){
+            console.log(loginStatus);
+            if(loginStatus == 'googleplus') {
+                gapi.auth.signOut();
+                $('#googleplusSigninButton').show();
+            }
+            loginStatus = 'none';
+            ignoreHashChange = true;
+            window.location.hash = 'login_page'
+            // For some reason this fires off two hash changes - the second #'s to window.location.pathname
+        }
+        
+        function hashChanged(event){
+            if(ignoreHashChange == false){
+                if(loginStatus == 'none' && window.location.hash != '#login_page' && window.location.hash != ''){
+                    ignoreHashChange = true;
+                    window.location.hash = 'login_page';
+                    alert('Please login first to use Democratree');
+                }
+                else if(window.location.hash == '#profile_page'){
+                    $('#profile_loginStatus').text("Currently logged in via "+loginStatus+".");
+                    if(loginStatus == 'googleplus'){
+                        googleplusHelper.profile();
+                        var $button = $('<button/>', {
+                          type: 'button',
+                          id: 'revokeAccess',
+                          text: 'Revoke the apps access to your account',
+                          click: googleplusHelper.disconnect
+                        });
+                        $button.appendTo('#profile_revokeAccess');
+                    }
+                    if(loginStatus == 'facebook'){
+                        facebookHelper.profile();
+                        var $button = $('<button/>', {
+                          type: 'button',
+                          id: 'revokeAccess',
+                          text: 'Revoke the apps access to your account',
+                          click: facebookHelper.disconnect
+                        });
+                        $button.appendTo('#profile_revokeAccess');
+                    }
+                }
+            }
+            ignoreHashChange = false;
+        }
+                
         
         function openMapPage() {
             window.location.hash = 'map_page';
@@ -264,7 +328,7 @@
             h = $(window).height();
             document.getElementById('map-canvas').style.height = h-120+"px"; // Under the assumption header/footer are 60px tall, may need changing
             // Set cache reset for jStorage
-            document.getElementById("resetCache").onclick = function() { 
+            $('.resetCache').bind('click', function() { 
                 for(var i = treeCount-1; i >= 0; i--) {
                     treeArray[i].id = null;
                     treeArray[i] = null;
@@ -284,8 +348,8 @@
                 treeCount = 0;
                 markerCount = 0;
                 $.jStorage.flush();
-            };
-            document.getElementById("cacheSize").onclick = function() { console.log($.jStorage.storageSize()); };
+            });
+            $('.cacheSize').bind('click', function() { console.log($.jStorage.storageSize()); });
             initializeArrays(map);
             return map;
         } 
@@ -490,7 +554,7 @@
             // Additional params including the callback, the rest of the params will
             // come from the page-level configuration.
             var additionalParams = {
-                'callback': signinCallback,
+                'callback': onSignInCallback,
                 'clientid':'472542569529-mfjun68cmt6gojdfis32u465hpkbjij8.apps.googleusercontent.com',
                 'cookiepolicy':'single_host_origin',
                 'requestvisibleactions':'http://schemas.google.com/AddActivity',
@@ -504,8 +568,32 @@
             });
         }
     </script>
+    <!-- /Google+ Signin Scripts -->
     <body> 
+    <!-- Facebook Login Scripts -->
+    <div id="fb-root"></div>
+    <script>
+      window.fbAsyncInit = function() {
+        FB.init({
+          appId      : '628889687147449',
+          status     : true,
+          xfbml      : true,
+          oauth   : true
+        });
+      };
 
+      (function(d, s, id){
+         var js, fjs = d.getElementsByTagName(s)[0];
+         if (d.getElementById(id)) {return;}
+         js = d.createElement(s); js.id = id;
+         //js.src = "//connect.facebook.net/en_UK/all.js"; For some reason this fails to get the page.
+         js.src = "js/fb_all.js";
+         fjs.parentNode.insertBefore(js, fjs);
+       }(document, 'script', 'facebook-jssdk'));
+       
+    </script>
+    <!-- /Facebook login scripts -->
+    
         <!-- Login Page -->
         <div data-role="page" id="login_page">
 
@@ -516,6 +604,9 @@
                 <div id="guestLoginButton" data-role="button">Login as Guest</div>
                 <br>
                 <div id="googleplusSigninButton"></div>
+                <br>
+                <br>
+                <div id="facebookSigninButton"></div>
             </div><!-- /content -->
 
             <div data-role="footer" data-position="fixed" data-id="fixed_footer">
@@ -545,10 +636,11 @@
                     <li><input id="search-input" data-mini="true" data-clear-btn="true" type="text" placeholder="Search"></li>
                     <!-- <li><a href="#map_page">Map</a></li> -->
                     <li><a href="#leaderboard_page">Leaderboard</a></li>
-                    <li><a href="#login_page" id="logoutButton">Logout</a></li>
+                    <li><a href="#profile_page" class="profileButton">Profile</a></li>
+                    <li><a href="#login_page" class="logoutButton">Logout</a></li>
                     <!-- Dev buttons -->
-                    <li><button type="button" id="resetCache">Reset tree cache</button></li>
-                    <li><button type="button" id="cacheSize">Cache size</button></li>
+                    <li><button type="button" class="resetCache">Reset tree cache</button></li>
+                    <li><button type="button" class="cacheSize">Cache size</button></li>
                 </ul>
                 
             </div><!-- /panel -->
@@ -556,7 +648,7 @@
         </div><!-- /page -->
 
 
-        <!-- Start of second page -->
+        <!-- Leaderboard page -->
         <div data-role="page" id="leaderboard_page">
 
             <div data-role="header" data-position="fixed" data-id="fixed_header">
@@ -578,7 +670,7 @@
 			<td>User2</td>
 			<td>3</td>
 		</tr>
-		</table>     
+		</table>   
             </div><!-- /content -->
 
             <div data-role="footer" data-position="fixed" data-id="fixed_footer">
@@ -589,16 +681,168 @@
                 <ul data-role="listview">
                     <li data-role="list-divider">Democratree</li>
                     <li><a href="#map_page">Map</a></li>
+                    <li><a href="#profile_page" class="profileButton">Profile</a></li>
+                    <li><a href="#login_page" class="logoutButton">Logout</a></li>
+                    <!-- Dev buttons -->
+                    <li><button type="button" class="resetCache">Reset tree cache</button></li>
+                    <li><button type="button" class="cacheSize">Cache size</button></li>
+                </ul>
+            </div><!-- /panel -->
+        </div><!-- /page -->
+        
+        <!-- Profile page -->
+        <div data-role="page" id="profile_page">
+            
+            <div data-role="header" data-position="fixed" data-id="fixed_header">
+                <a data-icon="bars" href="#profile_left_panel" data-iconpos="notext">Menu</a>
+                <h1>Profile</h1>
+            </div><!-- /header -->
+            
+            <div data-role="content" id="profile_content">
+                <div id="profile_loginStatus"></div>
+                <div id="profile_username"></div>
+                <div id="profile_revokeAccess"></div>
+            </div><!-- /content -->
+			
+            <div data-role="footer" data-position="fixed" data-id="fixed_footer">
+                <h4>Democratree</h4>
+            </div><!-- /footer -->
+
+            <div data-role="panel" id="profile_left_panel">
+                <ul data-role="listview">
+                    <li data-role="list-divider">Democratree</li>
+                    <li><a href="#map_page">Map</a></li>
                     <li><a href="#leaderboard_page">Leaderboard</a></li>
+                    <li><a href="#login_page" class="logoutButton">Logout</a></li>
+                    <!-- Dev buttons -->
+                    <li><button type="button" class="resetCache">Reset tree cache</button></li>
+                    <li><button type="button" class="cacheSize">Cache size</button></li>
                 </ul>
             </div><!-- /panel -->
         </div><!-- /page -->
     </body>
+<script type="text/javascript">
+var googleplusHelper = (function() {
+  var BASE_API_PATH = 'plus/v1/';
+
+  return {
+
+    /**
+     * Calls the OAuth2 endpoint to disconnect the app for the user.
+     */
+    disconnect: function() {
+      // Revoke the access token.
+      $.ajax({
+        type: 'GET',
+        url: 'https://accounts.google.com/o/oauth2/revoke?token=' +
+            gapi.auth.getToken().access_token,
+        async: false,
+        contentType: 'application/json',
+        dataType: 'jsonp',
+        success: function(result) {
+          console.log('revoke response: ' + result);
+          // Remove user info
+          $('#profile_loginStatus').empty();
+          $('#profile_username').empty();
+          $('#profile_revokeAccess').empty();
+          logout();
+        },
+        error: function(e) {
+          console.log(e);
+        }
+      });
+    },
+
+    /**
+     * Gets and renders the list of people visible to this app.
+     */
+    people: function() {
+      var request = gapi.client.plus.people.list({
+        'userId': 'me',
+        'collection': 'visible'
+      });
+      request.execute(function(people) {
+        $('#visiblePeople').empty();
+        $('#visiblePeople').append('Number of people visible to this app: ' +
+            people.totalItems + '<br/>');
+        for (var personIndex in people.items) {
+          person = people.items[personIndex];
+          $('#visiblePeople').append('<img src="' + person.image.url + '">');
+        }
+      });
+    },
+
+    /**
+     * Gets and renders the currently signed in user's profile data.
+     */
+    profile: function(){
+      var request = gapi.client.plus.people.get( {'userId' : 'me'} );
+      request.execute( function(profile) {
+        $('#profile_username').empty();
+        if (profile.error) {
+          console.log(profile.error);
+          return;
+        }
+        $('#profile_username').append(
+            $('<p><img src=\"' + profile.image.url + '\"></p>'));
+        $('#profile_username').append(
+            $('<p>Currently logged in as ' + profile.displayName + '<br />Tagline: ' +
+            profile.tagline + '<br />About: ' + profile.aboutMe + '</p>'));
+        if (profile.cover && profile.coverPhoto) {
+          $('#profile_username').append(
+              $('<p><img src=\"' + profile.cover.coverPhoto.url + '\"></p>'));
+        }
+      });
+    }
+  };
+})();
+var facebookHelper = (function() {
+   
+    return {
+    
+    /**
+    * Calls to revoke api permissions
+    */
+    
+    disconnect: function(){
+        FB.api('/me/permissions', 'delete', function(response){
+            if (response == true){
+                // Remove user info
+                $('#profile_loginStatus').empty();
+                $('#profile_username').empty();
+                $('#profile_revokeAccess').empty();
+                logout();
+            } else {
+                console.log(response);
+            }
+        });
+    },
+        
+    
+    /**
+     * Gets profile info
+     */
+    profile: function(){
+        FB.api("/me", function(response) {
+            if(response && !response.error){
+                console.log(response);
+                $('#profile_username').append(
+                    $('<p><img src=\"//graph.facebook.com/'+response.id+'/picture\"></p>'));
+                $('#profile_username').append(
+                    $('<p>Currently logged in as ' + response.name + '</p>'));
+            } else {
+                console.log(response.error);
+            }
+        });
+    }
+  };
+})();
+</script>
 </html>
-    function Tree(Latitude, Longitude, Score, Type)
+ <!--   function Tree(Latitude, Longitude, Score, Type)
     {
         this.Latitude = Latitude;
         this.Longitude = Longitude;
         this.Score = Score;
         this.Type = Type;
-    }
+    } What is this for???? -->

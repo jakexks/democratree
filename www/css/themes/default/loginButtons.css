@@ -18,7 +18,23 @@
     margin-left: -97px;
     white-space: nowrap;
 }
+#facebookSigninButton {
+    background: url('./images/fb/192x35.png') transparent 0px 50% no-repeat;
+    display: inline-block;
+    color: white;
+    width: 192px;
+    height: 35px;
+    position: absolute;
+    left: 50%;
+    white-space: nowrap;
+    margin-left: -97px;
+}
+#facebookSigninButton:hover {
+    cursor: hand;
+    cursor: pointer;
+}
 #googleplusSigninButton:hover {
     background: url('./images/g+/googleSignin_long_hover_32dp.png') transparent 0px 50% no-repeat;
     cursor: hand;
+    cursor: pointer;
 }
