@@ -19,7 +19,7 @@
     white-space: nowrap;
 }
 #facebookSigninButton {
-    background: url('./images/fb/192x35.png') transparent 0px 50% no-repeat;
+    background: url('./images/fb/facebookSignin_192x35.png') transparent 0px 50% no-repeat;
     display: inline-block;
     color: white;
     width: 192px;
@@ -30,6 +30,21 @@
     margin-left: -97px;
 }
 #facebookSigninButton:hover {
+    cursor: hand;
+    cursor: pointer;
+}
+#twitterSigninButton {
+    background: url('./images/twitter/twitterSignin_192x35.png') transparent 0px 50% no-repeat;
+    display: inline-block;
+    color: white;
+    width: 192px;
+    height: 35px;
+    position: absolute;
+    left: 50%;
+    white-space: nowrap;
+    margin-left: -94px;
+}
+#twitterSigninButton:hover {
     cursor: hand;
     cursor: pointer;
 }
