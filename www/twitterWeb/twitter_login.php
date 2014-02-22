@@ -1,9 +1,9 @@
 <?php
-require("twitter/twitteroauth.php");
+require("twitteroauth.php");
 session_start();
 $twitteroauth = new TwitterOAuth('K0mQSXAkQud9yOkLq21Msg', '3lomb9DzdDOQQPrrZKXxKbalBckyeFYdvRxzAiKI');
 // Requesting authentication tokens, the parameter is the URL we will be redirected to
-$request_token = $twitteroauth->getRequestToken('localhost/democratree/www/twitter_oauth.php');
+$request_token = $twitteroauth->getRequestToken('localhost/democratree/www/twitterWeb/twitter_oauth.php');
 // Saving them into the session
 $_SESSION['oauth_token'] = $request_token['oauth_token'];
 $_SESSION['oauth_token_secret'] = $request_token['oauth_token_secret'];

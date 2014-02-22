@@ -1,55 +1,56 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" xmlns:fb="http://www.facebook.com/2008/fbml" xmlns:og="http://opengraphprotocol.org/schema/" lang="en">
-    <head>
-        <meta charset="utf-8" />
-        <meta name="format-detection" content="telephone=no" />
-        <!-- WARNING: for iOS 7, remove the width=device-width and height=device-height attributes. See https://issues.apache.org/jira/browse/CB-4323 -->
-        <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height, target-densitydpi=medium-dpi" />
-        <link rel="stylesheet"  href="css/themes/default/jquery.mobile-1.3.2.min.css">
-        <link rel="stylesheet"  href="css/themes/default/loginButtons.css">
-		<style type="text/css">
-		  #map-canvas { height: 100%}
-		</style>
-        <script type="text/javascript" src="js/jquery.js"></script>
-        <script type="text/javascript">
-            var dd = $.Deferred();
-            var jqd = $.Deferred();
-            $.when(dd, jqd).done(doInit);
+<head>
+    <meta charset="utf-8" />
+    <meta name="format-detection" content="telephone=no" />
+    <!-- WARNING: for iOS 7, remove the width=device-width and height=device-height attributes. See https://issues.apache.org/jira/browse/CB-4323 -->
+    <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height, target-densitydpi=medium-dpi" />
+    <link rel="stylesheet"  href="css/themes/default/jquery.mobile-1.3.2.min.css">
+    <link rel="stylesheet"  href="css/themes/default/loginButtons.css">
+    <style type="text/css">
+		#map-canvas { height: 100%}
+    </style>
+    <script type="text/javascript" src="js/jquery.js"></script>
+    <script type="text/javascript">
+        var dd = $.Deferred();
+        var jqd = $.Deferred();
+        $.when(dd, jqd).done(doInit);
 
-            $(document).bind('mobileinit', function () {
-                jqd.resolve();
-            });
-            function doInit() {
-                FastClick.attach(document.body);
-                var ele = document.getElementById("deviceproperties");
-                ele.innerHTML = 'Device Model: '    + device.model    + '<br />' +
-                            	'Device Cordova: '  + device.cordova  + '<br />' +
-                            	'Device Platform: ' + device.platform + '<br />' +
-        		                'Device UUID: '     + device.uuid     + '<br />' +
-		                        'Device Version: '  + device.version  + '<br />';
+        $(document).bind('mobileinit', function () {
+            jqd.resolve();
+        });
+        function doInit() {
+            FastClick.attach(document.body);
+            var ele = document.getElementById("deviceproperties");
+            ele.innerHTML = 'Device Model: '    + device.model    + '<br />' +
+                            'Device Cordova: '  + device.cordova  + '<br />' +
+                            'Device Platform: ' + device.platform + '<br />' +
+                            'Device UUID: '     + device.uuid     + '<br />' +
+                            'Device Version: '  + device.version  + '<br />';
 
-            }
-            $.support.cors = true;
-            $.mobile.allowCrossDomainPages = true;
-            $.mobile.buttonMarkup.hoverDelay = 10;
-        </script>
-        <script type="text/javascript" src="js/jquery.mobile-1.3.2.min.js"></script>
-        <script type="application/javascript" src="js/fastclick.min.js"></script>
-        <script type="text/javascript" src="cordova.js"></script>
-        <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
-        <script type="text/javascript" src="http://www.parsecdn.com/js/parse-1.2.16.min.js"></script>
-        <script type="text/javascript" src="js/json2.js"></script>
-        <script type="text/javascript" src="js/jstorage.js"></script>
-        <script type="text/javascript">
-            document.addEventListener('deviceready', deviceReady, false);
-            function deviceReady() {
-                dd.resolve();
-            }
-        </script>
-		<script type="text/javascript"
-		  src="https://maps.googleapis.com/maps/api/js?key=AIzaSyATdd83fKwz8LOVfeVfTe5nVpbNI_0kxSI&libraries=places&amp;sensor=false">
-		</script>
-        <script type="text/javascript" src="http://google-maps-utility-library-v3.googlecode.com/svn/trunk/infobox/src/infobox.js"></script>
+        }
+        $.support.cors = true;
+        $.mobile.allowCrossDomainPages = true;
+        $.mobile.buttonMarkup.hoverDelay = 10;
+    </script>
+    <script type="text/javascript" src="js/jquery.mobile-1.3.2.min.js"></script>
+    <script type="application/javascript" src="js/fastclick.min.js"></script>
+    <script type="text/javascript" src="cordova.js"></script>
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+    <script type="text/javascript" src="http://www.parsecdn.com/js/parse-1.2.16.min.js"></script>
+    <script type="text/javascript" src="js/json2.js"></script>
+    <script type="text/javascript" src="js/jstorage.js"></script>
+    <script type="text/javascript">
+        document.addEventListener('deviceready', deviceReady, false);
+        function deviceReady() {
+            dd.resolve();
+        }
+    </script>
+    <script type="text/javascript"
+		src="https://maps.googleapis.com/maps/api/js?key=AIzaSyATdd83fKwz8LOVfeVfTe5nVpbNI_0kxSI&libraries=places&amp;sensor=false">
+    </script>
+    <script type="text/javascript" src="http://google-maps-utility-library-v3.googlecode.com/svn/trunk/infobox/src/infobox.js"></script>
+    <script type="text/javascript" src="js/democratreeWebSocialMedia.js"></script>
 	<script type="text/javascript">
 
         Parse.initialize("Pw7r5n6AfEqyu1qCWzPGFveMWwfkBDiNSAE33dnL", "eTo4A3yQclInUHyVSj96zDP45Hdy6XIxHtfl2yIe");
@@ -62,92 +63,6 @@
         var loginStatus = 'none';
         var ignoreHashChange = false;
         
-        // G+ callback
-        function onSignInCallback(authResult) {
-          if (authResult['status']['signed_in']) {
-            // Update the app to reflect a signed in user
-            // Hide the sign-in button now that the user is authorized, for example:
-            gapi.client.load('plus','v1');
-            $('#googleplusSigninButton').hide();
-            loginStatus = 'googleplus';
-            openMapPage();
-          } else {
-            // Update the app to reflect a signed out user
-            // Possible error values:
-            //   "user_signed_out" - User is signed-out
-            //   "access_denied" - User denied access to your app
-            //   "immediate_failed" - Could not automatically log in the user
-            //console.log('Sign-in state: ' + authResult['error']);                
-          }
-        }
-        
-        <!-- Initialize login page -->
-        function initialize() {
-            if (window.location.hash != '#login_page' && window.location.hash != '') {
-                alert('Please login first to use Democratree');
-                _ignoreHashChange = true;
-                window.location.hash = '';
-            }
-            $(window).bind( 'hashchange', hashChanged );
-            document.getElementById("guestLoginButton").addEventListener('click', function() {
-                loginStatus = 'guest';
-                openMapPage();
-            });
-            $('#facebookSigninButton').bind('click', function(){
-                FB.getLoginStatus(function(response) {
-                    if (response.status === 'connected') {
-                        loginStatus = 'facebook';
-                        openMapPage();
-                    } else {
-                        FB.login(function(response) {
-                            if (response.authResponse) {
-                                loginStatus = 'facebook';
-                                openMapPage();
-                            }
-                            else {
-                                console.log(response);
-                            }
-                        });
-                    }
-                }, true);
-            });
-            $('#twitterSigninButton').bind('click', function(){
-                $.ajax({
-                    url: "twitter_login.php",
-                    type: 'post',
-                    dataType: 'json',
-                    success: function(data, status, xhr) {
-                        if (data.msg == 'OK') {
-                            loginStatus = 'twitter';
-                            window.open(data.url);
-                            // all ok, user logged in
-                        } else {
-                            // display error
-                            console.log(data.msg);
-                        }
-                    },
-                    error: function(data, status, xhr) {
-                        console.log(data);
-                    }
-                });
-            });
-            $('.logoutButton').bind('click', logout);
-        }
-        
-        function logout(){
-            $('#profile_loginStatus').empty();
-            $('#profile_username').empty();
-            $('#profile_revokeAccess').empty();
-            if(loginStatus == 'googleplus') {
-                gapi.auth.signOut();
-                $('#googleplusSigninButton').show();
-            }
-            loginStatus = 'none';
-            ignoreHashChange = true;
-            window.location.hash = 'login_page'
-            // For some reason this fires off two hash changes - the second #'s to window.location.pathname
-        }
-        
         function hashChanged(event){
             if(ignoreHashChange == false){
                 if(loginStatus == 'none' && window.location.hash != '#login_page' && window.location.hash != ''){
@@ -156,31 +71,7 @@
                     alert('Please login first to use Democratree');
                 }
                 else if(window.location.hash == '#profile_page'){
-                    $('#profile_loginStatus').text("Currently logged in via "+loginStatus+".");
-                    if(loginStatus == 'googleplus'){
-                        googleplusHelper.profile();
-                        var $button = $('<button/>', {
-                          type: 'button',
-                          id: 'revokeAccess',
-                          text: 'Revoke the apps access to your account',
-                          click: googleplusHelper.disconnect
-                        });
-                        $button.appendTo('#profile_revokeAccess');
-                    }
-                    if(loginStatus == 'facebook'){
-                        facebookHelper.profile();
-                        var $button = $('<button/>', {
-                          type: 'button',
-                          id: 'revokeAccess',
-                          text: 'Revoke the apps access to your account',
-                          click: facebookHelper.disconnect
-                        });
-                        $button.appendTo('#profile_revokeAccess');
-                    }
-                    if(loginStatus == 'twitter'){
-                        twitterHelper.profile();
-                        // There is no revoke function in the api for twitter, users have to do it manually from twitter settings
-                    }
+                    hashChangedProfile();
                 }
             }
             ignoreHashChange = false;
@@ -564,62 +455,14 @@
             var i;
         }
 
-        google.maps.event.addDomListener(window, 'load', initialize);
-        </script>
-        <title>Democratree</title>
+        google.maps.event.addDomListener(window, 'load', initializeLogin);
+    </script>
+    <title>Democratree</title>
     </head>
-    <!-- Google+ Signin Scripts -->
-    <script type="text/javascript">
-        (function() {
-            var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
-            po.src = 'https://apis.google.com/js/client:plusone.js?onload=render';
-            var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
-        })();
-     
-        function render() {
-
-            // Additional params including the callback, the rest of the params will
-            // come from the page-level configuration.
-            var additionalParams = {
-                'callback': onSignInCallback,
-                'clientid':'472542569529-mfjun68cmt6gojdfis32u465hpkbjij8.apps.googleusercontent.com',
-                'cookiepolicy':'single_host_origin',
-                'requestvisibleactions':'http://schemas.google.com/AddActivity',
-                'scope':'https://www.googleapis.com/auth/plus.login'
-            };
-
-            // Attach a click listener to a button to trigger the flow.
-            var signinButton = document.getElementById('googleplusSigninButton');
-            signinButton.addEventListener('click', function() {
-                gapi.auth.signIn(additionalParams); // Will use page level configuration
-            });
-        }
-    </script>
-    <!-- /Google+ Signin Scripts -->
     <body> 
-    <!-- Facebook Login Scripts -->
     <div id="fb-root"></div>
-    <script>
-      window.fbAsyncInit = function() {
-        FB.init({
-          appId      : '628889687147449',
-          status     : true,
-          xfbml      : true,
-          oauth   : true
-        });
-      };
-
-      (function(d, s, id){
-         var js, fjs = d.getElementsByTagName(s)[0];
-         if (d.getElementById(id)) {return;}
-         js = d.createElement(s); js.id = id;
-         //js.src = "//connect.facebook.net/en_UK/all.js"; For some reason this fails to get the page.
-         js.src = "js/fb_all.js";
-         fjs.parentNode.insertBefore(js, fjs);
-       }(document, 'script', 'facebook-jssdk'));
-       
-    </script>
-    <!-- /Facebook login scripts -->
+    <!-- Facebook/Google+ API loader -->
+    <script type="text/javascript" src="js/democratreeWebSocialMediaAPIs.js"></script>
     
         <!-- Login Page -->
         <div data-role="page" id="login_page">
@@ -751,144 +594,6 @@
             </div><!-- /panel -->
         </div><!-- /page -->
     </body>
-<script type="text/javascript">
-var googleplusHelper = (function() {
-  var BASE_API_PATH = 'plus/v1/';
-
-  return {
-
-    /**
-     * Calls the OAuth2 endpoint to disconnect the app for the user.
-     */
-    disconnect: function() {
-      // Revoke the access token.
-      $.ajax({
-        type: 'GET',
-        url: 'https://accounts.google.com/o/oauth2/revoke?token=' +
-            gapi.auth.getToken().access_token,
-        async: false,
-        contentType: 'application/json',
-        dataType: 'jsonp',
-        success: function(result) {
-          // Remove user info
-          $('#profile_loginStatus').empty();
-          $('#profile_username').empty();
-          $('#profile_revokeAccess').empty();
-          logout();
-        },
-        error: function(e) {
-          console.log(e);
-        }
-      });
-    },
-
-    /**
-     * Gets and renders the list of people visible to this app.
-     */
-    people: function() {
-      var request = gapi.client.plus.people.list({
-        'userId': 'me',
-        'collection': 'visible'
-      });
-      request.execute(function(people) {
-        $('#visiblePeople').empty();
-        $('#visiblePeople').append('Number of people visible to this app: ' +
-            people.totalItems + '<br/>');
-        for (var personIndex in people.items) {
-          person = people.items[personIndex];
-          $('#visiblePeople').append('<img src="' + person.image.url + '">');
-        }
-      });
-    },
-
-    /**
-     * Gets and renders the currently signed in user's profile data.
-     */
-    profile: function(){
-      var request = gapi.client.plus.people.get( {'userId' : 'me'} );
-      request.execute( function(profile) {
-        $('#profile_username').empty();
-        if (profile.error) {
-          console.log(profile.error);
-          return;
-        }
-        $('#profile_username').append(
-            $('<p><img src=\"' + profile.image.url + '\"></p>'));
-        $('#profile_username').append(
-            $('<p>Currently logged in as ' + profile.displayName + '<br />Tagline: ' +
-            profile.tagline + '<br />About: ' + profile.aboutMe + '</p>'));
-        if (profile.cover && profile.coverPhoto) {
-          $('#profile_username').append(
-              $('<p><img src=\"' + profile.cover.coverPhoto.url + '\"></p>'));
-        }
-      });
-    }
-  };
-})();
-var facebookHelper = (function() {
-   
-    return {
-    
-    /**
-    * Calls to revoke api permissions
-    */
-    
-    disconnect: function(){
-        FB.api('/me/permissions', 'delete', function(response){
-            if (response == true){
-                logout();
-            } else {
-                // Add response to user
-                console.log(response);
-            }
-        });
-    },
-        
-    
-    /**
-     * Gets profile info
-     */
-    profile: function(){
-        FB.api("/me", function(response) {
-            if(response && !response.error){
-                console.log(response);
-                $('#profile_username').append(
-                    $('<p><img src=\"//graph.facebook.com/'+response.id+'/picture\"></p>'));
-                $('#profile_username').append(
-                    $('<p>Currently logged in as ' + response.name + '</p>'));
-            } else {
-                console.log(response.error);
-            }
-        });
-    }
-  };
-})();
-var twitterHelper = (function() {
-
-    return {
-    
-    profile: function(){
-        $.ajax({
-            url: "twitter_profile.php",
-            type: "GET",
-            dataType: "json"
-        }).done(function(data) {
-            console.log(data);
-            if(data.msg == 'OK') {
-                // Retrieved properly
-                $('#profile_username').append(
-                    $('<p><img src=\"' + data.response.profile_image_url+'\"></p>'));
-                $('#profile_username').append(
-                    $('<p>Currently logged in as ' + data.response.name + ' (@' + data.response.screen_name + ')</p>'));
-            } else {
-                $('#profile_username').append(
-                $('<p>Unfortunately there was an error retrieving your profile from twitter.</p>'));
-            }
-        });
-    }
-  }
-})();
-</script>
 </html>
  <!--   function Tree(Latitude, Longitude, Score, Type)
     {

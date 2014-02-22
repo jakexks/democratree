@@ -1,5 +1,5 @@
 <?php
-require("twitter/twitteroauth.php");
+require("twitteroauth.php");
 session_start();
 // Get new OAuth from access token
 $twitteroauth = new TwitterOAuth('K0mQSXAkQud9yOkLq21Msg', '3lomb9DzdDOQQPrrZKXxKbalBckyeFYdvRxzAiKI', $_SESSION['access_token']['oauth_token'], $_SESSION['access_token']['oauth_token_secret']);
