@@ -24,24 +24,24 @@ body {
     -webkit-touch-callout: none;                /* prevent callout to copy image, etc when tap to hold */
     -webkit-text-size-adjust: none;             /* prevent webkit from resizing text to fit */
     -webkit-user-select: none;                  /* prevent copy paste, to allow, change 'none' to 'text' */
-    background-color:#E4E4E4;
-    background-image:linear-gradient(top, #A7A7A7 0%, #E4E4E4 51%);
-    background-image:-webkit-linear-gradient(top, #A7A7A7 0%, #E4E4E4 51%);
-    background-image:-ms-linear-gradient(top, #A7A7A7 0%, #E4E4E4 51%);
+    background-color:#A9F16C;
+    background-image:linear-gradient(top, #A9F16C 0%, #A9F16C 51%);
+    background-image:-webkit-linear-gradient(top, #A9F16C 0%, #A9F16C 51%);
+    background-image:-ms-linear-gradient(top, #A9F16C 0%, #A9F16C 51%);
     background-image:-webkit-gradient(
         linear,
         left top,
         left bottom,
-        color-stop(0, #A7A7A7),
-        color-stop(0.51, #E4E4E4)
+        color-stop(0, #A9F16C),
+        color-stop(0.51, #A9F16C)
     );
     background-attachment:fixed;
     font-family:'HelveticaNeue-Light', 'HelveticaNeue', Helvetica, Arial, sans-serif;
-    font-size:12px;
+    font-size:14px;
     height:100%;
     margin:0px;
     padding:0px;
-    text-transform:uppercase;
+    
     width:100%;
 }
 
@@ -69,13 +69,26 @@ body {
     }
 }
 
-h1 {
-    font-size:24px;
-    font-weight:normal;
-    margin:0px;
-    overflow:visible;
-    padding:0px;
-    text-align:center;
+.article p img {
+
+    max-width: 100%;
+}
+
+.article p:first-child {
+    text-align: center;
+}
+
+IMG.displayed {
+    display: block;
+    margin-left: auto;
+    margin-right: auto
+}
+
+
+.button1{
+    width: 300px;
+    padding-top: 10px;
+    padding-bottom: 10px;
 }
 
 .event {

@@ -1,14 +1,21 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" xmlns:fb="http://www.facebook.com/2008/fbml" xmlns:og="http://opengraphprotocol.org/schema/" lang="en">
+
 <head>
     <meta charset="utf-8" />
     <meta name="format-detection" content="telephone=no" />
     <!-- WARNING: for iOS 7, remove the width=device-width and height=device-height attributes. See https://issues.apache.org/jira/browse/CB-4323 -->
     <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height, target-densitydpi=medium-dpi" />
-    <link rel="stylesheet"  href="css/themes/default/jquery.mobile-1.3.2.min.css">
+
+    
+    <link rel="stylesheet" href="css/themes/green3.min.css" />
+    <link rel="stylesheet" href="css/themes/jquery.mobile.icons.min.css" />
+    <link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.0/jquery.mobile.structure-1.4.0.min.css" />
     <link rel="stylesheet"  href="css/themes/default/loginButtons.css">
+
+
     <style type="text/css">
-		#map-canvas { height: 100%}
+        #map-canvas { height: 100%}
     </style>
     <script type="text/javascript" src="js/jquery.js"></script>
     <script type="text/javascript">
@@ -33,7 +40,11 @@
         $.mobile.allowCrossDomainPages = true;
         $.mobile.buttonMarkup.hoverDelay = 10;
     </script>
-    <script type="text/javascript" src="js/jquery.mobile-1.3.2.min.js"></script>
+
+    <script type="text/javascript" src="js/markerclusterer.js"></script>
+
+    <script src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
+    <script src="http://code.jquery.com/mobile/1.4.0/jquery.mobile-1.4.0.min.js"></script>
     <script type="application/javascript" src="js/fastclick.min.js"></script>
     <script type="text/javascript" src="cordova.js"></script>
     <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
@@ -47,15 +58,15 @@
         }
     </script>
     <script type="text/javascript"
-		src="https://maps.googleapis.com/maps/api/js?key=AIzaSyATdd83fKwz8LOVfeVfTe5nVpbNI_0kxSI&libraries=places&amp;sensor=false">
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyATdd83fKwz8LOVfeVfTe5nVpbNI_0kxSI&libraries=places&amp;sensor=false">
     </script>
     <script type="text/javascript" src="http://google-maps-utility-library-v3.googlecode.com/svn/trunk/infobox/src/infobox.js"></script>
     <script type="text/javascript" src="js/democratreeWebSocialMedia.js"></script>
-	<script type="text/javascript">
+    <script type="text/javascript">
 
         Parse.initialize("Pw7r5n6AfEqyu1qCWzPGFveMWwfkBDiNSAE33dnL", "eTo4A3yQclInUHyVSj96zDP45Hdy6XIxHtfl2yIe");
 
-	    var treeCount = 0;
+        var treeCount = 0;
         var markerCount = 0;
         var treeArray = new Array();
         var gmarkers = new Array();
@@ -81,16 +92,18 @@
         function openMapPage() {
             window.location.hash = 'map_page';
             var map = initializeMap();
-            var c = map.getCenter();
+            var c = map.getCenter();        
+
             // Fix for loading map into 'hidden' div on other page
             google.maps.event.addListener(map, 'idle', function(){
                 google.maps.event.trigger(map, 'resize');
                 map.setCenter(c);
                 google.maps.event.clearListeners(map, 'idle');
             });
+
         }
         
-        <!-- Initialize Map page -->
+        // Initialize Map page
         function initializeMap() {
             var mapOptions = {
                 center: new google.maps.LatLng(51.455, -2.588),
@@ -104,6 +117,7 @@
                 infowindow.open(map);
                 infowindow.setPosition(event.latLng);
             });
+
 
             // Rough BS1-16 (Bristol council jurisdiction) postcode bounds, needs refining to a polygon
             var allowedBounds = new google.maps.LatLngBounds(
@@ -127,6 +141,37 @@
             var infowindow = new google.maps.InfoWindow({ 
                 content: badArea
             });
+                // Coordinates for disallowed area
+                var polyCoords = [
+                    new google.maps.LatLng(51.422368, -2.600615), new google.maps.LatLng(51.422281, -2.599920), new google.maps.LatLng(51.422303, -2.598823), 
+                    new google.maps.LatLng(51.421931, -2.598190), new google.maps.LatLng(51.421291, -2.598362), new google.maps.LatLng(51.420220, -2.599207), 
+                    new google.maps.LatLng(51.420162, -2.599341), new google.maps.LatLng(51.420210, -2.599928), new google.maps.LatLng(51.420321, -2.600121), 
+                    new google.maps.LatLng(51.420759, -2.600387), new google.maps.LatLng(51.420884, -2.600556), new google.maps.LatLng(51.421294, -2.600470), 
+                    new google.maps.LatLng(51.421716, -2.600202), new google.maps.LatLng(51.421925, -2.600481), new google.maps.LatLng(51.421946, -2.600620), 
+                ];
+
+                var circleOptions = {
+                    strokeColor: '#FF0000',
+                    strokeOpacity: 0.1,
+                    strokeWeight: 2,
+                    fillColor: '#A1F4A1',
+                    fillOpacity: 0.1,
+                    map: map,
+                    center: new google.maps.LatLng(51.421274, -2.599345),
+                    radius: 2500
+                    };
+
+                plantArea = new google.maps.Circle(circleOptions);
+
+                // Polygon for disallowed area
+                shading = new google.maps.Polygon({
+                    paths: polyCoords,
+                    strokeColor: '#595555',
+                    strokeOpacity: 0.5,
+                    strokeWeight: 1,
+                    fillColour: '#595555',
+                    fillOpacity: 0.3
+                });
 
             // Coordinates for disallowed area
             var polyCoords = [
@@ -269,6 +314,7 @@
             });
             $('.cacheSize').bind('click', function() { console.log($.jStorage.storageSize()); });
             initializeArrays(map);
+            
             return map;
         } 
 
@@ -295,6 +341,10 @@
                     }
                     treeCount = results.length;
                     markerCount = treeCount;
+
+        // cluster            
+        var markerCluster = new MarkerClusterer(map, gmarkers);
+
                 },
                 error: function(error) {
                     alert("failure");
@@ -440,11 +490,11 @@
             
         function compare(a,b) {
             if (a.votes < b.votes)
-     			return -1;
+                return -1;
             if (a.votes > b.votes)
-    			return 1;
+                return 1;
             return 0;
-	    }
+        }
 
         function sortArray() {
             treeArray.sort(compare);
@@ -458,147 +508,215 @@
         google.maps.event.addDomListener(window, 'load', initializeLogin);
     </script>
     <title>Democratree</title>
-    </head>
-    <body> 
-    <div id="fb-root"></div>
-    <!-- Facebook/Google+ API loader -->
-    <script type="text/javascript" src="js/democratreeWebSocialMediaAPIs.js"></script>
-    
-        <!-- Login Page -->
-        <div data-role="page" id="login_page">
+</head>
 
-            <div data-role="header" data-position="fixed" data-id="fixed_header">
-            </div><!-- /header -->
+<body>
 
-            <div data-role="content">
-                <div id="guestLoginButton" data-role="button">Login as Guest</div>
-                <br>
-                <div id="googleplusSigninButton"></div>
-                <br>
-                <br>
-                <div id="facebookSigninButton"></div>
-                <br>
-                <br>
-                <div id="twitterSigninButton"></div>
-            </div><!-- /content -->
+<div data-role="page" id="login">
 
-            <div data-role="footer" data-position="fixed" data-id="fixed_footer">
-            </div><!-- /footer -->
-            
-        </div><!-- /page -->
-    
-        <!-- map page -->
-        <div data-role="page" id="map_page">
+    <div role="main" class="ui-content" >
+        <h2>Log In</h2>
 
-            <div data-role="header" data-position="fixed" data-id="fixed_header">
-                <a data-icon="bars" href="#map_left_panel" data-iconpos="notext">Menu</a>
-                <h1>Map</h1>
-            </div><!-- /header -->
-            
-            <div data-role="content" id="map-canvas">
-                <div id="deviceproperties"></div>
-            </div><!-- /content -->
-			
-            <div data-role="footer" data-position="fixed" data-id="fixed_footer">
-                <h4>Democratree</h4>
-            </div><!-- /footer -->
+        <p>
+            <form>
+                <label for="login-username" class="ui-hidden-accessible">Username:</label>
+                <input name="login-username" id="login-username" placeholder="Username" value="" type="text">
+                <label for="login-pwd" class="ui-hidden-accessible">Username:</label>
+                <input name="login-pwd" id="login-pwd" placeholder="Password" value="" type="text">
+            </form>
+        </p>
+        <p><a href="#map" class="ui-btn ui-shadow ui-corner-all">Log In</a></p>
+        <p><a href="#map" class="ui-btn ui-shadow ui-corner-all">Sign Up</a></p>
+        <p><a href="#map" id="guestLoginButton" class="ui-btn ui-shadow ui-corner-all">Guest</a></p>
+    </div><!-- /content -->
 
-            <div data-role="panel" id="map_left_panel">
-                <ul data-role="listview">
-                    <li data-role="list-divider">Democratree</li>
-                    <li><input id="search-input" data-mini="true" data-clear-btn="true" type="text" placeholder="Search"></li>
-                    <!-- <li><a href="#map_page">Map</a></li> -->
-                    <li><a href="#leaderboard_page">Leaderboard</a></li>
-                    <li><a href="#profile_page" class="profileButton">Profile</a></li>
-                    <li><a href="#login_page" class="logoutButton">Logout</a></li>
-                    <!-- Dev buttons -->
-                    <li><button type="button" class="resetCache">Reset tree cache</button></li>
-                    <li><button type="button" class="cacheSize">Cache size</button></li>
-                </ul>
-                
-            </div><!-- /panel -->
+</div><!-- /Login Page -->
 
-        </div><!-- /page -->
+<!-- Start of map page -->
+<div data-role="page" id="map">
 
-
-        <!-- Leaderboard page -->
-        <div data-role="page" id="leaderboard_page">
-
-            <div data-role="header" data-position="fixed" data-id="fixed_header">
-                <a data-icon="bars" href="#leaderboard_left_panel" data-iconpos="notext">Menu</a>
-                <h1>Leaderboard</h1>
-            </div><!-- /header -->
-
-            <div data-role="content">   
-                <p><table id="leaderboardTable" border="1">
-		<tr>
-			<td><b>Username</b></td>
-			<td><b>Votes</b></td>
-		</tr>
-		<tr>
-			<td>User1</td>
-			<td>7</td>
-		</tr>
-		<tr>
-			<td>User2</td>
-			<td>3</td>
-		</tr>
-		</table>   
-            </div><!-- /content -->
-
-            <div data-role="footer" data-position="fixed" data-id="fixed_footer">
-                <h4>Democratree</h4>
-            </div><!-- /footer -->
-
-            <div data-role="panel" id="leaderboard_left_panel">
-                <ul data-role="listview">
-                    <li data-role="list-divider">Democratree</li>
-                    <li><a href="#map_page">Map</a></li>
-                    <li><a href="#profile_page" class="profileButton">Profile</a></li>
-                    <li><a href="#login_page" class="logoutButton">Logout</a></li>
-                    <!-- Dev buttons -->
-                    <li><button type="button" class="resetCache">Reset tree cache</button></li>
-                    <li><button type="button" class="cacheSize">Cache size</button></li>
-                </ul>
-            </div><!-- /panel -->
-        </div><!-- /page -->
+    <div data-role="header" data-position="fixed" data-id="fixed_header">
         
-        <!-- Profile page -->
-        <div data-role="page" id="profile_page">
-            
-            <div data-role="header" data-position="fixed" data-id="fixed_header">
-                <a data-icon="bars" href="#profile_left_panel" data-iconpos="notext">Menu</a>
-                <h1>Profile</h1>
-            </div><!-- /header -->
-            
-            <div data-role="content" id="profile_content">
-                <div id="profile_loginStatus"></div>
-                <div id="profile_username"></div>
-                <div id="profile_revokeAccess"></div>
-            </div><!-- /content -->
-			
-            <div data-role="footer" data-position="fixed" data-id="fixed_footer">
-                <h4>Democratree</h4>
-            </div><!-- /footer -->
+        <a href="#map_left_panel" data-icon="bars" data-iconpos="notext" data-direction="reverse">Home</a>
+        <a href="#" data-icon="info" data-iconpos="notext" data-rel="dialog" data-transition="fade">Search</a>
+        <h1>Map</h1>
 
-            <div data-role="panel" id="profile_left_panel">
-                <ul data-role="listview">
-                    <li data-role="list-divider">Democratree</li>
-                    <li><a href="#map_page">Map</a></li>
-                    <li><a href="#leaderboard_page">Leaderboard</a></li>
-                    <li><a href="#login_page" class="logoutButton">Logout</a></li>
-                    <!-- Dev buttons -->
-                    <li><button type="button" class="resetCache">Reset tree cache</button></li>
-                    <li><button type="button" class="cacheSize">Cache size</button></li>
-                </ul>
-            </div><!-- /panel -->
-        </div><!-- /page -->
-    </body>
+    </div><!-- /header -->
+
+        <input id="search-input" data-mini="true" data-clear-btn="true" type="text" placeholder="Search">
+
+    <div data-role="content" id="map-canvas">        
+    
+    <!-- <div id="deviceproperties"></div> -->
+
+    </div><!-- /content -->
+
+            
+    <div data-role="panel" id="map_left_panel">
+        <ul data-role="listview">
+            <li><a href="#map" class="ui-icon-grid">Map</a></li>
+            <li><a href="#leaderboard" class="ui-icon-bullets">Leaderboard</a></li>
+            <li><a href="#profile" class="ui-icon-user">My Profile</a></li>
+            <li><a href="#friends" class="ui-icon-heart">Friends</a></li>
+            <li><a href="#settings" class="ui-icon-gear">Account Settings</a></li>
+            <li><a href="#treeinfo" class="ui-icon-info">Tree Information</a></li>
+            <li><a href="#about" class="ui-icon-edit">About</a></li>
+            <li><a href="#login" class="ui-icon-power">Log Out</a></li>
+        </ul>
+        
+    </div><!-- /panel -->
+
+</div><!-- /page -->
+
+<!-- Start of leaderboard page -->
+<div data-role="page" id="leaderboard">
+
+    <div data-role="header" data-position="fixed" data-id="fixed_header">
+        <a data-icon="bars" href="#leaderboard_left_panel" data-iconpos="notext">Menu</a>
+        <h1>Leaderboard</h1>
+    </div><!-- /header -->
+
+    <div role="main" class="ui-content">
+        <p>
+            <ol data-role="listview">
+                <li>A Tree</li>
+                <li>B Tree</li>
+                <li>C Tree</li>
+                <li>D Tree</li>
+                <li>E Tree</li>
+            </ol>
+        </p>
+
+    </div><!-- /content -->
+            
+    <div data-role="panel" id="leaderboard_left_panel">
+        <ul data-role="listview">
+            <li><a href="#map" class="ui-icon-grid">Map</a></li>
+            <li><a href="#leaderboard" class="ui-icon-bullets">Leaderboard</a></li>
+            <li><a href="#profile" class="ui-icon-user">My Profile</a></li>
+            <li><a href="#friends" class="ui-icon-heart">Friends</a></li>
+            <li><a href="#settings" class="ui-icon-gear">Account Settings</a></li>
+            <li><a href="#treeinfo" class="ui-icon-info">Tree Information</a></li>
+            <li><a href="#about" class="ui-icon-edit">About</a></li>
+            <li><a href="#login" class="ui-icon-power">Log Out</a></li>
+        </ul>
+        
+    </div><!-- /panel -->
+
+</div><!-- /page -->
+
+<!-- Start of profile page -->
+<div data-role="page" id="profile">
+
+    <div data-role="header" data-position="fixed" data-id="fixed_header">
+        <a data-icon="bars" href="#profile_left_panel" data-iconpos="notext">Menu</a>
+        <h1>My Profile</h1>
+    </div><!-- /header -->
+
+    <div role="main" class="ui-content" style="text-align: center;">
+        <h2>John Smith</h2>
+        <h4>j.smith</h4>
+        <p>
+            pic
+        </p>
+        <h4>My Trees:</h4>
+        <p>
+            <ul data-role="listview">
+                <li><a href="#map">Clifton Down</a></li>
+                <li><a href="#map">Waterfront</a></li>
+            </ul>
+        </p>
+    </div><!-- /content -->
+            
+    <div data-role="panel" id="profile_left_panel">
+        <ul data-role="listview">
+            <li><a href="#map" class="ui-icon-grid">Map</a></li>
+            <li><a href="#leaderboard" class="ui-icon-bullets">Leaderboard</a></li>
+            <li><a href="#profile" class="ui-icon-user">My Profile</a></li>
+            <li><a href="#friends" class="ui-icon-heart">Friends</a></li>
+            <li><a href="#settings" class="ui-icon-gear">Account Settings</a></li>
+            <li><a href="#treeinfo" class="ui-icon-info">Tree Information</a></li>
+            <li><a href="#about" class="ui-icon-edit">About</a></li>
+            <li><a href="#login" class="ui-icon-power">Log Out</a></li>
+        </ul>
+        
+    </div><!-- /panel -->
+
+</div><!-- /page -->
+
+<!-- Start of friends page -->
+<div data-role="page" id="friends">
+
+    <div data-role="header" data-position="fixed" data-id="fixed_header">
+        <a data-icon="bars" href="#friends_left_panel" data-iconpos="notext">Menu</a>
+        <h1>Friends</h1>
+    </div><!-- /header -->
+
+    <div role="main" class="ui-content">
+        <p>
+            <ul data-role="listview" data-autodividers="true" data-filter="true" data-inset="true">
+                <li>Abbbbbby</li>
+                <li>JLVNOOO(</li>
+                <li>RATATA</li>
+            </ul>
+        </p>
+
+    </div><!-- /content -->
+            
+    <div data-role="panel" id="friends_left_panel">
+        <ul data-role="listview">
+            <li><a href="#map" class="ui-icon-grid">Map</a></li>
+            <li><a href="#leaderboard" class="ui-icon-bullets">Leaderboard</a></li>
+            <li><a href="#profile" class="ui-icon-user">My Profile</a></li>
+            <li><a href="#friends" class="ui-icon-heart">Friends</a></li>
+            <li><a href="#settings" class="ui-icon-gear">Account Settings</a></li>
+            <li><a href="#treeinfo" class="ui-icon-info">Tree Information</a></li>
+            <li><a href="#about" class="ui-icon-edit">About</a></li>
+            <li><a href="#login" class="ui-icon-power">Log Out</a></li>
+        </ul>
+        
+    </div><!-- /panel -->
+
+</div><!-- /page -->
+
+<div data-role="page" id="settings">
+
+    <div data-role="header" data-position="fixed" data-id="fixed_header">
+        <a data-icon="bars" href="#settings_left_panel" data-iconpos="notext">Menu</a>
+        <h1>Settings</h1>
+    </div><!-- /header -->
+
+    <div role="main" class="ui-content">
+        <p>
+            <ul data-role="listview">
+                <li data-role="list-divider">Account Settings</li>
+                <li>Change Password</li>
+                <li>Linked Accounts</li>
+                <li>Show Profie Picture</li>
+                <li data-role="list-divider">Notification Settings</li>
+                <li>Notifications</li>
+                <li>In-App Sounds</li>
+                <li>Vibrate</li>
+            </ul>
+        </p>
+
+    </div><!-- /content -->
+            
+    <div data-role="panel" id="settings_left_panel">
+        <ul data-role="listview">
+            <li><a href="#map" class="ui-icon-grid">Map</a></li>
+            <li><a href="#leaderboard" class="ui-icon-bullets">Leaderboard</a></li>
+            <li><a href="#profile" class="ui-icon-user">My Profile</a></li>
+            <li><a href="#friends" class="ui-icon-heart">Friends</a></li>
+            <li><a href="#settings" class="ui-icon-gear">Account Settings</a></li>
+            <li><a href="#treeinfo" class="ui-icon-info">Tree Information</a></li>
+            <li><a href="#about" class="ui-icon-edit">About</a></li>
+            <li><a href="#login" class="ui-icon-power">Log Out</a></li>
+        </ul>
+        
+    </div><!-- /panel -->
+
+</div><!-- /page -->
+
+</body>
 </html>
- <!--   function Tree(Latitude, Longitude, Score, Type)
-    {
-        this.Latitude = Latitude;
-        this.Longitude = Longitude;
-        this.Score = Score;
-        this.Type = Type;
-    } What is this for???? -->
