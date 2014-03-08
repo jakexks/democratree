@@ -1,12 +1,22 @@
 function initializeLogin() {
-    if (window.location.hash != '#login_page' && window.location.hash != '') {
+    if (window.location.hash != '#login' && window.location.hash != '') {
         alert('Please login first to use Democratree');
         _ignoreHashChange = true;
         window.location.hash = '';
     }
     $(window).bind( 'hashchange', hashChanged );
-    document.getElementById("guestLoginButton").addEventListener('click', function() {
+    $('#guestLoginButton').bind('click', function() {
         loginStatus = 'guest';
+        openMapPage();
+    });
+    $('#democratreeSigninButton').bind('click', function() {
+        // Temporary
+        loginStatus = 'democratree';
+        openMapPage();
+    });
+    $('#democratreeSignupButton').bind('click', function() {
+        // Temporary
+        loginStatus = 'signup';
         openMapPage();
     });
     $('#facebookSigninButton').bind('click', function(){
@@ -51,21 +61,18 @@ function initializeLogin() {
 }
         
 function logout(){
-    $('#profile_loginStatus').empty();
-    $('#profile_username').empty();
+    clearProfile();
     $('#profile_revokeAccess').empty();
     if(loginStatus == 'googleplus') {
         gapi.auth.signOut();
-        $('#googleplusSigninButton').show();
     }
     loginStatus = 'none';
     ignoreHashChange = true;
-    window.location.hash = 'login_page'
+    window.location.hash = '#login'
     // For some reason this fires off two hash changes - the second #'s to window.location.pathname
 }
 
 function hashChangedProfile(){
-    $('#profile_loginStatus').text("Currently logged in via "+loginStatus+".");
     if(loginStatus == 'googleplus'){
         googleplusHelper.profile();
         var $button = $('<button/>', {
@@ -74,6 +81,7 @@ function hashChangedProfile(){
             text: 'Revoke the apps access to your account',
             click: googleplusHelper.disconnect
         });
+        $('#profile_revokeAccess').empty();
         $button.appendTo('#profile_revokeAccess');
     }
     if(loginStatus == 'facebook'){
@@ -84,12 +92,14 @@ function hashChangedProfile(){
             text: 'Revoke the apps access to your account',
             click: facebookHelper.disconnect
         });
+        $('#profile_revokeAccess').empty();
         $button.appendTo('#profile_revokeAccess');
     }
     if(loginStatus == 'twitter'){
         twitterHelper.profile();
         // There is no revoke function in the api for twitter, users have to do it manually from twitter settings
     }
+    // Add case for our login
 }
 
 // G+ callback
@@ -98,7 +108,6 @@ function onSignInCallback(authResult) {
         // Update the app to reflect a signed in user
         // Hide the sign-in button now that the user is authorized, for example:
         gapi.client.load('plus','v1');
-        $('#googleplusSigninButton').hide();
         loginStatus = 'googleplus';
         openMapPage();
     } else {
@@ -109,6 +118,12 @@ function onSignInCallback(authResult) {
         //   "immediate_failed" - Could not automatically log in the user
         //console.log('Sign-in state: ' + authResult['error']);                
     }
+}
+
+function clearProfile() {
+    $('#profile_username').empty();
+    $('#profile_name').empty();
+    $('#profile_picture').empty();
 }
 
 var googleplusHelper = (function() {
@@ -129,10 +144,6 @@ var googleplusHelper = (function() {
         contentType: 'application/json',
         dataType: 'jsonp',
         success: function(result) {
-          // Remove user info
-          $('#profile_loginStatus').empty();
-          $('#profile_username').empty();
-          $('#profile_revokeAccess').empty();
           logout();
         },
         error: function(e) {
@@ -166,20 +177,14 @@ var googleplusHelper = (function() {
     profile: function(){
       var request = gapi.client.plus.people.get( {'userId' : 'me'} );
       request.execute( function(profile) {
-        $('#profile_username').empty();
+        clearProfile();
         if (profile.error) {
           console.log(profile.error);
           return;
         }
-        $('#profile_username').append(
-            $('<p><img src=\"' + profile.image.url + '\"></p>'));
-        $('#profile_username').append(
-            $('<p>Currently logged in as ' + profile.displayName + '<br />Tagline: ' +
-            profile.tagline + '<br />About: ' + profile.aboutMe + '</p>'));
-        if (profile.cover && profile.coverPhoto) {
-          $('#profile_username').append(
-              $('<p><img src=\"' + profile.cover.coverPhoto.url + '\"></p>'));
-        }
+        $('#profile_picture').append(
+            $('<img src=\"' + profile.image.url + '\">'));
+        $('#profile_name').append(profile.displayName);
       });
     }
   };
@@ -210,11 +215,10 @@ var facebookHelper = (function() {
     profile: function(){
         FB.api("/me", function(response) {
             if(response && !response.error){
-                console.log(response);
-                $('#profile_username').append(
-                    $('<p><img src=\"//graph.facebook.com/'+response.id+'/picture\"></p>'));
-                $('#profile_username').append(
-                    $('<p>Currently logged in as ' + response.name + '</p>'));
+                $('#profile_username').empty();
+                $('#profile_picture').append(
+                    $('<img src=\"//graph.facebook.com/'+response.id+'/picture\">'));
+                $('#profile_name').append(response.name);
             } else {
                 console.log(response.error);
             }
@@ -233,14 +237,15 @@ var twitterHelper = (function() {
             dataType: "json"
         }).done(function(data) {
             console.log(data);
+            $('#profile_username').empty();
             if(data.msg == 'OK') {
                 // Retrieved properly
-                $('#profile_username').append(
+                $('#profile_name').append(data.response.name);
+                $('#profile_username').append('@' + data.response.screen_name);
+                $('#profile_picture').append(
                     $('<p><img src=\"' + data.response.profile_image_url+'\"></p>'));
-                $('#profile_username').append(
-                    $('<p>Currently logged in as ' + data.response.name + ' (@' + data.response.screen_name + ')</p>'));
             } else {
-                $('#profile_username').append(
+                $('#profile_name').append(
                 $('<p>Unfortunately there was an error retrieving your profile from twitter.</p>'));
             }
         });

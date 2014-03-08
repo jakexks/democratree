@@ -11,12 +11,12 @@
         
         function hashChanged(event){
             if(ignoreHashChange == false){
-                if(loginStatus == 'none' && window.location.hash != '#login_page' && window.location.hash != ''){
+                if(loginStatus == 'none' && window.location.hash != '#login' && window.location.hash != ''){
                     ignoreHashChange = true;
-                    window.location.hash = 'login_page';
+                    window.location.hash = '#login';
                     alert('Please login first to use Democratree');
                 }
-                else if(window.location.hash == '#profile_page'){
+                else if(window.location.hash == '#profile'){
                     hashChangedProfile();
                 }
             }
@@ -25,11 +25,12 @@
                 
         
         function openMapPage() {
-            window.location.hash = 'map_page';
+            window.location.hash = '#map';
             var map = initializeMap();
             var c = map.getCenter();        
 
             // Fix for loading map into 'hidden' div on other page
+            // If the login takes a long time this sometimes doesn't work
             google.maps.event.addListener(map, 'idle', function(){
                 google.maps.event.trigger(map, 'resize');
                 map.setCenter(c);

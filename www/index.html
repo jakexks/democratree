@@ -11,8 +11,6 @@
     <link rel="stylesheet" href="css/themes/green3.min.css" />
     <link rel="stylesheet" href="css/themes/jquery.mobile.icons.min.css" />
     <link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.0/jquery.mobile.structure-1.4.0.min.css" />
-    <link rel="stylesheet"  href="css/themes/default/loginButtons.css">
-
 
     <style type="text/css">
         #map-canvas { height: 100%}
@@ -40,14 +38,28 @@
         src="https://maps.googleapis.com/maps/api/js?key=AIzaSyATdd83fKwz8LOVfeVfTe5nVpbNI_0kxSI&libraries=places&amp;sensor=false">
     </script>
     <script type="text/javascript" src="http://google-maps-utility-library-v3.googlecode.com/svn/trunk/infobox/src/infobox.js"></script>
+    <!-- Mobile scripts -->
+    <!-- <script type="text/javascript" src="js/mobile/liquid.js"></script>
+    <script type="text/javascript" src="js/mobile/democratreeMobileSocialMedia.js"></script>
+    <script type="text/javascript" src="js/mobile/helper/liquid.helper.oauth.js"></script>
+    <script type="text/javascript" src="js/mobile/model/liquid.model.tasks.js"></script> 
+    -->
+    <!-- /Mobile scripts -->
+    <!-- Web scripts -->
     <script type="text/javascript" src="js/democratreeWebSocialMedia.js"></script>
+    <!-- /Web scripts -->
+    <script type="text/javascript" src="js/mobile/purl.js"></script>
     <script type="text/javascript" src="js/map.js">
     </script>
     <title>Democratree</title>
 </head>
 
 <body>
-
+<div id="fb-root"></div>
+<!-- Web scripts p2 -->
+<script type="text/javascript" src="js/democratreeWebSocialMediaAPIs.js"></script>
+<!-- /Web scripts p2 -->
+<!-- Login Page -->
 <div data-role="page" id="login">
 
     <div role="main" class="ui-content" >
@@ -61,9 +73,12 @@
                 <input name="login-pwd" id="login-pwd" placeholder="Password" value="" type="text">
             </form>
         </p>
-        <p><a href="#map" class="ui-btn ui-shadow ui-corner-all">Log In</a></p>
-        <p><a href="#map" class="ui-btn ui-shadow ui-corner-all">Sign Up</a></p>
-        <p><a href="#map" id="guestLoginButton" class="ui-btn ui-shadow ui-corner-all">Guest</a></p>
+        <p><a id="democratreeSigninButton" class="ui-btn ui-shadow ui-corner-all">Log In</a></p>
+        <p><a id="democratreeSignupButton" class="ui-btn ui-shadow ui-corner-all">Sign Up</a></p>
+        <p><a id="guestLoginButton" class="ui-btn ui-shadow ui-corner-all">Guest</a></p>
+        <p><a id="googleplusSigninButton" class="ui-btn ui-shadow ui-corner-all">Login with Google+</a></p>
+        <p><a id="facebookSigninButton" class="ui-btn ui-shadow ui-corner-all">Login with Facebook</a></p>
+        <p><a id="twitterSigninButton" class="ui-btn ui-shadow ui-corner-all">Login with Twitter</a></p>
     </div><!-- /content -->
 
 </div><!-- /Login Page -->
@@ -97,7 +112,7 @@
             <li><a href="#settings" class="ui-icon-gear">Account Settings</a></li>
             <li><a href="#treeinfo" class="ui-icon-info">Tree Information</a></li>
             <li><a href="#about" class="ui-icon-edit">About</a></li>
-            <li><a href="#login" class="ui-icon-power">Log Out</a></li>
+            <li><a class="ui-icon-power logoutButton">Log Out</a></li>
         </ul>
         
     </div><!-- /panel -->
@@ -134,7 +149,7 @@
             <li><a href="#settings" class="ui-icon-gear">Account Settings</a></li>
             <li><a href="#treeinfo" class="ui-icon-info">Tree Information</a></li>
             <li><a href="#about" class="ui-icon-edit">About</a></li>
-            <li><a href="#login" class="ui-icon-power">Log Out</a></li>
+            <li><a class="ui-icon-power logoutButton">Log Out</a></li>
         </ul>
         
     </div><!-- /panel -->
@@ -150,10 +165,13 @@
     </div><!-- /header -->
 
     <div role="main" class="ui-content" style="text-align: center;">
-        <h2>John Smith</h2>
-        <h4>j.smith</h4>
+        <h2><div id="profile_name"></div></h2>
+        <h4><div id="profile_username"></div></h4>
         <p>
-            pic
+            <div id="profile_picture"></div>
+        </p>
+        <p>
+        <div id="profile_revokeAccess"></div>
         </p>
         <h4>My Trees:</h4>
         <p>
@@ -173,7 +191,7 @@
             <li><a href="#settings" class="ui-icon-gear">Account Settings</a></li>
             <li><a href="#treeinfo" class="ui-icon-info">Tree Information</a></li>
             <li><a href="#about" class="ui-icon-edit">About</a></li>
-            <li><a href="#login" class="ui-icon-power">Log Out</a></li>
+            <li><a class="ui-icon-power logoutButton">Log Out</a></li>
         </ul>
         
     </div><!-- /panel -->
@@ -208,7 +226,7 @@
             <li><a href="#settings" class="ui-icon-gear">Account Settings</a></li>
             <li><a href="#treeinfo" class="ui-icon-info">Tree Information</a></li>
             <li><a href="#about" class="ui-icon-edit">About</a></li>
-            <li><a href="#login" class="ui-icon-power">Log Out</a></li>
+            <li><a class="ui-icon-power logoutButton">Log Out</a></li>
         </ul>
         
     </div><!-- /panel -->
@@ -247,7 +265,7 @@
             <li><a href="#settings" class="ui-icon-gear">Account Settings</a></li>
             <li><a href="#treeinfo" class="ui-icon-info">Tree Information</a></li>
             <li><a href="#about" class="ui-icon-edit">About</a></li>
-            <li><a href="#login" class="ui-icon-power">Log Out</a></li>
+            <li><a class="ui-icon-power logoutButton">Log Out</a></li>
         </ul>
         
     </div><!-- /panel -->
