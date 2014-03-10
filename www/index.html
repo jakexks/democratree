@@ -233,6 +233,7 @@
 
 </div><!-- /page -->
 
+<!-- Start of settings page -->
 <div data-role="page" id="settings">
 
     <div data-role="header" data-position="fixed" data-id="fixed_header">
@@ -270,6 +271,57 @@
         
     </div><!-- /panel -->
 
+</div><!-- /page -->
+
+<!-- Start of add tree page -->
+<div data-role="page" id="add_tree">
+
+    <div data-role="header" data-position="fixed" data-id="fixed_header">
+        <a data-icon="arrow-l" href="javascript:window.history.back();" data-iconpos="notext">Back</a>
+        <h1>Add Tree</h1>
+    </div><!-- /header -->
+
+    <div role="main" class="ui-content">
+        <p>
+            Choose the type of tree you wish to place:
+        </p>
+        <p>
+            <div class="ui-grid-a" style="height:80%">
+                <div class="ui-block-a"><div class="ui-bar ui-bar-a">Common Ash</div></div>
+                <div class="ui-block-b"><div class="ui-bar ui-bar-a">Silver Birch</div></div>
+                <div class="ui-block-a"><div class="ui-bar ui-bar-a">Pedunculate Oak</div></div>
+                <div class="ui-block-b"><div class="ui-bar ui-bar-a">Common Juniper</div></div>
+                <div class="ui-block-a"><div class="ui-bar ui-bar-a">Wych Elm</div></div>
+                <div class="ui-block-b"><div class="ui-bar ui-bar-a">European Beech</div></div>
+            </div>
+            <a href="#plant" class="ui-btn">Continue</a>
+        </p>
+
+    </div><!-- /content -->
+</div><!-- /page -->
+
+<!-- Start of plant tree page -->
+<div data-role="page" id="plant">
+
+    <div data-role="header" data-position="fixed" data-id="fixed_header">
+        <a data-icon="arrow-l" href="javascript:window.history.back();" data-iconpos="notext">Back</a>
+        <h1>Plant your tree</h1>
+    </div><!-- /header -->
+
+    <div role="main" class="ui-content">
+        <form>
+            <p>
+                <label for="tree-label">Enter a Label for your tree:</label>
+                <input name="tree-label" id="tree-label" placeholder="My favourite tree" value="" type="text">
+            </p>
+            <p>
+                <label for="tree-story">Add a story to your tree:</label>
+                <textarea cols="40" rows="50" name="tree-story" id="tree-story"></textarea>
+                <a href="#" class="ui-btn ui-btn-inline ui-icon-camera ui-btn-icon-left">Attach Photo</a>
+                <a href="#plant" class="ui-btn">Continue</a>
+            </p>
+        </form>
+    </div><!-- /content -->
 </div><!-- /page -->
 
 </body>
