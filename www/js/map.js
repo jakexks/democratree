@@ -278,8 +278,8 @@
                     treeCount = results.length;
                     markerCount = treeCount;
 
-        // cluster            
-        var markerCluster = new MarkerClusterer(map, gmarkers);
+                    // cluster            
+                    var markerCluster = new MarkerClusterer(map, gmarkers);
 
                 },
                 error: function(error) {
@@ -424,21 +424,42 @@
             });
         }
             
+        // LEADERBOARD STUFF
+
+        function updateLeaderboard() {
+            var dropdown=document.getElementById("leaderboardFilter");
+            var dropdownText=dropdown.options[dropdown.selectedIndex].text;
+            var sortArray=treeArray;
+
+            if (dropdownText == 'Overall') {
+                alert(sortArray.length);
+                alert(treeArray[0].votes);
+                sortArray.sort(compare);
+                alert(sortArray[0].votes + ' -- ' + sortArray[0].username);
+                document.getElementById("leaderboardFirst").innerHTML=sortArray[0].votes + ' -- ' + sortArray[0].username;
+                document.getElementById("leaderboardSecond").innerHTML=sortArray[1].votes + ' -- ' + sortArray[1].username;
+                document.getElementById("leaderboardThird").innerHTML=sortArray[2].votes + ' -- ' + sortArray[2].username;
+                document.getElementById("leaderboardFourth").innerHTML=sortArray[3].votes + ' -- ' + sortArray[3].username;
+                document.getElementById("leaderboardFifth").innerHTML=sortArray[4].votes + ' -- ' + sortArray[4].username;
+                document.getElementById("leaderboardSixth").innerHTML=sortArray[5].votes + ' -- ' + sortArray[5].username;
+                document.getElementById("leaderboardSeventh").innerHTML=sortArray[6].votes + ' -- ' + sortArray[6].username;
+                document.getElementById("leaderboardEighth").innerHTML=sortArray[7].votes + ' -- ' + sortArray[7].username;
+                document.getElementById("leaderboardNinth").innerHTML=sortArray[8].votes + ' -- ' + sortArray[8].username;
+                document.getElementById("leaderboardTenth").innerHTML=sortArray[9].votes + ' -- ' + sortArray[9].username;
+            }
+            //else alert('failed');
+        }
+
+        function goToLeaderboardMapLocation() {
+
+        }
+
         function compare(a,b) {
             if (a.votes < b.votes)
                 return -1;
             if (a.votes > b.votes)
                 return 1;
             return 0;
-        }
-
-        function sortArray() {
-            treeArray.sort(compare);
-        }
-
-        function writeLeaderboard() {
-            var x=document.getElementById("leaderBoardContent");
-            var i;
         }
 
         google.maps.event.addDomListener(window, 'load', initializeLogin);

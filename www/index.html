@@ -49,8 +49,7 @@
     <script type="text/javascript" src="js/democratreeWebSocialMedia.js"></script>
     <!-- /Web scripts -->
     <script type="text/javascript" src="js/mobile/purl.js"></script>
-    <script type="text/javascript" src="js/map.js">
-    </script>
+    <script type="text/javascript" src="js/map.js"></script>
     <title>Democratree</title>
 </head>
 
@@ -129,13 +128,31 @@
 
     <div role="main" class="ui-content">
         <p>
-            <ol data-role="listview">
-                <li>A Tree</li>
-                <li>B Tree</li>
-                <li>C Tree</li>
-                <li>D Tree</li>
-                <li>E Tree</li>
-            </ol>
+            <form>
+            Select leaderboard filter:
+            <select id="leaderboardFilter" onchange="updateLeaderboard()">
+                <option>Overall</option>
+                <option>Within 1/4 mile of you</option>  
+                <option>Within 1/2 mile of you</option>
+                <option>Within 1 mile of you</option>
+                <option>Close to your planted trees</option>
+            </select>
+            <br/>
+            <p>
+            <ul data-role="listview">
+                <li id='leaderboardFirst'><a href="#map">28 -- John's tree</a></li>
+                <li id='leaderboardSecond'><a href="#map">24 -- Clifton Downs</a></li>
+                <li id='leaderboardThird'><a href="#map">23 -- Broadmead</a></li>
+                <li id ='leaderboardFourth'><a href="#map">22 -- Outside my house</a></li>
+                <li id='leaderboardFifth'><a href="#map">22 -- Park Street</a></li>
+                <li id='leaderboardSixth'><a href="#map">21 -- Jason Donervan</a></li>
+                <li id='leaderboardSeventh'><a href="#map">18 -- St Michaels Hill</a></li>
+                <li id ='leaderboardEighth'><a href="#map">14 -- Waterfront</a></li>
+                <li id='leaderboardNinth'><a href="#map">12 -- Outside Timbuk2</a></li>
+                <li id ='leaderboardTenth'><a href="#map">10 -- Ladies Mile</a></li>
+            </ul>
+            </p>
+            </form>
         </p>
 
     </div><!-- /content -->
