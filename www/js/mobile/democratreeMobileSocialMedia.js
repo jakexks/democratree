@@ -30,6 +30,9 @@ function initializeLogin() {
         }
         event.preventDefault();
     });
+    $('#twitterSigninButton').bind('click', function(event) {
+        Twitter.init();
+    });
     $('.logoutButton').bind('click', logout);
 }
 
@@ -78,9 +81,12 @@ function loadGapi() {
 function logout(){
     clearProfile();
     $('#profile_revokeAccess').empty();
+    if(loginStatus == 'twitter') {
+        Twitter.logout();
+    }
     loginStatus = 'none';
     ignoreHashChange = true;
-    window.location.hash = 'login_page'
+    window.location.hash = 'login'
     // For some reason this fires off two hash changes - the second #'s to window.location.pathname
 }
 
@@ -108,7 +114,7 @@ function hashChangedProfile(){
         $button.appendTo('#profile_revokeAccess');
     }
     if(loginStatus == 'twitter'){
-        twitterHelper.profile();
+        Twitter.profile();
         // There is no revoke function in the api for twitter, users have to do it manually from twitter settings
     }
 }
@@ -149,7 +155,7 @@ var googleplusHelper = (function() {
                 request.execute( function(profile) {
                     clearProfile();
                     if (profile.error) {
-                      console.log(profile.error);
+                      alert(profile.error);
                       return;
                     }
                     $('#profile_picture').append(

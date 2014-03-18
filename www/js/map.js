@@ -6,6 +6,7 @@
         var treeArray = new Array();
         var gmarkers = new Array();
         var infoWindowArray = new Array();
+        var map = undefined;
         var loginStatus = 'none';
         var ignoreHashChange = false;
         
@@ -26,7 +27,10 @@
         
         function openMapPage() {
             window.location.hash = '#map';
-            var map = initializeMap();
+            // Prevent reloading the map when logging out and back in during the same session
+            if (map == undefined) {
+                map = initializeMap();
+            }
             var c = map.getCenter();        
 
             // Fix for loading map into 'hidden' div on other page
@@ -46,7 +50,7 @@
                 zoom: 13,
                 minZoom: 13
             };
-            var map = new google.maps.Map(document.getElementById("map-canvas"),mapOptions);
+            map = new google.maps.Map(document.getElementById("map-canvas"),mapOptions);
 
             // Listen for clicks to add labels
             google.maps.event.addListener(map, 'click', function(event) {

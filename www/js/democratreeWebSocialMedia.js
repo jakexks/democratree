@@ -215,7 +215,7 @@ var facebookHelper = (function() {
     profile: function(){
         FB.api("/me", function(response) {
             if(response && !response.error){
-                $('#profile_username').empty();
+                clearProfile();
                 $('#profile_picture').append(
                     $('<img src=\"//graph.facebook.com/'+response.id+'/picture\">'));
                 $('#profile_name').append(response.name);
@@ -237,7 +237,7 @@ var twitterHelper = (function() {
             dataType: "json"
         }).done(function(data) {
             console.log(data);
-            $('#profile_username').empty();
+            clearProfile();
             if(data.msg == 'OK') {
                 // Retrieved properly
                 $('#profile_name').append(data.response.name);
