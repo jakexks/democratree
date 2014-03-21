@@ -277,7 +277,7 @@
                         });
                         gmarkers.push(marker);
                         attachMessageInit(marker, map, tree);
-                        treeArray.push(tree.tree);
+                        treeArray.push(tree);
                     }
                     treeCount = results.length;
                     markerCount = treeCount;
@@ -436,33 +436,43 @@
             var sortArray=treeArray;
 
             if (dropdownText == 'Overall') {
-                alert(sortArray.length);
-                alert(treeArray[0].votes);
                 sortArray.sort(compare);
-                alert(sortArray[0].votes + ' -- ' + sortArray[0].username);
-                document.getElementById("leaderboardFirst").innerHTML=sortArray[0].votes + ' -- ' + sortArray[0].username;
-                document.getElementById("leaderboardSecond").innerHTML=sortArray[1].votes + ' -- ' + sortArray[1].username;
-                document.getElementById("leaderboardThird").innerHTML=sortArray[2].votes + ' -- ' + sortArray[2].username;
-                document.getElementById("leaderboardFourth").innerHTML=sortArray[3].votes + ' -- ' + sortArray[3].username;
-                document.getElementById("leaderboardFifth").innerHTML=sortArray[4].votes + ' -- ' + sortArray[4].username;
-                document.getElementById("leaderboardSixth").innerHTML=sortArray[5].votes + ' -- ' + sortArray[5].username;
-                document.getElementById("leaderboardSeventh").innerHTML=sortArray[6].votes + ' -- ' + sortArray[6].username;
-                document.getElementById("leaderboardEighth").innerHTML=sortArray[7].votes + ' -- ' + sortArray[7].username;
-                document.getElementById("leaderboardNinth").innerHTML=sortArray[8].votes + ' -- ' + sortArray[8].username;
-                document.getElementById("leaderboardTenth").innerHTML=sortArray[9].votes + ' -- ' + sortArray[9].username;
+                /* var lbsize = 12;
+                var lblist = "";
+                lblist += '<ul data-role="list-view">'
+                //'<a href="#map" data="listview" onclick="goToLeaderboardMapLocation(' + sortArray[0].get("lat") + ',' + sortArray[0].get("lng") +  ')">' + sortArray[0].get("votes") + ' -- ' + sortArray[0].get("username") + '</a></li>';
+                for (var i = 0; i < lbsize; i++) {
+                    lblist += '<li><a href="#map" data="listview" onclick="goToLeaderboardMapLocation(' + sortArray[i].get("lat") + ',' + sortArray[i].get("lng") +  ')">' + sortArray[i].get("votes") + ' -- ' + sortArray[i].get("username") + '</a></li>';
+                }
+                lblist += '</ul>'
+                //lblist += '<li><a href="#map" data="listview" onclick="goToLeaderboardMapLocation(' + sortArray[lbsize-1].get("lat") + ',' + sortArray[lbsize-1].get("lng") +  ')">' + sortArray[lbsize-1].get("votes") + ' -- ' + sortArray[lbsize-1].get("username") + '</a>';
+                document.getElementById("leaderboardList").innerHTML=lblist;*/
+                /*for (var i=0; i<10; i++) {
+                    var str = 'lb' + (i+1);
+                    document.getElementById(str).innerHTML='<a href="#map" onclick="goToLeaderboardMapLocation(' + sortArray[i].get("lat") + ',' + sortArray[i].get("lng") +  ')">' + sortArray[i].get("votes") + ' -- ' + sortArray[i].get("username") + '</a>';
+                }*/
+                document.getElementById("lb1").innerHTML='<a href="#map" onclick="goToLeaderboardMapLocation(' + sortArray[0].get("lat") + ',' + sortArray[0].get("lng") +  ')">' + sortArray[0].get("votes") + ' -- ' + sortArray[0].get("username") + '</a>';
+                document.getElementById("lb2").innerHTML='<a href="#map" onclick="goToLeaderboardMapLocation(' + sortArray[1].get("lat") + ',' + sortArray[1].get("lng") +  ')">' + sortArray[1].get("votes") + ' -- ' + sortArray[1].get("username") + '</a>';
+                document.getElementById("lb3").innerHTML='<a href="#map" onclick="goToLeaderboardMapLocation(' + sortArray[2].get("lat") + ',' + sortArray[2].get("lng") +  ')">' + sortArray[2].get("votes") + ' -- ' + sortArray[2].get("username") + '</a>';
+                document.getElementById("lb4").innerHTML='<a href="#map" onclick="goToLeaderboardMapLocation(' + sortArray[3].get("lat") + ',' + sortArray[3].get("lng") +  ')">' + sortArray[3].get("votes") + ' -- ' + sortArray[3].get("username") + '</a>';
+                document.getElementById("lb5").innerHTML='<a href="#map" onclick="goToLeaderboardMapLocation(' + sortArray[4].get("lat") + ',' + sortArray[4].get("lng") +  ')">' + sortArray[4].get("votes") + ' -- ' + sortArray[4].get("username") + '</a>';
+                document.getElementById("lb6").innerHTML='<a href="#map" onclick="goToLeaderboardMapLocation(' + sortArray[5].get("lat") + ',' + sortArray[5].get("lng") +  ')">' + sortArray[5].get("votes") + ' -- ' + sortArray[5].get("username") + '</a>';
+                document.getElementById("lb7").innerHTML='<a href="#map" onclick="goToLeaderboardMapLocation(' + sortArray[6].get("lat") + ',' + sortArray[6].get("lng") +  ')">' + sortArray[6].get("votes") + ' -- ' + sortArray[6].get("username") + '</a>';
+                document.getElementById("lb8").innerHTML='<a href="#map" onclick="goToLeaderboardMapLocation(' + sortArray[7].get("lat") + ',' + sortArray[7].get("lng") +  ')">' + sortArray[7].get("votes") + ' -- ' + sortArray[7].get("username") + '</a>';
+                document.getElementById("lb9").innerHTML='<a href="#map" onclick="goToLeaderboardMapLocation(' + sortArray[8].get("lat") + ',' + sortArray[8].get("lng") +  ')">' + sortArray[8].get("votes") + ' -- ' + sortArray[8].get("username") + '</a>';
+                document.getElementById("lb10").innerHTML='<a href="#map" onclick="goToLeaderboardMapLocation(' + sortArray[9].get("lat") + ',' + sortArray[9].get("lng") +  ')">' + sortArray[9].get("votes") + ' -- ' + sortArray[9].get("username") + '</a>';
             }
-            //else alert('failed');
         }
 
-        function goToLeaderboardMapLocation() {
-
+        function goToLeaderboardMapLocation(lat,lng) {
+            alert(lat + ',' + lng);
         }
 
         function compare(a,b) {
-            if (a.votes < b.votes)
-                return -1;
-            if (a.votes > b.votes)
+            if (a.get("votes") < b.get("votes"))
                 return 1;
+            if (a.get("votes") > b.get("votes"))
+                return -1;
             return 0;
         }
 
