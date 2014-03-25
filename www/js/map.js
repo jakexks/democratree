@@ -294,34 +294,36 @@
 
         // Function to place marker
         function placeMarker(location, map) {
-            var marker = new google.maps.Marker({
-                position: location,
-                map: map,
-                title: ""+markerCount,    
-                animation: google.maps.Animation.DROP,
-                icon: 'img/tree1.png'
-            });
-            var Tree = Parse.Object.extend("Tree");
-            var tree = new Tree();
-            tree.set("lat", location.lat());
-            tree.set("lng", location.lng());
-            tree.set("type", "default");
-            tree.set("username", "none");
-            tree.set("votes", 0); 
-            tree.set("story", "none");
-            tree.save(null, {
-                success: function(tree) {
-                    objectId = tree.id;
-                    markerCount++;
-                    gmarkers.push(marker);
-                    map.panTo(location);
-                    attachMessage(marker, map);
-                },
-                error: function(error) {
-                    alert("error");
-                }
-            });
-            
+            if($.ajax({type: "GET", url: "http://pecan.jakexks.com/democratree/plantable.php?lat=" + location.lat() + "&long=" + location.lng(), async: false}).responseText == "true") {
+            	var marker = new google.maps.Marker({
+            	    position: location,
+            	    map: map,
+            	    title: ""+markerCount,    
+            	    animation: google.maps.Animation.DROP,
+            	    icon: 'img/tree1.png'
+            	});
+            	var Tree = Parse.Object.extend("Tree");
+            	var tree = new Tree();
+            	tree.set("lat", location.lat());
+            	tree.set("lng", location.lng());
+            	tree.set("type", "default");
+            	tree.set("username", "none");
+            	tree.set("votes", 0); 
+            	tree.set("story", "none");
+            	tree.save(null, {
+            	    success: function(tree) {
+            	        objectId = tree.id;
+            	        markerCount++;
+            	        gmarkers.push(marker);
+            	        map.panTo(location);
+            	        attachMessage(marker, map);
+            	    },
+            	    error: function(error) {
+            	        alert("error");
+            	    }
+            	});
+            }
+            else {alert("That area is not plantable (according to our heuristic)\nTry planting somewhere else!");}
         }
         
         function cancelTree(i) {
