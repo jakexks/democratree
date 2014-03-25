@@ -75,7 +75,7 @@
             });
             
             // String to display when user tries to place tree in disallowed area
-            var badArea = 'Sorry, this area is unsuitable for tree planting';
+            var badArea = 'Sorry, this area is outside the predefined allowed locations for tree planting';
 
             // Infowindow to display when tree planting is attempted in disallowed area
             var infowindow = new google.maps.InfoWindow({ 
