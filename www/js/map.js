@@ -10,6 +10,26 @@
         var loginStatus = 'none';
         var ignoreHashChange = false;
         
+        var clusterStyles = [{
+        url: 'img/m1.png',
+        width: 35,
+        height: 35,
+        textColor: '#ff00ff',
+        textSize: 10
+      }, {
+        url: 'img/m1.png',
+        width: 45,
+        height: 45,
+        textColor: '#ff0000',
+        textSize: 11
+      }, {
+        url: 'img/m1.png',
+        width: 55,
+        height: 55,
+        textColor: '#ffffff',
+        textSize: 12
+      }];
+
         function hashChanged(event){
             if(ignoreHashChange == false){
                 if(loginStatus == 'none' && window.location.hash != '#login' && window.location.hash != ''){
@@ -283,7 +303,12 @@
                     markerCount = treeCount;
 
                     // cluster            
-                    var markerCluster = new MarkerClusterer(map, gmarkers);
+                    var markerCluster = new MarkerClusterer(map, gmarkers, {
+                        maxZoom: 14,
+                        gridSize: 80,
+                        styles: clusterStyles
+                    }
+                    );
 
                 },
                 error: function(error) {
