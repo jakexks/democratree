@@ -462,31 +462,9 @@
             var dropdownText=dropdown.options[dropdown.selectedIndex].text;
             var sortArray;
 
-            /*var test1 = Object.keys(treeArray[0]);
-            for (var i = 0; i < test1.length; i++) {
-                alert (test1[i]);
-            }*/
-            //alert(treeArray[0].createdAt);
-
             if (dropdownText == 'Overall') {
                 sortArray = new Array();
                 sortArray = treeArray;
-
-                /*for (var i=0; i<10; i++) {
-                    var str = 'lb' + (i+1);
-                    document.getElementById(str).innerHTML='<a href="#map" onclick="goToLeaderboardMapLocation(' + sortArray[i].get("lat") + ',' + sortArray[i].get("lng") +  ')">' + sortArray[i].get("votes") + ' -- ' + sortArray[i].get("username") + '</a>';
-                }*/
-                /*document.getElementById("lb1").innerHTML='<a href="#map" onclick="goToLeaderboardMapLocation(' + sortArray[0].get("lat") + ',' + sortArray[0].get("lng") +  ')">' + sortArray[0].get("votes") + ' -- ' + sortArray[0].get("username") + '</a>';
-                document.getElementById("lb2").innerHTML='<a href="#map" onclick="goToLeaderboardMapLocation(' + sortArray[1].get("lat") + ',' + sortArray[1].get("lng") +  ')">' + sortArray[1].get("votes") + ' -- ' + sortArray[1].get("username") + '</a>';
-                document.getElementById("lb3").innerHTML='<a href="#map" onclick="goToLeaderboardMapLocation(' + sortArray[2].get("lat") + ',' + sortArray[2].get("lng") +  ')">' + sortArray[2].get("votes") + ' -- ' + sortArray[2].get("username") + '</a>';
-                document.getElementById("lb4").innerHTML='<a href="#map" onclick="goToLeaderboardMapLocation(' + sortArray[3].get("lat") + ',' + sortArray[3].get("lng") +  ')">' + sortArray[3].get("votes") + ' -- ' + sortArray[3].get("username") + '</a>';
-                document.getElementById("lb5").innerHTML='<a href="#map" onclick="goToLeaderboardMapLocation(' + sortArray[4].get("lat") + ',' + sortArray[4].get("lng") +  ')">' + sortArray[4].get("votes") + ' -- ' + sortArray[4].get("username") + '</a>';
-                document.getElementById("lb6").innerHTML='<a href="#map" onclick="goToLeaderboardMapLocation(' + sortArray[5].get("lat") + ',' + sortArray[5].get("lng") +  ')">' + sortArray[5].get("votes") + ' -- ' + sortArray[5].get("username") + '</a>';
-                document.getElementById("lb7").innerHTML='<a href="#map" onclick="goToLeaderboardMapLocation(' + sortArray[6].get("lat") + ',' + sortArray[6].get("lng") +  ')">' + sortArray[6].get("votes") + ' -- ' + sortArray[6].get("username") + '</a>';
-                document.getElementById("lb8").innerHTML='<a href="#map" onclick="goToLeaderboardMapLocation(' + sortArray[7].get("lat") + ',' + sortArray[7].get("lng") +  ')">' + sortArray[7].get("votes") + ' -- ' + sortArray[7].get("username") + '</a>';
-                document.getElementById("lb9").innerHTML='<a href="#map" onclick="goToLeaderboardMapLocation(' + sortArray[8].get("lat") + ',' + sortArray[8].get("lng") +  ')">' + sortArray[8].get("votes") + ' -- ' + sortArray[8].get("username") + '</a>';
-                document.getElementById("lb10").innerHTML='<a href="#map" onclick="goToLeaderboardMapLocation(' + sortArray[9].get("lat") + ',' + sortArray[9].get("lng") +  ')">' + sortArray[9].get("votes") + ' -- ' + sortArray[9].get("username") + '</a>';
-                */
             }
             else if (dropdownText == 'This Month') {
                 sortArray = new Array();
@@ -503,7 +481,7 @@
                 var dw = new Date();
                 dw.setDate(dw.getDate() - 7);
                 for (var i = 0; i < treeArray.length; i++) {
-                    if (treeArray[i].createdAt > dm) {
+                    if (treeArray[i].createdAt > dw) {
                         sortArray.push(treeArray[i]);
                     }
                 }
@@ -536,24 +514,25 @@
             if (lbsize == 0) {
             }
             else if (lbsize == 1) {
-                lblist += '<a href="#map" data="button" onclick="goToLeaderboardMapLocation(' + sortArray[0].get("lat") + ',' + sortArray[0].get("lng") +  ')">' + sortArray[0].get("votes") + ' - ' + sortArray[0].get("username") + '</a>';
+                lblist += '<a href="#map" onclick="goToLeaderboardMapLocation(' + sortArray[0].get("lat") + ',' + sortArray[0].get("lng") +  ')">' + sortArray[0].get("votes") + ' - ' + sortArray[0].get("username") + '</a>';
             }
             else if (lbsize == 2) {
-                lblist += '<a href="#map" data="button" onclick="goToLeaderboardMapLocation(' + sortArray[0].get("lat") + ',' + sortArray[0].get("lng") +  ')">' + sortArray[0].get("votes") + ' - ' + sortArray[0].get("username") + '</a></li>';
-                lblist += '<li><a href="#map" data="button" onclick="goToLeaderboardMapLocation(' + sortArray[1].get("lat") + ',' + sortArray[1].get("lng") +  ')">' + sortArray[1].get("votes") + ' - ' + sortArray[1].get("username") + '</a>';
+                lblist += '<a href="#map" onclick="goToLeaderboardMapLocation(' + sortArray[0].get("lat") + ',' + sortArray[0].get("lng") +  ')">' + sortArray[0].get("votes") + ' - ' + sortArray[0].get("username") + '</a></li>';
+                lblist += '<li><a href="#map" onclick="goToLeaderboardMapLocation(' + sortArray[1].get("lat") + ',' + sortArray[1].get("lng") +  ')">' + sortArray[1].get("votes") + ' - ' + sortArray[1].get("username") + '</a>';
             }
             else {
-                lblist += '<a href="#map" data="button" onclick="goToLeaderboardMapLocation(' + sortArray[0].get("lat") + ',' + sortArray[0].get("lng") +  ')">' + sortArray[0].get("votes") + ' - ' + sortArray[0].get("username") + '</a></li>';
+                lblist += '<a href="#map" onclick="goToLeaderboardMapLocation(' + sortArray[0].get("lat") + ',' + sortArray[0].get("lng") +  ')">' + sortArray[0].get("votes") + ' - ' + sortArray[0].get("username") + '</a></li>';
                 for (var i = 1; i < lbsize-1; i++) {
-                    lblist += '<li><a href="#map" data="button" onclick="goToLeaderboardMapLocation(' + sortArray[i].get("lat") + ',' + sortArray[i].get("lng") +  ')">' + sortArray[i].get("votes") + ' - ' + sortArray[i].get("username") + '</a></li>';
+                    lblist += '<li><a href="#map" onclick="goToLeaderboardMapLocation(' + sortArray[i].get("lat") + ',' + sortArray[i].get("lng") +  ')">' + sortArray[i].get("votes") + ' - ' + sortArray[i].get("username") + '</a></li>';
                 }
-                lblist += '<li><a href="#map" data="button" onclick="goToLeaderboardMapLocation(' + sortArray[lbsize-1].get("lat") + ',' + sortArray[lbsize-1].get("lng") +  ')">' + sortArray[lbsize-1].get("votes") + ' - ' + sortArray[lbsize-1].get("username") + '</a>';
+                lblist += '<li><a href="#map" onclick="goToLeaderboardMapLocation(' + sortArray[lbsize-1].get("lat") + ',' + sortArray[lbsize-1].get("lng") +  ')">' + sortArray[lbsize-1].get("votes") + ' - ' + sortArray[lbsize-1].get("username") + '</a>';
             }
             document.getElementById("leaderboardList").innerHTML=lblist;
         }
 
         function goToLeaderboardMapLocation(lat,lng) {
-            alert(lat + ',' + lng);
+            map.panTo(new google.maps.LatLng(lat, lng));
+            map.setZoom(19);
         }
 
         function compare(a,b) {
