@@ -309,9 +309,8 @@
                 <input name="treeRadio" value="European Beech" type="radio" id="treeChoice6">
                 <label for="treeChoice6">European Beech</label>
             </fieldset>
-            <a href="#plant" class="ui-btn">Continue</a>
+            <a href="#plant" class="ui-btn" onclick="addTree1();">Continue</a>
         </p>
-
     </div><!-- /content -->
 </div><!-- /page -->
 
@@ -320,22 +319,37 @@
 
     <div data-role="header" data-position="fixed" data-id="fixed_header">
         <a data-icon="arrow-l" href="javascript:window.history.back();" data-iconpos="notext">Back</a>
-        <h1>Plant your tree</h1>
+        <h1>Tell us more</h1>
     </div><!-- /header -->
 
     <div role="main" class="ui-content">
         <form>
             <p>
-                <label for="tree-label">Enter a Label for your tree:</label>
+                <label for="tree-label">Enter a Label for your new tree:</label>
                 <input name="tree-label" id="tree-label" placeholder="My favourite tree" value="" type="text">
             </p>
             <p>
                 <label for="tree-story">Add a story to your tree:</label>
                 <textarea cols="40" rows="50" name="tree-story" id="tree-story"></textarea>
                 <a href="#" class="ui-btn ui-btn-inline ui-icon-camera ui-btn-icon-left" onclick="attachPhoto1();">Attach photo from camera</a><a href="#" class="ui-btn ui-btn-inline ui-icon-camera ui-btn-icon-left" onclick="attachPhoto2();">Attach photo from gallery</a><br /> <img id="myImage" style="width:100%" />
-                <a href="#plant" class="ui-btn">Continue</a>
+                <a href="#plantconfirm" class="ui-btn" onclick="addTree2();">Continue</a>
             </p>
         </form>
+    </div><!-- /content -->
+</div><!-- /page -->
+
+<!-- Start of plant tree confirmation page -->
+<div data-role="page" id="plantconfirm">
+
+    <div data-role="header" data-position="fixed" data-id="fixed_header">
+        <a data-icon="arrow-l" href="javascript:window.history.back();" data-iconpos="notext">Back</a>
+        <h1>Check out your tree</h1>
+    </div><!-- /header -->
+
+    <div role="main" class="ui-content">
+        <p>
+            Hi hi hi hi hi.
+        </p>
     </div><!-- /content -->
 </div><!-- /page -->
 
