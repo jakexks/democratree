@@ -22,7 +22,7 @@ Quick step by step:
 
 #### Installing the Android SDK
 
-1. Install the [SDK Manager](http://dl.google.com/android/installer_r22.3-windows.exe)
+1. Install the [SDK Manager](http://dl.google.com/android/installer_r22.6.2-windows.exe)
 2. Run the SDK manager and install the tools, platform tools, and every API >= Android 4.0
 3. Add the `tools` and `platform-tools` directory to your PATH
 4. Install the JDK
