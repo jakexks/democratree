@@ -294,17 +294,21 @@
 
     <div role="main" class="ui-content">
         <p>
-            Choose the type of tree you wish to place:
-        </p>
-        <p>
-            <div class="ui-grid-a" style="height:80%">
-                <div class="ui-block-a"><div class="ui-bar ui-bar-a">Common Ash</div></div>
-                <div class="ui-block-b"><div class="ui-bar ui-bar-a">Silver Birch</div></div>
-                <div class="ui-block-a"><div class="ui-bar ui-bar-a">Pedunculate Oak</div></div>
-                <div class="ui-block-b"><div class="ui-bar ui-bar-a">Common Juniper</div></div>
-                <div class="ui-block-a"><div class="ui-bar ui-bar-a">Wych Elm</div></div>
-                <div class="ui-block-b"><div class="ui-bar ui-bar-a">European Beech</div></div>
-            </div>
+            <fieldset data-role="controlgroup" id="chosenTree">
+                <legend>Choose the type of tree you wish to place:</legend>
+                <input name="treeRadio" value="Common Ash" checked="checked" type="radio" id="treeChoice1">
+                <label for="treeChoice1">Common Ash</label>
+                <input name="treeRadio" value="Silver Birch" type="radio" id="treeChoice2">
+                <label for="treeChoice2">Silver Birch</label>
+                <input name="treeRadio" value="Pedunculate Oak" type="radio" id="treeChoice3">
+                <label for="treeChoice3">Pedunculate Oak</label>
+                <input name="treeRadio" value="Common Juniper" type="radio" id="treeChoice4">
+                <label for="treeChoice4">Common Juniper</label>
+                <input name="treeRadio" value="Wych Elm" type="radio" id="treeChoice5">
+                <label for="treeChoice5">Wych Elm</label>
+                <input name="treeRadio" value="European Beech" type="radio" id="treeChoice6">
+                <label for="treeChoice6">European Beech</label>
+            </fieldset>
             <a href="#plant" class="ui-btn">Continue</a>
         </p>
 
