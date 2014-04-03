@@ -348,8 +348,21 @@
 
     <div role="main" class="ui-content">
         <p>
-            Hi hi hi hi hi.
+            <div id="confirmTitle"></div>
+            <div id="confirmType"></div>
+            <div><img id="confirmImg"></img></div>
+            <div id="confirmStory"></div>
         </p>
+        <script type="text/javascript">
+            $("body").on( "pagecontainershow", function( event, ui ) {
+                console.log(ui);
+                $("#confirmTitle").html("<h2>" + newTreeLabel + "</h2>");
+                $("#confirmType").html(newChosenTree);
+                $("#confirmImg").src = "data:image/jpeg;base64," + newTreeImg;
+                $("#confirmStory").html(newTreeStory);
+            } );
+            
+        </script>
     </div><!-- /content -->
 </div><!-- /page -->
 
