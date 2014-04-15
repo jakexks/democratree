@@ -309,7 +309,6 @@
                         styles: clusterStyles
                     }
                     );
-
                 },
                 error: function(error) {
                     alert("failure");
@@ -320,33 +319,34 @@
         // Function to place marker
         function placeMarker(location, map) {
             if($.ajax({type: "GET", url: "http://pecan.jakexks.com/democratree/plantable.php?lat=" + location.lat() + "&long=" + location.lng(), async: false}).responseText == "true") {
-            	var marker = new google.maps.Marker({
-            	    position: location,
-            	    map: map,
-            	    title: ""+markerCount,    
-            	    animation: google.maps.Animation.DROP,
-            	    icon: 'img/tree1.png'
-            	});
-            	var Tree = Parse.Object.extend("Tree");
-            	var tree = new Tree();
-            	tree.set("lat", location.lat());
-            	tree.set("lng", location.lng());
-            	tree.set("type", "default");
-            	tree.set("username", "none");
-            	tree.set("votes", 0); 
-            	tree.set("story", "none");
-            	tree.save(null, {
-            	    success: function(tree) {
-            	        objectId = tree.id;
-            	        markerCount++;
-            	        gmarkers.push(marker);
-            	        map.panTo(location);
-            	        attachMessage(marker, map);
-            	    },
-            	    error: function(error) {
-            	        alert("error");
-            	    }
-            	});
+                var marker = new google.maps.Marker({
+                    position: location,
+                    map: map,
+                    title: ""+markerCount,    
+                    animation: google.maps.Animation.DROP,
+                    icon: 'img/tree1.png'
+                });
+                var currentUser = Parse.User.current();
+                var Tree = Parse.Object.extend("Tree");
+                var tree = new Tree();
+                tree.set("lat", location.lat());
+                tree.set("lng", location.lng());
+                tree.set("type", "default");
+                tree.set("username", currentUser.get("username"));
+                tree.set("votes", 0); 
+                tree.set("story", "none");
+                tree.save(null, {
+                    success: function(tree) {
+                        objectId = tree.id;
+                        markerCount++;
+                        gmarkers.push(marker);
+                        map.panTo(location);
+                        attachMessage(marker, map);
+                    },
+                    error: function(error) {
+                        alert("error");
+                    }
+                });
             }
             else {alert("That area is not plantable (according to our heuristic)\nTry planting somewhere else!");}
         }
@@ -375,10 +375,20 @@
             query.equalTo("objectId", objectId);
             query.first({
                 success: function(tree) {
-                    var score = tree.get("votes");
-                    tree.set("votes", score + 1);
-                    tree.save();
-                    infowindow.setContent('<p>User Name: ' + tree.get("username") + '<p>Tree Story: ' + tree.get("story") + '<p><p>Votes: ' + tree.get("votes") + '<p><button id="btnVoteUp' + tree.id + '">Vote Up</button>');
+                    var currentUser = Parse.User.current();
+                    currentUser.add("votedOn", tree.id) 
+                    currentUser.save();
+                    if(tree.get("username") == currentUser.get("username"))
+                    {
+                        alert("you cannot vote on your own tree");
+                    }
+                    else
+                    {
+                        var score = tree.get("votes");
+                        tree.set("votes", score + 1);
+                        tree.save();
+                        infowindow.setContent('<p>User Name: ' + tree.get("username") + '<p>Tree Story: ' + tree.get("story") + '<p><p>Votes: ' + tree.get("votes") + '<p><button id="btnVoteUp' + tree.id + '">Vote Up</button>');
+                    }
                 },
                 error: function(error) {
                     alert("voteup error");
@@ -387,7 +397,6 @@
         }
 
         function addNewTree() {
-            var fName=document.forms["myForm"]["Name"].value;
             var fStory=document.forms["myForm"]["Story"].value;
             var Tree = Parse.Object.extend("Tree");
             var tree = new Tree();
@@ -396,9 +405,8 @@
             query.first({
                 success: function(tree) {
                     tree.set("story", fStory);
-                    tree.set("username", fName);
                     tree.save();
-                    infoWindowArray[treeCount].setContent('Tree submitted.<p>User Name: ' + fName + '<p>Tree Story: ' + fStory + '<p><p>Votes: 0<p><button id="btnVoteUp'+tree.id+'">Vote Up</button>');
+                    infoWindowArray[treeCount].setContent('Tree submitted.<p>User Name: ' + tree.get("username") + '<p>Tree Story: ' + fStory + '<p><p>Votes: 0');
                     //treeArray.push(treeInfo); //Needed?
                     treeCount++;
                 },
@@ -411,7 +419,7 @@
 
         // Attaches infowindow to each marker
         function attachMessage(marker, map) {           
-            var contentString = '<p id="textInfoWindow"><b>New Tree Placed</b><p><form id="myForm"> User Name: <input type="text" name="Name"><br> Story: <input type="text" name="Story"><br></form><p><button id="btnSubmitTree" onclick="return addNewTree()">Submit</button><button id="btnCancelTree" onclick="return cancelTree(markerCount-1)">Cancel</button></p>'
+            var contentString = '<p id="textInfoWindow"><b>New Tree Placed</b><p><form id="myForm"> Story: <input type="text" name="Story"><br></form><p><button id="btnSubmitTree" onclick="return addNewTree()">Submit</button><button id="btnCancelTree" onclick="return cancelTree(markerCount-1)">Cancel</button></p>'
             var infowindow = new google.maps.InfoWindow({
                 content: contentString
             });
@@ -438,9 +446,11 @@
         
         // Create infoWindows when loading from Parse Cloud
         function attachMessageInit(marker, map, tree) {
-            var infowindow = new google.maps.InfoWindow({
-                content: '<p>User Name: ' + tree.get("username") + '<p>Tree Story: ' + tree.get("story") + '<p>Votes: ' + tree.get("votes") + '<p><button id="btnVoteUp'+tree.id+'">Vote Up</button>'
-            })
+            {
+                var infowindow = new google.maps.InfoWindow({
+                    content: '<p>User Name: ' + tree.get("username") + '<p>Tree Story: ' + tree.get("story") + '<p>Votes: ' + tree.get("votes") + '<p><button id="btnVoteUp'+tree.id+'">Vote Up</button>'
+                });
+            }
             var idForVote = tree.id;
             infoWindowArray.push(infowindow);
             google.maps.event.addListener(marker, 'click', function() {
@@ -450,7 +460,16 @@
                 // Attach listener
                 var btn = document.getElementById("btnVoteUp"+tree.id);
                 btn.addEventListener('click', function() {
-                    voteUp(idForVote, infowindow);
+                    var user = Parse.User.current();
+                    var votedOn = user.get("votedOn");
+                    if(votedOn.indexOf(tree.id) == -1) 
+                    {
+                        voteUp(idForVote, infowindow);
+                    }
+                    else
+                    {
+                        alert("you have already voted on this tree");
+                    }
                 });
             });
         }

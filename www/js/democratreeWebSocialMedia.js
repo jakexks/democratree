@@ -31,11 +31,13 @@ function initializeLogin() {
             var name = document.getElementById('demo-name').value;
             var pwd = document.getElementById('demo-pwd').value;
             var email = document.getElementById('demo-email').value;
+            var votedOn = new Array();
             var user = new Parse.User();
             user.set('username', username);
             user.set('name', name);
             user.set('password', pwd);
             user.set('email', email);
+            user.set('votedOn', votedOn);
             user.signUp(null, {
                 success: function(user) {
                     openMapPage();
