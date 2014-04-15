@@ -436,6 +436,11 @@
             });
         }
         
+        function mytester()
+        {
+            alert('lelz');
+        }
+            
         // Create infoWindows when loading from Parse Cloud
         function attachMessageInit(marker, map, tree) {
             var infowindow = new google.maps.InfoWindow({

@@ -12,9 +12,7 @@ function initializeLogin() {
     $('#democratreeSigninButton').bind('click', function() {
         // Temporary
         loginStatus = 'democratree';
-        var username = document.getElementById('login-username').value;
-        var pwd = document.getElementById('login-pwd').value;
-        Parse.User.logIn(username, pwd, {
+        Parse.User.logIn("myname", "mypass", {
             success: function(user) {
                 openMapPage();
             },

@@ -103,7 +103,7 @@
                 <input name="demo-email" id="demo-email" placeholder="Email" value="" type="text">
             </form>
         </p>
-        <p><a id="democratreeCreateAccButton" class="ui-btn ui-shadow ui-corner-all">Create Account</a></p>
+        <p><a id="democratreeCreateAccButon" class="ui-btn ui-shadow ui-corner-all">Create Account</a></p>
     </div><!-- /content -->
 
 </div><!-- /Democratree Sign up Page -->
