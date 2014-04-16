@@ -1,6 +1,6 @@
 
         Parse.initialize("Pw7r5n6AfEqyu1qCWzPGFveMWwfkBDiNSAE33dnL", "eTo4A3yQclInUHyVSj96zDP45Hdy6XIxHtfl2yIe");
-
+        
         var treeCount = 0;
         var markerCount = 0;
         var treeArray = new Array();
@@ -11,25 +11,25 @@
         var ignoreHashChange = false;
         
         var clusterStyles = [{
-        url: 'img/m1.png',
-        width: 35,
-        height: 35,
-        textColor: '#ff00ff',
-        textSize: 10
-      }, {
-        url: 'img/m1.png',
-        width: 45,
-        height: 45,
-        textColor: '#ff0000',
-        textSize: 11
-      }, {
-        url: 'img/m1.png',
-        width: 55,
-        height: 55,
-        textColor: '#ffffff',
-        textSize: 12
-      }];
-
+            url: 'img/m1.png',
+            width: 35,
+            height: 35,
+            textColor: '#ff00ff',
+            textSize: 10
+        }, {
+            url: 'img/m1.png',
+            width: 45,
+            height: 45,
+            textColor: '#ff0000',
+            textSize: 11
+        }, {
+            url: 'img/m1.png',
+            width: 55,
+            height: 55,
+            textColor: '#ffffff',
+            textSize: 12
+        }];
+        
         function hashChanged(event){
             if(ignoreHashChange == false){
                 if(loginStatus == 'none' && window.location.hash != '#login' && window.location.hash != ''){
@@ -43,7 +43,7 @@
             }
             ignoreHashChange = false;
         }
-                
+        
         
         function openMapPage() {
             window.location.hash = '#map';
@@ -52,7 +52,7 @@
                 map = initializeMap();
             }
             var c = map.getCenter();        
-
+            
             // Fix for loading map into 'hidden' div on other page
             // If the login takes a long time this sometimes doesn't work
             google.maps.event.addListener(map, 'idle', function(){
@@ -60,7 +60,7 @@
                 map.setCenter(c);
                 google.maps.event.clearListeners(map, 'idle');
             });
-
+            
         }
         
         // Initialize Map page
@@ -71,21 +71,21 @@
                 minZoom: 13
             };
             map = new google.maps.Map(document.getElementById("map-canvas"),mapOptions);
-
+            
             // Listen for clicks to add labels
             google.maps.event.addListener(map, 'click', function(event) {
                 infowindow.open(map);
                 infowindow.setPosition(event.latLng);
             });
-
-
+            
+            
             // Rough BS1-16 (Bristol council jurisdiction) postcode bounds, needs refining to a polygon
             var allowedBounds = new google.maps.LatLngBounds(
-            new google.maps.LatLng(51.389244, -2.709939), 
-            new google.maps.LatLng(51.552326,-2.41893));
-
+                new google.maps.LatLng(51.389244, -2.709939), 
+                                                             new google.maps.LatLng(51.552326,-2.41893));
+            
             var lastValidCenter = map.getCenter();
-
+            
             google.maps.event.addListener(map, 'center_changed', function() {
                 if (allowedBounds.contains(map.getCenter())) {
                     lastValidCenter = map.getCenter();
@@ -96,52 +96,52 @@
             
             // String to display when user tries to place tree in disallowed area
             var badArea = 'Sorry, this area is outside the predefined allowed locations for tree planting';
-
+            
             // Infowindow to display when tree planting is attempted in disallowed area
             var infowindow = new google.maps.InfoWindow({ 
                 content: badArea
             });
-                // Coordinates for disallowed area
-                var polyCoords = [
-                    new google.maps.LatLng(51.422368, -2.600615), new google.maps.LatLng(51.422281, -2.599920), new google.maps.LatLng(51.422303, -2.598823), 
-                    new google.maps.LatLng(51.421931, -2.598190), new google.maps.LatLng(51.421291, -2.598362), new google.maps.LatLng(51.420220, -2.599207), 
-                    new google.maps.LatLng(51.420162, -2.599341), new google.maps.LatLng(51.420210, -2.599928), new google.maps.LatLng(51.420321, -2.600121), 
-                    new google.maps.LatLng(51.420759, -2.600387), new google.maps.LatLng(51.420884, -2.600556), new google.maps.LatLng(51.421294, -2.600470), 
-                    new google.maps.LatLng(51.421716, -2.600202), new google.maps.LatLng(51.421925, -2.600481), new google.maps.LatLng(51.421946, -2.600620), 
-                ];
-
-                var circleOptions = {
-                    strokeColor: '#FF0000',
-                    strokeOpacity: 0.1,
-                    strokeWeight: 2,
-                    fillColor: '#A1F4A1',
-                    fillOpacity: 0.1,
-                    map: map,
-                    center: new google.maps.LatLng(51.421274, -2.599345),
-                    radius: 2500
-                    };
-
-                plantArea = new google.maps.Circle(circleOptions);
-
-                // Polygon for disallowed area
-                shading = new google.maps.Polygon({
-                    paths: polyCoords,
-                    strokeColor: '#595555',
-                    strokeOpacity: 0.5,
-                    strokeWeight: 1,
-                    fillColour: '#595555',
-                    fillOpacity: 0.3
-                });
-
             // Coordinates for disallowed area
             var polyCoords = [
-                new google.maps.LatLng(51.422368, -2.600615), new google.maps.LatLng(51.422281, -2.599920), new google.maps.LatLng(51.422303, -2.598823), 
-                new google.maps.LatLng(51.421931, -2.598190), new google.maps.LatLng(51.421291, -2.598362), new google.maps.LatLng(51.420220, -2.599207), 
-                new google.maps.LatLng(51.420162, -2.599341), new google.maps.LatLng(51.420210, -2.599928), new google.maps.LatLng(51.420321, -2.600121), 
-                new google.maps.LatLng(51.420759, -2.600387), new google.maps.LatLng(51.420884, -2.600556), new google.maps.LatLng(51.421294, -2.600470), 
-                new google.maps.LatLng(51.421716, -2.600202), new google.maps.LatLng(51.421925, -2.600481), new google.maps.LatLng(51.421946, -2.600620), 
+            new google.maps.LatLng(51.422368, -2.600615), new google.maps.LatLng(51.422281, -2.599920), new google.maps.LatLng(51.422303, -2.598823), 
+            new google.maps.LatLng(51.421931, -2.598190), new google.maps.LatLng(51.421291, -2.598362), new google.maps.LatLng(51.420220, -2.599207), 
+            new google.maps.LatLng(51.420162, -2.599341), new google.maps.LatLng(51.420210, -2.599928), new google.maps.LatLng(51.420321, -2.600121), 
+            new google.maps.LatLng(51.420759, -2.600387), new google.maps.LatLng(51.420884, -2.600556), new google.maps.LatLng(51.421294, -2.600470), 
+            new google.maps.LatLng(51.421716, -2.600202), new google.maps.LatLng(51.421925, -2.600481), new google.maps.LatLng(51.421946, -2.600620), 
             ];
-
+            
+            var circleOptions = {
+                strokeColor: '#FF0000',
+                strokeOpacity: 0.1,
+                strokeWeight: 2,
+                fillColor: '#A1F4A1',
+                fillOpacity: 0.1,
+                map: map,
+                center: new google.maps.LatLng(51.421274, -2.599345),
+                radius: 2500
+            };
+            
+            plantArea = new google.maps.Circle(circleOptions);
+            
+            // Polygon for disallowed area
+            shading = new google.maps.Polygon({
+                paths: polyCoords,
+                strokeColor: '#595555',
+                strokeOpacity: 0.5,
+                strokeWeight: 1,
+                fillColour: '#595555',
+                fillOpacity: 0.3
+            });
+            
+            // Coordinates for disallowed area
+            var polyCoords = [
+            new google.maps.LatLng(51.422368, -2.600615), new google.maps.LatLng(51.422281, -2.599920), new google.maps.LatLng(51.422303, -2.598823), 
+            new google.maps.LatLng(51.421931, -2.598190), new google.maps.LatLng(51.421291, -2.598362), new google.maps.LatLng(51.420220, -2.599207), 
+            new google.maps.LatLng(51.420162, -2.599341), new google.maps.LatLng(51.420210, -2.599928), new google.maps.LatLng(51.420321, -2.600121), 
+            new google.maps.LatLng(51.420759, -2.600387), new google.maps.LatLng(51.420884, -2.600556), new google.maps.LatLng(51.421294, -2.600470), 
+            new google.maps.LatLng(51.421716, -2.600202), new google.maps.LatLng(51.421925, -2.600481), new google.maps.LatLng(51.421946, -2.600620), 
+            ];
+            
             var objectId = "xxxxxxx";
             
             var circleOptions = {
@@ -153,10 +153,10 @@
                 map: map,
                 center: new google.maps.LatLng(51.421274, -2.599345),
                 radius: 2500
-                };
-
+            };
+            
             plantArea = new google.maps.Circle(circleOptions);
-
+            
             // Polygon for disallowed area
             shading = new google.maps.Polygon({
                 paths: polyCoords,
@@ -166,39 +166,39 @@
                 fillColour: '#FF0000',
                 fillOpacity: 0.3
             });
-
+            
             google.maps.event.addListener(shading, 'click', function(event) {
                 infowindow.open(map);
                 infowindow.setPosition(event.latLng);
             });
-
+            
             // Makes disallowed area polygon only appear above a certain zoom level 
             google.maps.event.addListener(map, "zoom_changed", function() { 
                 if(map.getZoom() > 15) shading.setMap(map);
-                else shading.setMap(null);
-                });
+                                          else shading.setMap(null);
+            });
             
             var warning = new google.maps.InfoWindow({ 
-                            content: "Please finish placing your previous tree first"
-                        });
+                content: "Please finish placing your previous tree first"
+            });
             
             google.maps.event.addListener(plantArea, 'click', function(event)
             {
                 if(map.getZoom() > 15) {
                     if (markerCount != treeCount) {
                         if(warning.getMap() == null) warning.open(map);
-                        warning.setPosition(event.latLng);
+                                          warning.setPosition(event.latLng);
                     } else placeMarker(event.latLng, map);
                 }
             });
-                
+            
             // Create the search box and link it to the UI element.
             var input = document.getElementById('search-input');
             //map.controls[google.maps.ControlPosition.TOP_LEFT].push(input);
-
+            
             var autoComplete = new google.maps.places.Autocomplete(input);
             autoComplete.setComponentRestrictions({'country': 'uk'});
-
+            
             // Listen for the event fired when the user selects an item from the
             // pick list. Retrieve the matching place for that item.
             google.maps.event.addListener(autoComplete, 'place_changed', function() {
@@ -239,14 +239,14 @@
                     map.setZoom(16);
                 }
             });
-                
+            
             // Bias the SearchBox results towards places that are within the bounds of the
             // current map's viewport.
             google.maps.event.addListener(map, 'bounds_changed', function() {
                 var bounds = map.getBounds();
                 autoComplete.setBounds(bounds);
             });
-
+            
             // Set height
             h = $(window).height();
             document.getElementById('map-canvas').style.height = h-120+"px"; // Under the assumption header/footer are 60px tall, may need changing
@@ -277,7 +277,7 @@
             
             return map;
         } 
-
+        
         function initializeArrays(map) {
             var results;
             var Tree = Parse.Object.extend("Tree");
@@ -301,7 +301,7 @@
                     }
                     treeCount = results.length;
                     markerCount = treeCount;
-
+                    
                     // cluster            
                     var markerCluster = new MarkerClusterer(map, gmarkers, {
                         maxZoom: 14,
@@ -314,41 +314,61 @@
                     alert("failure");
                 }
             });
-       }
-
+        }
+        function showLoader()
+        {
+            var inter = setInterval(function() {
+                $.mobile.loading('show', {text: 'Checking Location...', textVisible: true, theme: 'a'});
+                clearInterval(inter);
+            }, 1);  
+        }
+        
+        function hideLoader()
+        {
+            var inter = setInterval(function() {
+                $.mobile.loading('hide');
+                clearInterval(inter);
+            }, 1);  
+        }
+        
         // Function to place marker
         function placeMarker(location, map) {
-            if($.ajax({type: "GET", url: "http://pecan.jakexks.com/democratree/plantable.php?lat=" + location.lat() + "&long=" + location.lng(), async: false}).responseText == "true") {
-                var marker = new google.maps.Marker({
-                    position: location,
-                    map: map,
-                    title: ""+markerCount,    
-                    animation: google.maps.Animation.DROP,
-                    icon: 'img/tree1.png'
-                });
-                var currentUser = Parse.User.current();
-                var Tree = Parse.Object.extend("Tree");
-                var tree = new Tree();
-                tree.set("lat", location.lat());
-                tree.set("lng", location.lng());
-                tree.set("type", "default");
-                tree.set("username", currentUser.get("username"));
-                tree.set("votes", 0); 
-                tree.set("story", "none");
-                tree.save(null, {
-                    success: function(tree) {
-                        objectId = tree.id;
-                        markerCount++;
-                        gmarkers.push(marker);
-                        map.panTo(location);
-                        attachMessage(marker, map);
-                    },
-                    error: function(error) {
-                        alert("error");
-                    }
-                });
-            }
-            else {alert("That area is not plantable (according to our heuristic)\nTry planting somewhere else!");}
+            showLoader();
+            $.get("http://pecan.jakexks.com/democratree/plantable.php?lat=" + location.lat() + "&long=" + location.lng(), function(data) { 
+                hideLoader();
+                if(data == "true")
+                {
+                    var marker = new google.maps.Marker({
+                        position: location,
+                        map: map,
+                        title: ""+markerCount,    
+                        animation: google.maps.Animation.DROP,
+                        icon: 'img/tree1.png'
+                    });
+                    var currentUser = Parse.User.current();
+                    var Tree = Parse.Object.extend("Tree");
+                    var tree = new Tree();
+                    tree.set("lat", location.lat());
+                    tree.set("lng", location.lng());
+                    tree.set("type", "default");
+                    tree.set("username", currentUser.get("username"));
+                    tree.set("votes", 0); 
+                    tree.set("story", "none");
+                    tree.save(null, {
+                        success: function(tree) {
+                            objectId = tree.id;
+                            markerCount++;
+                            gmarkers.push(marker);
+                            map.panTo(location);
+                            attachMessage(marker, map);
+                        },
+                        error: function(error) {
+                            alert("error");
+                        }
+                    });
+                }
+                else {alert("That area is not plantable (according to our heuristic)\nTry planting somewhere else!");}
+            });
         }
         
         function cancelTree(i) {
@@ -368,7 +388,7 @@
                 }
             });
         }
-
+        
         function voteUp(objectId, infowindow) {
             var Tree = Parse.Object.extend("Tree");
             var query = new Parse.Query("Tree");
@@ -395,7 +415,7 @@
                 }
             });
         }
-
+        
         function addNewTree() {
             var fStory=document.forms["myForm"]["Story"].value;
             var Tree = Parse.Object.extend("Tree");
@@ -416,7 +436,7 @@
             });
             return;
         }
-
+        
         // Attaches infowindow to each marker
         function attachMessage(marker, map) {           
             var contentString = '<p id="textInfoWindow"><b>New Tree Placed</b><p><form id="myForm"> Story: <input type="text" name="Story"><br></form><p><button id="btnSubmitTree" onclick="return addNewTree()">Submit</button><button id="btnCancelTree" onclick="return cancelTree(markerCount-1)">Cancel</button></p>'
@@ -473,14 +493,14 @@
                 });
             });
         }
-            
+        
         // LEADERBOARD STUFF
-
+        
         function updateLeaderboard() {
             var dropdown=document.getElementById("leaderboardFilter");
             var dropdownText=dropdown.options[dropdown.selectedIndex].text;
             var sortArray;
-
+            
             if (dropdownText == 'Overall') {
                 sortArray = new Array();
                 sortArray = treeArray;
@@ -525,11 +545,11 @@
                     }
                 }
             }
-
+            
             sortArray.sort(compare);
             var lbsize = sortArray.length;
             var lblist = "";
-
+            
             if (lbsize == 0) {
             }
             else if (lbsize == 1) {
@@ -548,12 +568,12 @@
             }
             document.getElementById("leaderboardList").innerHTML=lblist;
         }
-
+        
         function goToLeaderboardMapLocation(lat,lng) {
             map.panTo(new google.maps.LatLng(lat, lng));
             map.setZoom(19);
         }
-
+        
         function compare(a,b) {
             if (a.get("votes") < b.get("votes"))
                 return 1;
@@ -561,5 +581,5 @@
                 return -1;
             return 0;
         }
-
+        
         google.maps.event.addDomListener(window, 'load', initializeLogin);
