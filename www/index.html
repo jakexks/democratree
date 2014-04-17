@@ -72,7 +72,7 @@
                 <label for="login-username" class="ui-hidden-accessible">Username:</label>
                 <input name="login-username" id="login-username" placeholder="Username" value="" type="text">
                 <label for="login-pwd" class="ui-hidden-accessible">Password:</label>
-                <input name="login-pwd" id="login-pwd" placeholder="Password" value="" type="text">
+                <input name="login-pwd" id="login-pwd" placeholder="Password" value="" type="password">
             </form>
         </p>
         <p><a id="democratreeSigninButton" class="ui-btn ui-shadow ui-corner-all">Log In</a></p>
@@ -98,7 +98,7 @@
                 <label for="demo-name" class="ui-hidden-accessible">Name:</label>
                 <input name="demo-name" id="demo-name" placeholder="Name" value="" type="text">
                 <label for="demo-pwd" class="ui-hidden-accessible">Password:</label>
-                <input name="demo-pwd" id="demo-pwd" placeholder="Password" value="" type="text">
+                <input name="demo-pwd" id="demo-pwd" placeholder="Password" value="" type="password">
                 <label for="demo-email" class="ui-hidden-accessible">Email:</label>
                 <input name="demo-email" id="demo-email" placeholder="Email" value="" type="text">
             </form>
@@ -110,13 +110,23 @@
 
 <!-- Start of map page -->
 <div data-role="page" id="map">
+    
+    <!-- Tree Info Popup         -->
+    <div data-role="popup" id="treeInfo" class="ui-content">
+        <a href="#" data-rel="back" data-role="button" data-theme="a" data-icon="delete" data-iconpos="notext" class="ui-btn-right">Close</a>
+        <p id="treeInfoText"></p>
+    </div>
 
+    <!-- Alert Popup         -->
+    <div data-role="popup" id="alert" class="ui-content">
+        <a href="#" data-rel="back" data-role="button" data-theme="a" data-icon="delete" data-iconpos="notext" class="ui-btn-right">Close</a>
+        <p id="alertText"></p>
+    </div>
+    
     <div data-role="header" data-position="fixed" data-id="fixed_header">
-        
         <a href="#map_left_panel" data-icon="bars" data-iconpos="notext" data-direction="reverse">Home</a>
         <a href="#" data-icon="info" data-iconpos="notext" data-rel="dialog" data-transition="fade">Search</a>
         <h1>Map</h1>
-
     </div><!-- /header -->
 
         <input id="search-input" data-mini="true" data-clear-btn="true" type="text" placeholder="Search">
@@ -390,8 +400,6 @@
     </div><!-- /content -->
 </div><!-- /page -->
 
-<!-- Tree Info Popup -->
-<!--<div data-role="popup" id="treeInfo">-->
 
 
 </body>

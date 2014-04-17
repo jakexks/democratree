@@ -367,7 +367,12 @@
                         }
                     });
                 }
-                else {alert("That area is not plantable (according to our heuristic)\nTry planting somewhere else!");}
+                else 
+                {
+                    document.getElementById("alertText").innerHTML= "That area is not plantable (according to our heuristic)<p>Try planting somewhere else!";
+                    $( "#alert" ).popup({ theme: "a" });
+                    $( "#alert" ).popup("open");
+                }
             });
         }
         
@@ -426,7 +431,11 @@
                 success: function(tree) {
                     tree.set("story", fStory);
                     tree.save();
-                    infoWindowArray[treeCount].setContent('Tree submitted.<p>User Name: ' + tree.get("username") + '<p>Tree Story: ' + fStory + '<p><p>Votes: 0');
+                    infoWindowArray[treeCount].close();
+                    //infoWindowArray[treeCount].setContent('Tree submitted.<p>User Name: ' + tree.get("username") + '<p>Tree Story: ' + fStory + '<p><p>Votes: 0');
+                    document.getElementById("treeInfoText").innerHTML= 'Tree submitted.<p>User Name: ' + tree.get("username") + '<p>Tree Story: ' + fStory + '<p><p>Votes: 0';
+                    $( "#treeInfo" ).popup({ theme: "a" });
+                    $( "#treeInfo" ).popup("open");
                     //treeArray.push(treeInfo); //Needed?
                     treeCount++;
                 },
@@ -446,7 +455,7 @@
             infoWindowArray.push(infowindow);
             infowindow.open(map, marker);
             google.maps.event.addListener(marker, 'click', function() {
-                infowindow.open(map,marker);
+               infowindow.open(map,marker);
             });
             google.maps.event.addListener(infowindow, 'domready', function(){
                 var contentStr = '<p id="textInfoWindow"><b>New Tree Placed</b><p><form id="myForm"> User Name: <input type="text" name="Name"><br> Story: <input type="text" name="Story"><br></form><p><button id="btnSubmitTree" onclick="return addNewTree()">Submit</button><button id="btnCancelTree" onclick="return cancelTree(markerCount-1)">Cancel</button></p>'
