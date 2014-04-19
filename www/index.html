@@ -88,6 +88,11 @@
 <!-- Democratree Sign up Page -->
 <div data-role="page" id="demoSignUp"> 
 
+    <div data-role="popup" id="alert" class="ui-content" align="center">
+        <a href="#" data-rel="back" data-role="button" data-theme="a" data-icon="delete" data-iconpos="notext" class="ui-btn-right">Close</a>
+        <p id="alertText"></p>
+    </div>
+
     <div role="main" class="ui-content" >
         <h2>Create a Democratree Account</h2>
 
@@ -99,6 +104,8 @@
                 <input name="demo-name" id="demo-name" placeholder="Name" value="" type="text">
                 <label for="demo-pwd" class="ui-hidden-accessible">Password:</label>
                 <input name="demo-pwd" id="demo-pwd" placeholder="Password" value="" type="password">
+                <label for="demo-conf-pwd" class="ui-hidden-accessible">Confirm Password:</label>
+                <input name="demo-conf-pwd" id="demo-conf-pwd" placeholder="Confirm Password" value="" type="password">
                 <label for="demo-email" class="ui-hidden-accessible">Email:</label>
                 <input name="demo-email" id="demo-email" placeholder="Email" value="" type="text">
             </form>
@@ -112,13 +119,13 @@
 <div data-role="page" id="map">
     
     <!-- Tree Info Popup         -->
-    <div data-role="popup" id="treeInfo" class="ui-content">
+    <div data-role="popup" id="treeInfo" class="ui-content" align="center">
         <a href="#" data-rel="back" data-role="button" data-theme="a" data-icon="delete" data-iconpos="notext" class="ui-btn-right">Close</a>
         <p id="treeInfoText"></p>
     </div>
 
     <!-- Alert Popup         -->
-    <div data-role="popup" id="alert" class="ui-content">
+    <div data-role="popup" id="alert" class="ui-content" align="center">
         <a href="#" data-rel="back" data-role="button" data-theme="a" data-icon="delete" data-iconpos="notext" class="ui-btn-right">Close</a>
         <p id="alertText"></p>
     </div>

@@ -24,29 +24,40 @@ function initializeLogin() {
         }); 
     });
     $('#democratreeSignupButton').bind('click', function() {
-        // Temporary
         loginStatus = 'signup';
         $('#democratreeCreateAccButton').bind('click', function() {
             var username = document.getElementById('demo-username').value;
             var name = document.getElementById('demo-name').value;
             var pwd = document.getElementById('demo-pwd').value;
+            var secondpwd = document.getElementById('demo-conf-pwd').value;
             var email = document.getElementById('demo-email').value;
-            var votedOn = new Array();
-            var user = new Parse.User();
-            user.set('username', username);
-            user.set('name', name);
-            user.set('password', pwd);
-            user.set('email', email);
-            user.set('votedOn', votedOn);
-            user.signUp(null, {
-                success: function(user) {
-                    openMapPage();
-                },
-                error: function(user, error) {
-                    // Show the error message somewhere and let the user try again.
-                    alert("Error: " + error.code + " " + error.message);
-                }
-            }); 
+            if(pwd == secondpwd)
+            {
+                var votedOn = new Array();
+                var user = new Parse.User();
+                user.set('username', username);
+                user.set('name', name);
+                user.set('password', pwd);
+                user.set('email', email);
+                user.set('votedOn', votedOn);
+                user.signUp(null, {
+                    success: function(user) {
+                        openMapPage();
+                    },
+                    error: function(user, error) {
+                        // Show the error message somewhere and let the user try again.
+                        alert("Error: " + error.code + " " + error.message);
+                    }
+                }); 
+            }
+            else
+            {
+                document.getElementById("demo-pwd").value = "";
+                document.getElementById("demo-conf-pwd").value = "";
+                document.getElementById("alertText").innerHTML = "The passwords you entered do not match,<p>please type them again";
+                $("#alert").popup({theme: "a"});
+                $("#alert").popup("open");
+            }
         });
     });
     $('#facebookSigninButton').bind('click', function(){
