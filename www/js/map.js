@@ -347,10 +347,17 @@
             }, 1);  
         }
         
+        function openPopup(message)
+        {
+            $( "#alert" ).popup({ theme: "a" });
+            document.getElementById("alertText").innerHTML = message;
+            $( "#alert" ).popup("open");
+        }
+        
         // Function to place marker
         function placeMarker(location, map) {
-            /*if(checkLocation(location))
-            {*/
+            if(checkLocation(location))
+            {
                 showLoader();
                 $.get("http://pecan.jakexks.com/democratree/plantable.php?lat=" + location.lat() + "&long=" + location.lng(), function(data) { 
                     hideLoader();
@@ -387,18 +394,14 @@
                     }
                     else 
                     {
-                        document.getElementById("alertText").innerHTML = "That area is not plantable (according to our heuristic)<p>Try planting somewhere else!";
-                        $( "#alert" ).popup({ theme: "a" });
-                        $( "#alert" ).popup("open");
+                        openPopup("That area is not plantable (according to our heuristic)<p>Try planting somewhere else!");
                     }
                 });
-            /*}
+            }
             else
             {
-                document.getElementById("alertText").innerHTML = "You have tried to plant too close to another tree, please plant further away.";
-                $( "#alert" ).popup({ theme: "a" });
-                $( "#alert" ).popup("open");
-            }*/
+                openPopup("You have tried to plant too close to another tree, please plant further away.");
+            }
         }
         
         function cancelTree(i) {
