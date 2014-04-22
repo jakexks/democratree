@@ -315,6 +315,22 @@
                 }
             });
         }
+        
+        function checkLocation(newLoc)
+        {
+            for(i = 0; i < treeCount; i++)
+            {
+                latDif = Math.abs(Math.abs(treeArray[i].get("lat")) - Math.abs(newLoc.lat()));
+                lngDif = Math.abs(Math.abs(treeArray[i].get("lng")) - Math.abs(newLoc.lng()));
+                if(latDif < 0.0005 && lngDif < 0.0005)
+                {
+                    return false;
+                }
+            }
+            return true;
+        }
+        
+        
         function showLoader()
         {
             var inter = setInterval(function() {
@@ -333,47 +349,56 @@
         
         // Function to place marker
         function placeMarker(location, map) {
-            showLoader();
-            $.get("http://pecan.jakexks.com/democratree/plantable.php?lat=" + location.lat() + "&long=" + location.lng(), function(data) { 
-                hideLoader();
-                if(data == "true")
-                {
-                    var marker = new google.maps.Marker({
-                        position: location,
-                        map: map,
-                        title: ""+markerCount,    
-                        animation: google.maps.Animation.DROP,
-                        icon: 'img/tree1.png'
-                    });
-                    var currentUser = Parse.User.current();
-                    var Tree = Parse.Object.extend("Tree");
-                    var tree = new Tree();
-                    tree.set("lat", location.lat());
-                    tree.set("lng", location.lng());
-                    tree.set("type", "default");
-                    tree.set("username", currentUser.get("username"));
-                    tree.set("votes", 0); 
-                    tree.set("story", "none");
-                    tree.save(null, {
-                        success: function(tree) {
-                            objectId = tree.id;
-                            markerCount++;
-                            gmarkers.push(marker);
-                            map.panTo(location);
-                            attachMessage(marker, map);
-                        },
-                        error: function(error) {
-                            alert("error");
-                        }
-                    });
-                }
-                else 
-                {
-                    document.getElementById("alertText").innerHTML= "That area is not plantable (according to our heuristic)<p>Try planting somewhere else!";
-                    $( "#alert" ).popup({ theme: "a" });
-                    $( "#alert" ).popup("open");
-                }
-            });
+            /*if(checkLocation(location))
+            {*/
+                showLoader();
+                $.get("http://pecan.jakexks.com/democratree/plantable.php?lat=" + location.lat() + "&long=" + location.lng(), function(data) { 
+                    hideLoader();
+                    if(data == "true")
+                    {
+                        var marker = new google.maps.Marker({
+                            position: location,
+                            map: map,
+                            title: ""+markerCount,    
+                            animation: google.maps.Animation.DROP,
+                            icon: 'img/tree1.png'
+                        });
+                        var currentUser = Parse.User.current();
+                        var Tree = Parse.Object.extend("Tree");
+                        var tree = new Tree();
+                        tree.set("lat", location.lat());
+                        tree.set("lng", location.lng());
+                        tree.set("type", "default");
+                        tree.set("username", currentUser.get("username"));
+                        tree.set("votes", 0); 
+                        tree.set("story", "none");
+                        tree.save(null, {
+                            success: function(tree) {
+                                objectId = tree.id;
+                                markerCount++;
+                                gmarkers.push(marker);
+                                map.panTo(location);
+                                attachMessage(marker, map);
+                            },
+                            error: function(error) {
+                                alert("error");
+                            }
+                        });
+                    }
+                    else 
+                    {
+                        document.getElementById("alertText").innerHTML = "That area is not plantable (according to our heuristic)<p>Try planting somewhere else!";
+                        $( "#alert" ).popup({ theme: "a" });
+                        $( "#alert" ).popup("open");
+                    }
+                });
+            /*}
+            else
+            {
+                document.getElementById("alertText").innerHTML = "You have tried to plant too close to another tree, please plant further away.";
+                $( "#alert" ).popup({ theme: "a" });
+                $( "#alert" ).popup("open");
+            }*/
         }
         
         function cancelTree(i) {
@@ -436,7 +461,7 @@
                     document.getElementById("treeInfoText").innerHTML= 'Tree submitted.<p>User Name: ' + tree.get("username") + '<p>Tree Story: ' + fStory + '<p><p>Votes: 0';
                     $( "#treeInfo" ).popup({ theme: "a" });
                     $( "#treeInfo" ).popup("open");
-                    //treeArray.push(treeInfo); //Needed?
+                    treeArray.push(tree); 
                     treeCount++;
                 },
                 error: function(error) {
