@@ -1,0 +1,20 @@
+.layout_leaderboardno {
+	background-color:#98E882;
+	width:20%;
+	padding:6px;
+	text-align:center;
+	font:20px roboto,sans-serif;
+	font-weight:lighter;
+}
+
+.layout_leaderboardname {
+	background-color:#98E882;
+	width:80%;
+	padding:6px;
+	text-align:center;
+	font-weight:lighter;
+}
+
+.layout_leaderboardname:active {
+	background-color:#DEFDDE;
+}
