@@ -254,7 +254,10 @@
             
             // Set height
             h = $(window).height();
-            document.getElementById('map-canvas').style.height = h-120+"px"; // Under the assumption header/footer are 60px tall, may need changing
+            if ($("meta[name='ui']").attr('content') === 'mobile')
+                document.getElementById('map-canvas').style.height = h-120+"px"; // Under the assumption header/footer are 60px tall, may need changing
+            else
+                document.getElementById('map-canvas').style.height = "750px";
             // Set cache reset for jStorage
             $('.resetCache').bind('click', function() { 
                 for(var i = treeCount-1; i >= 0; i--) {
@@ -590,30 +593,42 @@
             
             sortArray.sort(compare);
             lbsize = sortArray.length;
-            var lblist = "";
             
-            if (lbsize == 0) {
-            }
-            else if (lbsize == 1) {
-                lblist += '<a href="#map" onclick="goToLeaderboardMapLocation(' + sortArray[0].get("lat") + ',' + sortArray[0].get("lng") +  ')">' + sortArray[0].get("votes") + ' - ' + sortArray[0].get("username") + '</a>';
-            }
-            else if (lbsize == 2) {
-                lblist += '<a href="#map" onclick="goToLeaderboardMapLocation(' + sortArray[0].get("lat") + ',' + sortArray[0].get("lng") +  ')">' + sortArray[0].get("votes") + ' - ' + sortArray[0].get("username") + '</a></li>';
-                lblist += '<li><a href="#map" onclick="goToLeaderboardMapLocation(' + sortArray[1].get("lat") + ',' + sortArray[1].get("lng") +  ')">' + sortArray[1].get("votes") + ' - ' + sortArray[1].get("username") + '</a>';
-            }
-            else {
-                lblist += '<a href="#map" onclick="goToLeaderboardMapLocation(' + sortArray[0].get("lat") + ',' + sortArray[0].get("lng") +  ')">' + sortArray[0].get("votes") + ' - ' + sortArray[0].get("username") + '</a></li>';
-                for (var i = 1; i < lbsize-1; i++) {
-                    lblist += '<li><a href="#map" onclick="goToLeaderboardMapLocation(' + sortArray[i].get("lat") + ',' + sortArray[i].get("lng") +  ')">' + sortArray[i].get("votes") + ' - ' + sortArray[i].get("username") + '</a></li>';
+            for (var i = 0; i < 15; i++) {
+                if (i < lbsize) {
+                    document.getElementById("lb" + (i+1) + "no").innerHTML=sortArray[i].get("votes");
+                    document.getElementById("lb" + (i+1) + "name").innerHTML=sortArray[i].get("username");
                 }
-                lblist += '<li><a href="#map" onclick="goToLeaderboardMapLocation(' + sortArray[lbsize-1].get("lat") + ',' + sortArray[lbsize-1].get("lng") +  ')">' + sortArray[lbsize-1].get("votes") + ' - ' + sortArray[lbsize-1].get("username") + '</a>';
+                else {
+                    document.getElementById("lb" + (i+1) + "no").innerHTML='-'
+                    document.getElementById("lb" + (i+1) + "name").innerHTML='-'
+                }
             }
-            document.getElementById("leaderboardList").innerHTML=lblist;
         }
         
-        function goToLeaderboardMapLocation(lat,lng) {
-            map.panTo(new google.maps.LatLng(lat, lng));
-            map.setZoom(19);
+        function goToLeaderboardMapLocation(pos) {
+            var lat;
+            var lng;
+            var found = false;
+            var mark;
+            var index;
+            if (pos <= sortArray.length) {
+                lat = sortArray[pos-1].get("lat");
+                lng = sortArray[pos-1].get("lng");
+                window.location.href='#map';
+                map.panTo(new google.maps.LatLng(lat,lng));
+                map.setZoom(18);
+
+                for (var i = 0; i < gmarkers.length; i++) {
+                    if (gmarkers[i].position.toString() === ('(' + lat + ', ' + lng + ')')) {
+                        mark = gmarkers[i];
+                        index = i;
+                        found = true;
+                    }
+                    if (found) break;
+                }
+                infoWindowArray[index].open(map,mark);
+            }
         }
         
         function compare(a,b) {

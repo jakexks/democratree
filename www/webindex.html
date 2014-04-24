@@ -1,0 +1,896 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" xmlns:fb="http://www.facebook.com/2008/fbml" xmlns:og="http://opengraphprotocol.org/schema/" lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="format-detection" content="telephone=no" />
+    <!-- WARNING: for iOS 7, remove the width=device-width and height=device-height attributes. See https://issues.apache.org/jira/browse/CB-4323 -->
+    <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height, target-densitydpi=medium-dpi" />
+
+    <meta name="ui" content="web"/>
+
+    <link rel="stylesheet" href="css/web_layout.css" />
+    <link rel="stylesheet" href="css/themes/green3.min.css" />
+    <link rel="stylesheet" href="css/themes/jquery.mobile.icons.min.css" />
+    <link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.0/jquery.mobile.structure-1.4.0.min.css" />
+
+    <style type="text/css">
+        #map-canvas { height: 100%}
+    </style>
+<!--    <script type="text/javascript" src="js/jquery.js"></script>-->
+    <script src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
+    <script src="http://code.jquery.com/mobile/1.4.0/jquery.mobile-1.4.0.min.js"></script>
+    <script type="text/javascript" src="js/init.js"></script>
+
+    <script type="text/javascript" src="js/markerclusterer.js"></script>
+
+    <script type="application/javascript" src="js/fastclick.min.js"></script>
+    <script type="text/javascript" src="cordova.js"></script>
+    <!--<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>-->
+    <script type="text/javascript" src="http://www.parsecdn.com/js/parse-1.2.16.min.js"></script>
+    <script type="text/javascript" src="js/json2.js"></script>
+    <script type="text/javascript" src="js/jstorage.js"></script>
+    <script type="text/javascript">
+        document.addEventListener('deviceready', deviceReady, false);
+        function deviceReady() {
+            dd.resolve();
+        }
+    </script>
+    <script type="text/javascript"
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyATdd83fKwz8LOVfeVfTe5nVpbNI_0kxSI&libraries=places&sensor=false">
+    </script>
+    <script type="text/javascript" src="http://google-maps-utility-library-v3.googlecode.com/svn/trunk/infobox/src/infobox.js"></script>
+    <!-- Mobile scripts -->
+    <!-- <script type="text/javascript" src="https://apis.google.com/js/client:plusone.js"></script>
+    <script type="text/javascript" src="js/mobile/liquid.js"></script>
+    <script type="text/javascript" src="js/mobile/democratreeMobileSocialMedia.js"></script>
+    <script type="text/javascript" src="js/mobile/helper/liquid.helper.oauth.js"></script>
+    <script type="text/javascript" src="js/mobile/twitter.js"></script>
+    <script type="text/javascript" src="js/mobile/jsOAuth-1.3.6.js"></script> -->
+    <!-- /Mobile scripts -->
+    <!-- Web scripts -->
+    <script type="text/javascript" src="js/democratreeWebSocialMedia.js"></script>
+    <!-- /Web scripts -->
+    <script type="text/javascript" src="js/mobile/purl.js"></script>
+    <script type="text/javascript" src="js/map.js"></script>
+    <script type="text/javascript" src="js/addTreeHelper.js"></script>
+    <title>Democratree</title>
+</head>
+
+<body>
+<div id="fb-root"></div>
+<!-- Web scripts p2 -->
+<script type="text/javascript" src="js/democratreeWebSocialMediaAPIs.js"></script>
+<!-- /Web scripts p2 -->
+
+<!-- Login Page -->
+<div data-role="page" id="login">
+
+    <div align=center>
+    <table width="1100">
+        <tr>
+            <td colspan="3" class="layout_titleheader" background="img/titleimage.jpg">
+                <p>
+                    Democratree
+                </p>
+                <p style="font-size:25px">
+                    Crowdsourcing the locations of 1000 new trees to be planted around the Bristol area.
+                </p>
+            </td>
+        </tr>
+        <tr>
+            <td class="layout_titlethird">
+                Login to Democratree
+                <p>
+                    <form>
+                        <label for="login-username" class="ui-hidden-accessible">Username:</label>
+                        <input name="login-username" id="login-username" placeholder="Username" value="" type="text">
+                        <label for="login-pwd" class="ui-hidden-accessible">Password:</label>
+                        <input name="login-pwd" id="login-pwd" placeholder="Password" value="" type="password">
+                    </form>
+                </p>
+                <p><a id="democratreeSigninButton" class="ui-btn ui-shadow ui-corner-all">Log In</a></p>
+            </td>
+            <td class="layout_titlemiddlethird">
+                <p><a id="googleplusSigninButton" class="ui-btn ui-shadow ui-corner-all">Login with Google+</a></p>
+                <p><a id="facebookSigninButton" class="ui-btn ui-shadow ui-corner-all">Login with Facebook</a></p>
+                <p><a id="twitterSigninButton" class="ui-btn ui-shadow ui-corner-all">Login with Twitter</a></p>
+            </td>
+            <td class="layout_titlethird">
+                <p><a href="#demoSignUp" id="democratreeSignupButton" class="ui-btn ui-shadow ui-corner-all">Sign Up</a></p>
+                <p style="font-size:12px" align=center><a id="guestLoginButton" class="ui-btn ui-shadow ui-corner-all">Log In as Guest</a>
+                Note: Logging in as a guest restricts full use of this site.</p>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="3" class="layout_footer">
+                © Democratree v1.1
+            </td>
+        </tr>
+    </table>
+    </div> 
+</div><!-- /Login Page -->
+
+<!-- Democratree Sign up Page -->
+<div data-role="page" id="demoSignUp"> 
+
+    <div data-role="popup" id="alert" class="ui-content" align="center">
+        <a href="#" data-rel="back" data-role="button" data-theme="a" data-icon="delete" data-iconpos="notext" class="ui-btn-right">Close</a>
+        <p id="alertText"></p>
+    </div>
+
+    <div align=center>
+    <table width="1100">
+        <tr>
+            <td colspan="3" class="layout_titleheader" background="img/titleimage.jpg">
+                <p>
+                    Democratree
+                </p>
+                <p style="font-size:25px">
+                    Crowdsourcing the locations of 1000 new trees to be planted around the Bristol area.
+                </p>
+            </td>
+        </tr>
+        <tr>
+            <td style="text-align:center;font-size:30px" class="layout_titlethird">
+                Sign up for Democratree:
+            </td>
+            <td class="layout_titlemiddlethird">
+                <p>
+                    <form>
+                        <label for="demo-name" class="ui-hidden-accessible">Name:</label>
+                        <input name="demo-name" id="demo-name" placeholder="Full Name" value="" type="text">
+                        <label for="demo-username" class="ui-hidden-accessible">Username:</label>
+                        <input name="demo-username" id="demo-username" placeholder="Username" value="" type="text">
+                        <label for="demo-email" class="ui-hidden-accessible">Email:</label>
+                        <input name="demo-email" id="demo-email" placeholder="Email" value="" type="text">
+                </p>
+            </td>
+            <td class="layout_titlethird">
+                <p>
+                        <label for="demo-pwd" class="ui-hidden-accessible">Password:</label>
+                        <input name="demo-pwd" id="demo-pwd" placeholder="Password" value="" type="password">
+                        <label for="demo-conf-pwd" class="ui-hidden-accessible">Confirm Password:</label>
+                        <input name="demo-conf-pwd" id="demo-conf-pwd" placeholder="Confirm Password" value="" type="password">
+                        <a id="democratreeCreateAccButton" class="ui-btn ui-shadow ui-corner-all">Create Account</a>
+                    </form>
+                </p>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="3" class="layout_footer">
+                © Democratree v1.1
+            </td>
+        </tr>
+    </table>
+    </div> 
+
+</div><!-- /Democratree Sign up Page -->
+
+<!-- Start of map page -->
+<div data-role="page" id="map">
+    
+    <!-- Tree Info Popup         -->
+    <div data-role="popup" id="treeInfo" class="ui-content" align="center">
+        <a href="#" data-rel="back" data-role="button" data-theme="a" data-icon="delete" data-iconpos="notext" class="ui-btn-right">Close</a>
+        <p id="treeInfoText"></p>
+    </div>
+
+    <!-- Alert Popup         -->
+    <div data-role="popup" id="alert" class="ui-content" align="center">
+        <a href="#" data-rel="back" data-role="button" data-theme="a" data-icon="delete" data-iconpos="notext" class="ui-btn-right">Close</a>
+        <p id="alertText"></p>
+    </div>
+    
+    <div align=center>
+    <table width="1100">
+        <tr>
+            <td colspan="2" class="layout_header">
+                Map
+            </td>
+        </tr>
+        <tr>
+            <td class="layout_selectedmenu">
+                Map
+            </td>
+            <td rowspan="8" class="layout_map">
+                <input id="search-input" data-mini="true" data-clear-btn="true" type="text" placeholder="Search">
+                <div data-role="content" id="map-canvas"></div>
+            </td>
+        </tr>
+        <tr>
+            <td class="layout_menu" onclick="updateLeaderboard();window.location.href='#leaderboard'">
+                Leaderboard
+            </td>
+        </tr>
+        <tr>
+            <td class="layout_menu" onclick="window.location.href='#profile'">
+                My Profile
+            </td>
+        </tr>
+        <tr>
+            <td class="layout_menu" onclick="window.location.href='#friends'">
+                Friends
+            </td>
+        </tr>
+        <tr>
+            <td class="layout_menu" onclick="window.location.href='#treeinfo'">
+                Tree Information
+            </td>
+        </tr>
+        <tr>
+            <td class="layout_menu" onclick="window.location.href='#settings'">
+                Account Settings
+            </td>
+        </tr>
+        <tr>
+            <td class="layout_menu" onclick="window.location.href='#help'">
+                Help
+            </td>
+        </tr>
+        <tr>
+            <td class="layout_menu logoutButton">
+                Log Out
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2" class="layout_footer">
+                © Democratree v1.1 
+            </td>
+        </tr>
+    </table>
+    </div>
+
+    <!--<li><a href="#add_tree">Add Tree TODO</a></li>-->
+
+</div><!-- /page -->
+
+<!-- Start of leaderboard page -->
+<div data-role="page" id="leaderboard">
+
+    <div align=center>
+    <table width="1100">
+        <tr>
+            <td colspan="2" class="layout_header">
+                Leaderboard
+            </td>
+        </tr>
+        <tr>
+            <td class="layout_menu" onclick="window.location.href='#map'">
+                Map
+            </td>
+            <td rowspan="8" class="layout_contentmain">
+                <div class="layout_leaderboarddropdown">
+                    <form>
+                        Select leaderboard filter:
+                        <select id="leaderboardFilter" onchange="updateLeaderboard()">
+                            <option>Overall</option>
+                            <option>This Month</option>  
+                            <option>This Week</option>
+                            <option>Today</option>
+                            <option>Hot</option>
+                        </select>
+                    </form>
+                </div>
+                <br>
+                <table align=center width="550">
+                    <tr>
+                        <td id="lb1no" class="layout_leaderboardno">
+                            1
+                        </td>
+                        <td id="lb1name" class="layout_leaderboardname" onclick="goToLeaderboardMapLocation(1)">
+                            First
+                        </td>
+                    </tr>
+                    <tr>
+                        <td id="lb2no" class="layout_leaderboardno">
+                            2
+                        </td>
+                        <td id="lb2name" class="layout_leaderboardname" onclick="goToLeaderboardMapLocation(2)">
+                            Second
+                        </td>
+                    </tr>
+                    <tr>
+                        <td id="lb3no" class="layout_leaderboardno">
+                            3
+                        </td>
+                        <td id="lb3name" class="layout_leaderboardname" onclick="goToLeaderboardMapLocation(3)">
+                            Third
+                        </td>
+                    </tr>
+                    <tr>
+                        <td id="lb4no" class="layout_leaderboardno">
+                            4
+                        </td>
+                        <td id="lb4name" class="layout_leaderboardname" onclick="goToLeaderboardMapLocation(4)">
+                            Fourth
+                        </td>
+                    </tr>
+                    <tr>
+                        <td id="lb5no" class="layout_leaderboardno">
+                            5
+                        </td>
+                        <td id="lb5name" class="layout_leaderboardname" onclick="goToLeaderboardMapLocation(5)">
+                            Fifth
+                        </td>
+                    </tr>
+                    <tr>
+                        <td id="lb6no" class="layout_leaderboardno">
+                            6
+                        </td>
+                        <td id="lb6name" class="layout_leaderboardname" onclick="goToLeaderboardMapLocation(6)">
+                            Sixth
+                        </td>
+                    </tr>
+                    <tr>
+                        <td id="lb7no" class="layout_leaderboardno">
+                            7
+                        </td>
+                        <td id="lb7name" class="layout_leaderboardname" onclick="goToLeaderboardMapLocation(7)">
+                            Seventh
+                        </td>
+                    </tr>
+                    <tr>
+                        <td id="lb8no" class="layout_leaderboardno">
+                            8
+                        </td>
+                        <td id="lb8name" class="layout_leaderboardname" onclick="goToLeaderboardMapLocation(8)">
+                            Eighth
+                        </td>
+                    </tr>
+                    <tr>
+                        <td id="lb9no" class="layout_leaderboardno">
+                            9
+                        </td>
+                        <td id="lb9name" class="layout_leaderboardname" onclick="goToLeaderboardMapLocation(9)">
+                            Ninth
+                        </td>
+                    </tr>
+                    <tr>
+                        <td id="lb10no" class="layout_leaderboardno">
+                            10
+                        </td>
+                        <td id="lb10name" class="layout_leaderboardname" onclick="goToLeaderboardMapLocation(10)">
+                            Tenth
+                        </td>
+                    </tr>
+                    <tr>
+                        <td id="lb11no" class="layout_leaderboardno">
+                            11
+                        </td>
+                        <td id="lb11name" class="layout_leaderboardname" onclick="goToLeaderboardMapLocation(11)">
+                            Eleventh
+                        </td>
+                    </tr>
+                    <tr>
+                        <td id="lb12no" class="layout_leaderboardno">
+                            12
+                        </td>
+                        <td id="lb12name" class="layout_leaderboardname" onclick="goToLeaderboardMapLocation(12)">
+                            Twelfth
+                        </td>
+                    </tr>
+                    <tr>
+                        <td id="lb13no" class="layout_leaderboardno">
+                            13
+                        </td>
+                        <td id="lb13name" class="layout_leaderboardname" onclick="goToLeaderboardMapLocation(13)">
+                            Thirteenth
+                        </td>
+                    </tr>
+                    <tr>
+                        <td id="lb14no" class="layout_leaderboardno">
+                            14
+                        </td>
+                        <td id="lb14name" class="layout_leaderboardname" onclick="goToLeaderboardMapLocation(14)">
+                            Fourteenth
+                        </td>
+                    </tr>
+                    <tr>
+                        <td id="lb15no" class="layout_leaderboardno">
+                            15
+                        </td>
+                        <td id="lb15name" class="layout_leaderboardname" onclick="goToLeaderboardMapLocation(15)">
+                            Fifteenth
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+        <tr>
+            <td class="layout_selectedmenu">
+                Leaderboard
+            </td>
+        </tr>
+        <tr>
+            <td class="layout_menu" onclick="window.location.href='#profile'">
+                My Profile
+            </td>
+        </tr>
+        <tr>
+            <td class="layout_menu" onclick="window.location.href='#friends'">
+                Friends
+            </td>
+        </tr>
+        <tr>
+            <td class="layout_menu" onclick="window.location.href='#treeinfo'">
+                Tree Information
+            </td>
+        </tr>
+        <tr>
+            <td class="layout_menu" onclick="window.location.href='#settings'">
+                Account Settings
+            </td>
+        </tr>
+        <tr>
+            <td class="layout_menu" onclick="window.location.href='#help'">
+                Help
+            </td>
+        </tr>
+        <tr>
+            <td class="layout_menu logoutButton">
+                Log Out
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2" class="layout_footer">
+                © Democratree v1.1 
+            </td>
+        </tr>
+    </table>
+    </div>
+
+</div><!-- /page -->
+
+<!-- Start of profile page -->
+<div data-role="page" id="profile">
+
+    <div align=center>
+    <table width="1100">
+        <tr>
+            <td colspan="2" class="layout_header">
+                Profile
+            </td>
+        </tr>
+        <tr>
+            <td class="layout_menu" onclick="window.location.href='#map'">
+                Map
+            </td>
+            <td rowspan="8" class="layout_contentmain">
+                <!-- CONTENT -->
+                <div role="main" class="ui-content" style="text-align:center;">
+                    <h2><div id="profile_name"></div></h2>
+                    <h4><div id="profile_username"></div></h4>
+                    <p>
+                        <div id="profile_picture"></div>
+                    </p>
+                    <p>
+                    <div id="profile_revokeAccess"></div>
+                    </p>
+                    <h4>My Trees:</h4>
+                    <p>
+                        <ul data-role="listview">
+                            <li><a href="#map">Clifton Down</a></li>
+                            <li><a href="#map">Waterfront</a></li>
+                        </ul>
+                    </p>
+                </div>
+                <!-- CONTENT -->
+            </td>
+        </tr>
+        <tr>
+            <td class="layout_menu" onclick="updateLeaderboard();window.location.href='#leaderboard'">
+                Leaderboard
+            </td>
+        </tr>
+        <tr>
+            <td class="layout_selectedmenu">
+                My Profile
+            </td>
+        </tr>
+        <tr>
+            <td class="layout_menu" onclick="window.location.href='#friends'">
+                Friends
+            </td>
+        </tr>
+        <tr>
+            <td class="layout_menu" onclick="window.location.href='#treeinfo'">
+                Tree Information
+            </td>
+        </tr>
+        <tr>
+            <td class="layout_menu" onclick="window.location.href='#settings'">
+                Account Settings
+            </td>
+        </tr>
+        <tr>
+            <td class="layout_menu" onclick="window.location.href='#help'">
+                Help
+            </td>
+        </tr>
+        <tr>
+            <td class="layout_menu logoutButton">
+                Log Out
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2" class="layout_footer">
+                © Democratree v1.1 
+            </td>
+        </tr>
+    </table>
+    </div>
+
+</div><!-- /page -->
+
+<!-- Start of friends page -->
+<div data-role="page" id="friends">
+
+    <div align=center>
+    <table width="1100">
+        <tr>
+            <td colspan="2" class="layout_header">
+                Profile
+            </td>
+        </tr>
+        <tr>
+            <td class="layout_menu" onclick="window.location.href='#map'">
+                Map
+            </td>
+            <td rowspan="8" class="layout_contentmain">
+                <!-- CONTENT -->
+                <div role="main" class="ui-content">
+                    <p>
+                        <ul data-role="listview" data-autodividers="true" data-filter="true" data-inset="true">
+                            <li>Abbbbbby</li>
+                            <li>JLVNOOO(</li>
+                            <li>RATATA</li>
+                        </ul>
+                    </p>
+                </div>
+                <!-- CONTENT -->
+            </td>
+        </tr>
+        <tr>
+            <td class="layout_menu" onclick="updateLeaderboard();window.location.href='#leaderboard'">
+                Leaderboard
+            </td>
+        </tr>
+        <tr>
+            <td class="layout_menu" onclick="window.location.href='#profile'">
+                My Profile
+            </td>
+        </tr>
+        <tr>
+            <td class="layout_selectedmenu">
+                Friends
+            </td>
+        </tr>
+        <tr>
+            <td class="layout_menu" onclick="window.location.href='#treeinfo'">
+                Tree Information
+            </td>
+        </tr>
+        <tr>
+            <td class="layout_menu" onclick="window.location.href='#settings'">
+                Account Settings
+            </td>
+        </tr>
+        <tr>
+            <td class="layout_menu" onclick="window.location.href='#help'">
+                Help
+            </td>
+        </tr>
+        <tr>
+            <td class="layout_menu logoutButton">
+                Log Out
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2" class="layout_footer">
+                © Democratree v1.1 
+            </td>
+        </tr>
+    </table>
+    </div>
+
+</div><!-- /page -->
+
+
+<!-- Start of Tree Info page -->
+<div data-role="page" id="treeinfo">
+
+    <div align=center>
+    <table width="1100">
+        <tr>
+            <td colspan="2" class="layout_header">
+                Profile
+            </td>
+        </tr>
+        <tr>
+            <td class="layout_menu" onclick="window.location.href='#map'">
+                Map
+            </td>
+            <td rowspan="8" class="layout_contentmain">
+                <!-- CONTENT -->
+                <!-- CONTENT -->
+                <!-- CONTENT -->
+            </td>
+        </tr>
+        <tr>
+            <td class="layout_menu" onclick="updateLeaderboard();window.location.href='#leaderboard'">
+                Leaderboard
+            </td>
+        </tr>
+        <tr>
+            <td class="layout_menu" onclick="window.location.href='#profile'">
+                My Profile
+            </td>
+        </tr>
+        <tr>
+            <td class="layout_menu" onclick="window.location.href='#friends'">
+                Friends
+            </td>
+        </tr>
+        <tr>
+            <td class="layout_selectedmenu">
+                Tree Information
+            </td>
+        </tr>
+        <tr>
+            <td class="layout_menu" onclick="window.location.href='#settings'">
+                Account Settings
+            </td>
+        </tr>
+        <tr>
+            <td class="layout_menu" onclick="window.location.href='#help'">
+                Help
+            </td>
+        </tr>
+        <tr>
+            <td class="layout_menu logoutButton">
+                Log Out
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2" class="layout_footer">
+                © Democratree v1.1 
+            </td>
+        </tr>
+    </table>
+    </div>
+
+</div> <!-- /page -->
+
+
+
+<!-- Start of settings page -->
+<div data-role="page" id="settings">
+
+    <div align=center>
+    <table width="1100">
+        <tr>
+            <td colspan="2" class="layout_header">
+                Profile
+            </td>
+        </tr>
+        <tr>
+            <td class="layout_menu" onclick="window.location.href='#map'">
+                Map
+            </td>
+            <td rowspan="8" class="layout_contentmain">
+                <!-- CONTENT -->
+                <div role="main" class="ui-content">
+                    <p>
+                        <ul data-role="listview">
+                            <li data-role="list-divider">Account Settings</li>
+                            <li>Change Password</li>
+                            <li>Linked Accounts</li>
+                            <li>Show Profie Picture</li>
+                            <li data-role="list-divider">Notification Settings</li>
+                            <li>Notifications</li>
+                            <li>In-App Sounds</li>
+                            <li>Vibrate</li>
+                        </ul>
+                    </p>
+                </div>
+                <!-- CONTENT -->
+            </td>
+        </tr>
+        <tr>
+            <td class="layout_menu" onclick="updateLeaderboard();window.location.href='#leaderboard'">
+                Leaderboard
+            </td>
+        </tr>
+        <tr>
+            <td class="layout_menu" onclick="window.location.href='#profile'">
+                My Profile
+            </td>
+        </tr>
+        <tr>
+            <td class="layout_menu" onclick="window.location.href='#friends'">
+                Friends
+            </td>
+        </tr>
+        <tr>
+            <td class="layout_menu" onclick="window.location.href='#treeinfo'">
+                Tree Information
+            </td>
+        </tr>
+        <tr>
+            <td class="layout_selectedmenu">
+                Account Settings
+            </td>
+        </tr>
+        <tr>
+            <td class="layout_menu" onclick="window.location.href='#help'">
+                Help
+            </td>
+        </tr>
+        <tr>
+            <td class="layout_menu logoutButton">
+                Log Out
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2" class="layout_footer">
+                © Democratree v1.1 
+            </td>
+        </tr>
+    </table>
+    </div>
+
+</div><!-- /page -->
+
+
+<!-- Start of Help page -->
+<div data-role="page" id="help">
+
+    <div align=center>
+    <table width="1100">
+        <tr>
+            <td colspan="2" class="layout_header">
+                Profile
+            </td>
+        </tr>
+        <tr>
+            <td class="layout_menu" onclick="window.location.href='#map'">
+                Map
+            </td>
+            <td rowspan="8" class="layout_contentmain">
+                <!-- CONTENT -->
+                <!-- CONTENT -->
+                <!-- CONTENT -->
+            </td>
+        </tr>
+        <tr>
+            <td class="layout_menu" onclick="updateLeaderboard();window.location.href='#leaderboard'">
+                Leaderboard
+            </td>
+        </tr>
+        <tr>
+            <td class="layout_menu" onclick="window.location.href='#profile'">
+                My Profile
+            </td>
+        </tr>
+        <tr>
+            <td class="layout_menu" onclick="window.location.href='#friends'">
+                Friends
+            </td>
+        </tr>
+        <tr>
+            <td class="layout_menu" onclick="window.location.href='#treeinfo'">
+                Tree Information
+            </td>
+        </tr>
+        <tr>
+            <td class="layout_menu" onclick="window.location.href='#settings'">
+                Account Settings
+            </td>
+        </tr>
+        <tr>
+            <td class="layout_selectedmenu">
+                Help
+            </td>
+        </tr>
+        <tr>
+            <td class="layout_menu logoutButton">
+                Log Out
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2" class="layout_footer">
+                © Democratree v1.1 
+            </td>
+        </tr>
+    </table>
+    </div>
+
+</div> <!-- /page -->
+
+<!-- Start of add tree page -->
+<div data-role="page" id="add_tree">
+
+    <div data-role="header" data-position="fixed" data-id="fixed_header">
+        <a data-icon="arrow-l" href="javascript:window.history.back();" data-iconpos="notext">Back</a>
+        <h1>Add Tree</h1>
+    </div><!-- /header -->
+
+    <div role="main" class="ui-content">
+        <p>
+            <fieldset data-role="controlgroup" id="chosenTree">
+                <legend>Choose the type of tree you wish to place:</legend>
+                <input name="treeRadio" value="Common Ash" checked="checked" type="radio" id="treeChoice1">
+                <label for="treeChoice1">Common Ash</label>
+                <input name="treeRadio" value="Silver Birch" type="radio" id="treeChoice2">
+                <label for="treeChoice2">Silver Birch</label>
+                <input name="treeRadio" value="Pedunculate Oak" type="radio" id="treeChoice3">
+                <label for="treeChoice3">Pedunculate Oak</label>
+                <input name="treeRadio" value="Common Juniper" type="radio" id="treeChoice4">
+                <label for="treeChoice4">Common Juniper</label>
+                <input name="treeRadio" value="Wych Elm" type="radio" id="treeChoice5">
+                <label for="treeChoice5">Wych Elm</label>
+                <input name="treeRadio" value="European Beech" type="radio" id="treeChoice6">
+                <label for="treeChoice6">European Beech</label>
+            </fieldset>
+            <a href="#plant" class="ui-btn" onclick="addTree1();">Continue</a>
+        </p>
+    </div><!-- /content -->
+</div><!-- /page -->
+
+<!-- Start of plant tree page -->
+<div data-role="page" id="plant">
+
+    <div data-role="header" data-position="fixed" data-id="fixed_header">
+        <a data-icon="arrow-l" href="javascript:window.history.back();" data-iconpos="notext">Back</a>
+        <h1>Tell us more</h1>
+    </div><!-- /header -->
+
+    <div role="main" class="ui-content">
+        <form>
+            <p>
+                <label for="tree-label">Enter a Label for your new tree:</label>
+                <input name="tree-label" id="tree-label" placeholder="My favourite tree" value="" type="text">
+            </p>
+            <p>
+                <label for="tree-story">Add a story to your tree:</label>
+                <textarea cols="40" rows="50" name="tree-story" id="tree-story"></textarea>
+                <a href="#" class="ui-btn ui-btn-inline ui-icon-camera ui-btn-icon-left" onclick="attachPhoto1();">Attach photo from camera</a><a href="#" class="ui-btn ui-btn-inline ui-icon-camera ui-btn-icon-left" onclick="attachPhoto2();">Attach photo from gallery</a><br /> <img id="myImage" style="width:100%" />
+                <a href="#plantconfirm" class="ui-btn" onclick="addTree2();">Continue</a>
+            </p>
+        </form>
+    </div><!-- /content -->
+</div><!-- /page -->
+
+<!-- Start of plant tree confirmation page -->
+<div data-role="page" id="plantconfirm">
+
+    <div data-role="header" data-position="fixed" data-id="fixed_header">
+        <a data-icon="arrow-l" href="javascript:window.history.back();" data-iconpos="notext">Back</a>
+        <h1>Check out your tree</h1>
+    </div><!-- /header -->
+
+    <div role="main" class="ui-content">
+        <p>
+            <div id="confirmTitle"></div>
+            <div id="confirmType"></div>
+            <div><img id="confirmImg"></img></div>
+            <div id="confirmStory"></div>
+        </p>
+        <script type="text/javascript">
+            $("body").on( "pagecontainershow", function( event, ui ) {
+                console.log(ui);
+                $("#confirmTitle").html("<h2>" + newTreeLabel + "</h2>");
+                $("#confirmType").html(newChosenTree);
+                $("#confirmImg").src = "data:image/jpeg;base64," + newTreeImg;
+                $("#confirmStory").html(newTreeStory);
+            } );
+            
+        </script>
+    </div><!-- /content -->
+</div><!-- /page -->
+
+
+
+</body>
+</html>
