@@ -9,6 +9,7 @@
         var map = undefined;
         var loginStatus = 'none';
         var ignoreHashChange = false;
+        var sortArray = new Array();
         
         var clusterStyles = [{
             url: 'img/m1.png',
@@ -50,6 +51,10 @@
             // Prevent reloading the map when logging out and back in during the same session
             if (map == undefined) {
                 map = initializeMap();
+            }
+            else {
+                map.panTo(new google.maps.LatLng(51.455, -2.588));
+                map.setZoom(13);
             }
             var c = map.getCenter();        
             
@@ -536,7 +541,7 @@
         function updateLeaderboard() {
             var dropdown=document.getElementById("leaderboardFilter");
             var dropdownText=dropdown.options[dropdown.selectedIndex].text;
-            var sortArray;
+            var lbsize;
             
             if (dropdownText == 'Overall') {
                 sortArray = new Array();
@@ -584,7 +589,7 @@
             }
             
             sortArray.sort(compare);
-            var lbsize = sortArray.length;
+            lbsize = sortArray.length;
             var lblist = "";
             
             if (lbsize == 0) {
