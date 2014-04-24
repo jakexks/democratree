@@ -14,18 +14,14 @@ function initializeLogin() {
         loginStatus = 'democratree';
         var username = document.getElementById('login-username').value;
         var pwd = document.getElementById('login-pwd').value;
-
         Parse.User.logIn(username, pwd, {
             success: function(user) {
-                document.getElementById('login-username').value = "";
-                document.getElementById('login-pwd').value = "";
                 openMapPage();
             },
             error: function(user, error) {
-                alert("Incorrect username/password");
+                alert("User does not exist");
             }
-        });
-
+        }); 
     });
     $('#democratreeSignupButton').bind('click', function() {
         loginStatus = 'signup';
@@ -110,9 +106,6 @@ function logout(){
     $('#profile_revokeAccess').empty();
     if(loginStatus == 'googleplus') {
         gapi.auth.signOut();
-    }
-    if(loginStatus == 'democratree') {
-        Parse.User.logOut();
     }
     loginStatus = 'none';
     ignoreHashChange = true;

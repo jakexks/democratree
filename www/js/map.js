@@ -9,7 +9,6 @@
         var map = undefined;
         var loginStatus = 'none';
         var ignoreHashChange = false;
-        var sortArray = new Array();
         
         var clusterStyles = [{
             url: 'img/m1.png',
@@ -52,11 +51,7 @@
             if (map == undefined) {
                 map = initializeMap();
             }
-            else {
-                map.panTo(new google.maps.LatLng(51.455, -2.588));
-                map.setZoom(13);
-            }
-            var c = map.getCenter();    
+            var c = map.getCenter();        
             
             // Fix for loading map into 'hidden' div on other page
             // If the login takes a long time this sometimes doesn't work
@@ -254,7 +249,7 @@
             
             // Set height
             h = $(window).height();
-            document.getElementById('map-canvas').style.height = "750px";
+            document.getElementById('map-canvas').style.height = h-120+"px"; // Under the assumption header/footer are 60px tall, may need changing
             // Set cache reset for jStorage
             $('.resetCache').bind('click', function() { 
                 for(var i = treeCount-1; i >= 0; i--) {
@@ -320,6 +315,22 @@
                 }
             });
         }
+        
+        function checkLocation(newLoc)
+        {
+            for(i = 0; i < treeCount; i++)
+            {
+                latDif = Math.abs(Math.abs(treeArray[i].get("lat")) - Math.abs(newLoc.lat()));
+                lngDif = Math.abs(Math.abs(treeArray[i].get("lng")) - Math.abs(newLoc.lng()));
+                if(latDif < 0.0005 && lngDif < 0.0005)
+                {
+                    return false;
+                }
+            }
+            return true;
+        }
+        
+        
         function showLoader()
         {
             var inter = setInterval(function() {
@@ -336,49 +347,61 @@
             }, 1);  
         }
         
+        function openPopup(message)
+        {
+            $( "#alert" ).popup({ theme: "a" });
+            document.getElementById("alertText").innerHTML = message;
+            $( "#alert" ).popup("open");
+        }
+        
         // Function to place marker
         function placeMarker(location, map) {
-            showLoader();
-            $.get("http://pecan.jakexks.com/democratree/plantable.php?lat=" + location.lat() + "&long=" + location.lng(), function(data) { 
-                hideLoader();
-                if(data == "true")
-                {
-                    var marker = new google.maps.Marker({
-                        position: location,
-                        map: map,
-                        title: ""+markerCount,    
-                        animation: google.maps.Animation.DROP,
-                        icon: 'img/tree1.png'
-                    });
-                    var currentUser = Parse.User.current();
-                    var Tree = Parse.Object.extend("Tree");
-                    var tree = new Tree();
-                    tree.set("lat", location.lat());
-                    tree.set("lng", location.lng());
-                    tree.set("type", "default");
-                    tree.set("username", currentUser.get("username"));
-                    tree.set("votes", 0); 
-                    tree.set("story", "none");
-                    tree.save(null, {
-                        success: function(tree) {
-                            objectId = tree.id;
-                            markerCount++;
-                            gmarkers.push(marker);
-                            map.panTo(location);
-                            attachMessage(marker, map);
-                        },
-                        error: function(error) {
-                            alert("error");
-                        }
-                    });
-                }
-                else 
-                {
-                    document.getElementById("alertText").innerHTML= "That area is not plantable (according to our heuristic)<p>Try planting somewhere else!";
-                    $( "#alert" ).popup({ theme: "a" });
-                    $( "#alert" ).popup("open");
-                }
-            });
+            if(checkLocation(location))
+            {
+                showLoader();
+                $.get("http://pecan.jakexks.com/democratree/plantable.php?lat=" + location.lat() + "&long=" + location.lng(), function(data) { 
+                    hideLoader();
+                    if(data == "true")
+                    {
+                        var marker = new google.maps.Marker({
+                            position: location,
+                            map: map,
+                            title: ""+markerCount,    
+                            animation: google.maps.Animation.DROP,
+                            icon: 'img/tree1.png'
+                        });
+                        var currentUser = Parse.User.current();
+                        var Tree = Parse.Object.extend("Tree");
+                        var tree = new Tree();
+                        tree.set("lat", location.lat());
+                        tree.set("lng", location.lng());
+                        tree.set("type", "default");
+                        tree.set("username", currentUser.get("username"));
+                        tree.set("votes", 0); 
+                        tree.set("story", "none");
+                        tree.save(null, {
+                            success: function(tree) {
+                                objectId = tree.id;
+                                markerCount++;
+                                gmarkers.push(marker);
+                                map.panTo(location);
+                                attachMessage(marker, map);
+                            },
+                            error: function(error) {
+                                alert("error");
+                            }
+                        });
+                    }
+                    else 
+                    {
+                        openPopup("That area is not plantable (according to our heuristic)<p>Try planting somewhere else!");
+                    }
+                });
+            }
+            else
+            {
+                openPopup("You have tried to plant too close to another tree, please plant further away.");
+            }
         }
         
         function cancelTree(i) {
@@ -441,7 +464,7 @@
                     document.getElementById("treeInfoText").innerHTML= 'Tree submitted.<p>User Name: ' + tree.get("username") + '<p>Tree Story: ' + fStory + '<p><p>Votes: 0';
                     $( "#treeInfo" ).popup({ theme: "a" });
                     $( "#treeInfo" ).popup("open");
-                    //treeArray.push(treeInfo); //Needed?
+                    treeArray.push(tree); 
                     treeCount++;
                 },
                 error: function(error) {
@@ -513,7 +536,7 @@
         function updateLeaderboard() {
             var dropdown=document.getElementById("leaderboardFilter");
             var dropdownText=dropdown.options[dropdown.selectedIndex].text;
-            var lbsize;
+            var sortArray;
             
             if (dropdownText == 'Overall') {
                 sortArray = new Array();
@@ -561,43 +584,31 @@
             }
             
             sortArray.sort(compare);
-            lbsize = sortArray.length;
+            var lbsize = sortArray.length;
+            var lblist = "";
             
-            for (var i = 0; i < 15; i++) {
-                if (i < lbsize) {
-                    document.getElementById("lb" + (i+1) + "no").innerHTML=sortArray[i].get("votes");
-                    document.getElementById("lb" + (i+1) + "name").innerHTML=sortArray[i].get("username");
-                }
-                else {
-                    document.getElementById("lb" + (i+1) + "no").innerHTML='-'
-                    document.getElementById("lb" + (i+1) + "name").innerHTML='-'
-                }
+            if (lbsize == 0) {
             }
+            else if (lbsize == 1) {
+                lblist += '<a href="#map" onclick="goToLeaderboardMapLocation(' + sortArray[0].get("lat") + ',' + sortArray[0].get("lng") +  ')">' + sortArray[0].get("votes") + ' - ' + sortArray[0].get("username") + '</a>';
+            }
+            else if (lbsize == 2) {
+                lblist += '<a href="#map" onclick="goToLeaderboardMapLocation(' + sortArray[0].get("lat") + ',' + sortArray[0].get("lng") +  ')">' + sortArray[0].get("votes") + ' - ' + sortArray[0].get("username") + '</a></li>';
+                lblist += '<li><a href="#map" onclick="goToLeaderboardMapLocation(' + sortArray[1].get("lat") + ',' + sortArray[1].get("lng") +  ')">' + sortArray[1].get("votes") + ' - ' + sortArray[1].get("username") + '</a>';
+            }
+            else {
+                lblist += '<a href="#map" onclick="goToLeaderboardMapLocation(' + sortArray[0].get("lat") + ',' + sortArray[0].get("lng") +  ')">' + sortArray[0].get("votes") + ' - ' + sortArray[0].get("username") + '</a></li>';
+                for (var i = 1; i < lbsize-1; i++) {
+                    lblist += '<li><a href="#map" onclick="goToLeaderboardMapLocation(' + sortArray[i].get("lat") + ',' + sortArray[i].get("lng") +  ')">' + sortArray[i].get("votes") + ' - ' + sortArray[i].get("username") + '</a></li>';
+                }
+                lblist += '<li><a href="#map" onclick="goToLeaderboardMapLocation(' + sortArray[lbsize-1].get("lat") + ',' + sortArray[lbsize-1].get("lng") +  ')">' + sortArray[lbsize-1].get("votes") + ' - ' + sortArray[lbsize-1].get("username") + '</a>';
+            }
+            document.getElementById("leaderboardList").innerHTML=lblist;
         }
         
-        function goToLeaderboardMapLocation(pos) {
-            var lat;
-            var lng;
-            var found = false;
-            var mark;
-            var index;
-            if (pos <= sortArray.length) {
-                lat = sortArray[pos-1].get("lat");
-                lng = sortArray[pos-1].get("lng");
-                window.location.href='#map';
-                map.panTo(new google.maps.LatLng(lat,lng));
-                map.setZoom(18);
-
-                for (var i = 0; i < gmarkers.length; i++) {
-                    if (gmarkers[i].position.toString() === ('(' + lat + ', ' + lng + ')')) {
-                        mark = gmarkers[i];
-                        index = i;
-                        found = true;
-                    }
-                    if (found) break;
-                }
-                infoWindowArray[index].open(map,mark);
-            }
+        function goToLeaderboardMapLocation(lat,lng) {
+            map.panTo(new google.maps.LatLng(lat, lng));
+            map.setZoom(19);
         }
         
         function compare(a,b) {
@@ -607,4 +618,5 @@
                 return -1;
             return 0;
         }
+        
         google.maps.event.addDomListener(window, 'load', initializeLogin);
