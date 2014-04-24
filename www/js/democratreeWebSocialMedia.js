@@ -19,14 +19,29 @@ function initializeLogin() {
             success: function(user) {
                 document.getElementById('login-username').value = "";
                 document.getElementById('login-pwd').value = "";
-                openMapPage();
+                if(user.get("emailVerified"))
+                {
+                    openMapPage();
+                }
+                else
+                {
+                    alert("Email address not verified");
+                    openMapPage();
+                }
             },
             error: function(user, error) {
-                alert("Incorrect username/password");
+                openPopup("Incorrect username/password");
             }
         });
-
     });
+    
+    function openPopup(message)
+    {
+        $("#alert").popup({theme: "a"});
+        document.getElementById("alertText").innerHTML = message;
+        $("#alert").popup("open");
+    }
+    
     $('#democratreeSignupButton').bind('click', function() {
         loginStatus = 'signup';
         $('#democratreeCreateAccButton').bind('click', function() {
@@ -46,11 +61,22 @@ function initializeLogin() {
                 user.set('votedOn', votedOn);
                 user.signUp(null, {
                     success: function(user) {
-                        openMapPage();
+                        openPopup("A verification email has been sent to the email address you entered. Please verify your email and then login");
+                        document.getElementById('demo-username').value = "";
+                        document.getElementById('demo-name').value = "";
+                        document.getElementById('demo-pwd').value = "";
+                        document.getElementById('demo-conf-pwd').value = "";
+                        document.getElementById('demo-email').value = "";
+                        window.location.hash = '';
                     },
                     error: function(user, error) {
                         // Show the error message somewhere and let the user try again.
-                        alert("Error: " + error.code + " " + error.message);
+                        if(error.code == 202)
+                        {
+                            document.getElementById('demo-pwd').value = "";
+                            document.getElementById('demo-conf-pwd').value = "";
+                        }
+                        openPopup(/*"Error: " + error.code + " " +*/error.message);
                     }
                 }); 
             }
@@ -58,9 +84,7 @@ function initializeLogin() {
             {
                 document.getElementById("demo-pwd").value = "";
                 document.getElementById("demo-conf-pwd").value = "";
-                document.getElementById("alertText").innerHTML = "The passwords you entered do not match,<p>please type them again";
-                $("#alert").popup({theme: "a"});
-                $("#alert").popup("open");
+                openPopup("The passwords you entered do not match,<p>please type them again");
             }
         });
     });
@@ -106,6 +130,7 @@ function initializeLogin() {
 }
         
 function logout(){
+    Parse.User.logout();
     clearProfile();
     $('#profile_revokeAccess').empty();
     if(loginStatus == 'googleplus') {
