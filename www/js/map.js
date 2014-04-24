@@ -446,12 +446,10 @@
                     var currentUser = Parse.User.current();
                     currentUser.add("votedOn", tree.id) 
                     currentUser.save();
-                    if(tree.get("username") == currentUser.get("username"))
-                    {
-                        alert("you cannot vote on your own tree");
+                    if (tree.get("username") == currentUser.get("username")) {
+                        openPopup("You cannot vote on your own tree!");
                     }
-                    else
-                    {
+                    else {
                         var score = tree.get("votes");
                         tree.set("votes", score + 1);
                         tree.save();
@@ -532,16 +530,17 @@
                 // Attach listener
                 var btn = document.getElementById("btnVoteUp"+tree.id);
                 btn.addEventListener('click', function() {
-                    var user = Parse.User.current();
-                    var votedOn = user.get("votedOn");
-                    if(votedOn.indexOf(tree.id) == -1) 
-                    {
-                        voteUp(idForVote, infowindow);
+                    if (loginStatus != "guest") {
+                        var user = Parse.User.current();
+                        var votedOn = user.get("votedOn");
+                        if(votedOn.indexOf(tree.id) == -1) {
+                            voteUp(idForVote, infowindow);
+                        }
+                        else {
+                            openPopup("You have already voted on this tree!");
+                        }
                     }
-                    else
-                    {
-                        alert("you have already voted on this tree");
-                    }
+                    else openPopup("You must be logged in to vote on tree locations.");
                 });
             });
         }
