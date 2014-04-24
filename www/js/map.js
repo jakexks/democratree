@@ -365,7 +365,7 @@
         function openPopup(message)
         {
             $( "#alert" ).popup({ theme: "a" });
-            document.getElementById("alertText").innerHTML = message;
+            document.getElementById("alertText").innerHTML = message + '<br/><br/><div align="center" style="width:100px"><a href="#" class="ui-btn ui-shadow ui-corner-all" data-rel="back">OK</a></div>';
             $( "#alert" ).popup("open");
         }
         
