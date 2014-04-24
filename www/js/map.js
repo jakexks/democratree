@@ -192,8 +192,12 @@
                 if(map.getZoom() > 15) {
                     if (markerCount != treeCount) {
                         if(warning.getMap() == null) warning.open(map);
-                                          warning.setPosition(event.latLng);
-                    } else placeMarker(event.latLng, map);
+                        warning.setPosition(event.latLng);
+                    } 
+                    else placeMarker(event.latLng, map);
+                }
+                else {
+                    openPopup("Please zoom in to place a tree more accurately.");
                 }
             });
             
