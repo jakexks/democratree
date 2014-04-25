@@ -9,6 +9,8 @@
     var loginStatus = 'none';
     var ignoreHashChange = false;
     var sortArray = new Array();
+    var gpsLat;
+    var gpsLng;
 
 
     var clusterStyles = [{
@@ -53,6 +55,13 @@
         ignoreHashChange = false;
     }
 
+    function findCurrentLocation(location) {
+        var gpsLat = location.coords.latitude;
+        var gpsLng = location.coords.longitude;
+        //alert("Location found" + lat + lng);
+        //alert(gpsLat + ',' + gpsLng);
+    }
+
     function openMapPage() {
         window.location.hash = '#map';
         // Prevent reloading the map when logging out and back in during the same session
@@ -72,6 +81,19 @@
             map.setCenter(c);
             google.maps.event.clearListeners(map, 'idle');
         });
+
+        gpsLat = null;
+        gpsLng = null;
+
+        //gps location
+        if(navigator.geolocation)
+            navigator.geolocation.getCurrentPosition(findCurrentLocation);
+
+        if (gpsLat != null) {
+            map.panTo(new google.maps.LatLng(gpsLat, gpsLng));
+            map.setZoom(18);
+        }
+
     }
 
     // Initialize Map page
@@ -717,7 +739,11 @@
         return 0;
     }
 
-    function attachButtons() {
+    function start() {
+        // currentUser = Parse.User.current();
+        // if(currentUser) {
+        //     openMapPage();
+        // }
         initializeLogin();
         settingsPage();
     }
@@ -847,39 +873,43 @@
     }
 
     function settingsPage() {
-        alert("sett page");
-        $('#settings-changepwdbtn').on('tap', function() {
-            var pwd = document.getElementById('settings-curpwd').value;
-            var newpwd = document.getElementById('settings-newpwd').value;
-            var newpwd2 = document.getElementById('settings-newpwd2').value;
-            var currentUser = Parse.User.current();
-            alert("blah");
-            Parse.User.logIn(currentUser, pwd, {
-                success: function(user) {
-                    if (newpwd == newpwd2) {
-                        document.getElementById("settings-curpwd").value = "";
-                        document.getElementById("settings-newpwd").value = "";
-                        document.getElementById("settings-newpwd2").value = "";
-                        openPopupInSettings("Successfully changed");
-                        currentUser.set('password', newpwd);
-                    }
-                    else {
-                        document.getElementById("settings-curpwd").value = "";
-                        document.getElementById("settings-newpwd").value = "";
-                        document.getElementById("settings-newpwd2").value = "";
-                        openPopupInSettings("The passwords you entered do not match,<p>please type them again");
-                    }
-                },
-                error: function(user, error) {
-                    openPopupInSettings("Incorrect username/password");
-                }
-            });
-        });
+        // $('#settings-changepwdbtn').on('tap', function() {
+        //     var pwd = document.getElementById('settings-curpwd').value;
+        //     var newpwd = document.getElementById('settings-newpwd').value;
+        //     var newpwd2 = document.getElementById('settings-newpwd2').value;
+        //     var currentUser = Parse.User.current();
+        //     alert("blah");
+        //     Parse.User.logIn(currentUser, pwd, {
+        //         success: function(user) {
+        //             if (newpwd == newpwd2) {
+        //                 document.getElementById("settings-curpwd").value = "";
+        //                 document.getElementById("settings-newpwd").value = "";
+        //                 document.getElementById("settings-newpwd2").value = "";
+        //                 alert("Successfully changed");
+        //                 currentUser.set('password', newpwd);
+        //             }
+        //             else {
+        //                 document.getElementById("settings-curpwd").value = "";
+        //                 document.getElementById("settings-newpwd").value = "";
+        //                 document.getElementById("settings-newpwd2").value = "";
+        //                 alert("The passwords you entered do not match,<p>please type them again");
+        //             }
+        //         },
+        //         error: function(user, error) {
+        //             alert("Incorrect username/password");
+        //         }
+        //     });
+        // });
         $('#settings-resetpwdbtn').on('tap', function() {
-            var email = $('settings-email').value;
+            console.log("reset");
+            var email = document.getElementById('settings-email').value;
+            if(email === "") {
+                alert("no email entered");
+            }
             Parse.User.requestPasswordReset(email, {
               success: function() {
                 // Password reset request was sent successfully
+                alert("Reset instructions emailed to you.");
               },
               error: function(error) {
                 // Show the error message somewhere
@@ -1084,5 +1114,4 @@
         }
       }
     })();
-
-    google.maps.event.addDomListener(window, 'load', attachButtons);
+    google.maps.event.addDomListener(window, 'load', start);
