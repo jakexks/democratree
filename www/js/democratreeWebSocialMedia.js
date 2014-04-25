@@ -28,7 +28,6 @@ function initializeLogin() {
                     alert("Email address not verified");
                     openMapPage();
                 }
-                openMapPage();
             },
             error: function(user, error) {
                 openPopupInLogin("Incorrect username/password");
