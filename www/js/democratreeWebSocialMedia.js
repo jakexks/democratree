@@ -14,7 +14,6 @@ function initializeLogin() {
         loginStatus = 'democratree';
         var username = document.getElementById('login-username').value;
         var pwd = document.getElementById('login-pwd').value;
-
         Parse.User.logIn(username, pwd, {
             success: function(user) {
                 document.getElementById('login-username').value = "";
