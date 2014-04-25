@@ -23,7 +23,9 @@
         var dd = $.Deferred();
         var jqd = $.Deferred();
         $.when(dd, jqd).done(doInit);
-
+    <script src="http://code.jquery.com/mobile/1.4.0/jquery.mobile-1.4.0.min.js"></script>
+    <script type="text/javascript" src="js/init.js"></script>
+    <script type="text/javascript" src="js/markerclusterer.js"></script>
         $(document).bind('mobileinit', function () {
             jqd.resolve();
         });

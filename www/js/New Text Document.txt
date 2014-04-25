@@ -1,0 +1,6 @@
+    <script type="text/javascript">
+        document.addEventListener('deviceready', deviceReady, false);
+        function deviceReady() {
+            dd.resolve();
+        }
+    </script>
