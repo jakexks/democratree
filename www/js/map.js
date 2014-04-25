@@ -31,6 +31,14 @@ var clusterStyles = [{
     textSize: 12
 }];
 
+function onLoad() {
+    document.addEventListener("deviceready", onDeviceReady, false);
+}
+
+function onDeviceReady() {
+    // Now safe to use device APIs
+}
+
 function hashChanged(event){
     if(ignoreHashChange == false){
         if(loginStatus == 'none' && window.location.hash != '#login' && window.location.hash != '') {

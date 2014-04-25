@@ -423,13 +423,21 @@
 
     <div role="main" class="ui-content">
         <p>
+            </form>
             <ul data-role="listview">
-                <li data-role="list-divider">Account Settings</li>
-                <li>Change Password</li>
-                <li>Linked Accounts</li>
-                <li>Show Profie Picture</li>
+                <li data-role="list-divider">Account settings</li>
+                <a href="#changepass" class = "ui-btn" data-transition="pop">Change password</a>
+
+                <a href="#" class = "ui-btn" onclick="">Unlink accounts</a>
+                <li><label>
+                        <input type="checkbox" name="checkbox_settings_dp" data-iconpos="right">Display profile picture
+                    </label></li>
                 <li data-role="list-divider">Notification Settings</li>
-                <li>Notifications</li>
+                <li>
+                    <label>
+                        <input type="checkbox" name="checkbox_settings_notif" data-iconpos="right">Notifications
+                    </label></li>
+                </li>
                 <li>In-App Sounds</li>
                 <li>Vibrate</li>
             </ul>
@@ -450,7 +458,10 @@
         </ul>
         
     </div><!-- /panel -->
+</div><!-- /page -->
 
+<div data-role="page" id="changepass" data-dialog="true">
+    <p>Hi</p>
 </div><!-- /page -->
 
 <!-- Start of add tree page -->
