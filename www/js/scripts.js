@@ -67,6 +67,23 @@
         else openPopupInMap("You are currently outside of the Bristol area so your location cannot be displayed");
     }
 
+    function showLocationError(error) {
+        switch(error.code) {
+            case error.PERMISSION_DENIED:
+                openPopupInMap("Location services blocked by user. To allow location services, consult your device/browser settings");
+                break;
+            case error.POSITION_UNAVAILABLE:
+                openPopupInMap("Location information is unavailable");
+                break;
+            case error.TIMEOUT:
+                openPopupInMap("The request to get user location timed out");
+                break;
+            case error.UNKNOWN_ERROR:
+                openPopupInMap("An unknown error occurred regarding user location");
+                break;
+        }
+    }
+
     function openMapPage() {
         window.location.hash = '#map';
         // Prevent reloading the map when logging out and back in during the same session
@@ -89,7 +106,8 @@
 
         //gps location
         if(navigator.geolocation)
-            navigator.geolocation.getCurrentPosition(showCurrentLocation);
+            navigator.geolocation.getCurrentPosition(showCurrentLocation,showLocationError);
+        else openPopupInMap("Location services not available in your browser");
     }
 
     // Initialize Map page
