@@ -9,6 +9,8 @@
     var loginStatus = 'none';
     var ignoreHashChange = false;
     var sortArray = new Array();
+    var gpsLat;
+    var gpsLng;
 
 
     var clusterStyles = [{
@@ -53,6 +55,13 @@
         ignoreHashChange = false;
     }
 
+    function findCurrentLocation(location) {
+        var gpsLat = location.coords.latitude;
+        var gpsLng = location.coords.longitude;
+        //alert("Location found" + lat + lng);
+        //alert(gpsLat + ',' + gpsLng);
+    }
+
     function openMapPage() {
         window.location.hash = '#map';
         // Prevent reloading the map when logging out and back in during the same session
@@ -72,6 +81,19 @@
             map.setCenter(c);
             google.maps.event.clearListeners(map, 'idle');
         });
+
+        gpsLat = null;
+        gpsLng = null;
+
+        //gps location
+        if(navigator.geolocation)
+            navigator.geolocation.getCurrentPosition(findCurrentLocation);
+
+        if (gpsLat != null) {
+            map.panTo(new google.maps.LatLng(gpsLat, gpsLng));
+            map.setZoom(18);
+        }
+
     }
 
     // Initialize Map page
