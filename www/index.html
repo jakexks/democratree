@@ -25,7 +25,7 @@
         $.when(dd, jqd).done(doInit);
     <script src="http://code.jquery.com/mobile/1.4.0/jquery.mobile-1.4.0.min.js"></script>
     <script type="text/javascript" src="js/init.js"></script>
-    <script type="text/javascript" src="js/markerclusterer.js"></script>
+    <script type="text/javascript" src="js/markerclusterer.js">
         $(document).bind('mobileinit', function () {
             jqd.resolve();
         });
@@ -107,12 +107,6 @@
 
 <!-- Democratree Sign up Page -->
 <div data-role="page" id="demoSignUp"> 
-
-    <div data-role="popup" id="alertSignup" class="ui-content" align="center">
-        <a href="#" data-rel="back" data-role="button" data-theme="a" data-icon="delete" data-iconpos="notext" class="ui-btn-right">Close</a>
-        <p id="alertTextSignup"></p>
-    </div>
-
     <div role="main" class="ui-content" >
         <h2>Create a Democratree Account</h2>
 
@@ -432,14 +426,18 @@
         <h1>Settings</h1>
     </div><!-- /header -->
 
+    <div data-role="popup" id="alertSettings" class="ui-content" align="center">
+        <a href="#" data-rel="back" data-role="button" data-theme="a" data-icon="delete" data-iconpos="notext" class="ui-btn-right">Close</a>
+        <p id="alertTextSettings"></p>
+    </div>
+
     <div role="main" class="ui-content">
         <p>
             </form>
             <ul data-role="listview">
                 <li data-role="list-divider">Account settings</li>
-                <a href="#changepass" class = "ui-btn" data-transition="pop">Change password</a>
-
-                <a href="#" class = "ui-btn" onclick="">Unlink accounts</a>
+                <li><a href="#changepass" class="ui-btn" id="changepass-click">Change password</a></li>
+                <li><a href="#" class = "ui-btn" onclick="">Unlink accounts</a></li>
                 <li><label>
                         <input type="checkbox" name="checkbox_settings_dp" data-iconpos="right">Display profile picture
                     </label></li>
@@ -471,8 +469,27 @@
     </div><!-- /panel -->
 </div><!-- /page -->
 
-<div data-role="page" id="changepass" data-dialog="true">
-    <p>Hi</p>
+<div data-role="page" id="changepass">
+    <div data-role="header" data-position="fixed" data-id="fixed_header">
+        <a data-icon="arrow-l" href="javascript:window.history.back();" data-iconpos="notext">Back</a>
+        <h1>Change password</h1>
+    </div><!-- /header -->
+    <div role="main" class="ui-content" >
+        <p>
+            <form>
+                <label for="settings-curpwd" class="ui-hidden-accessible">Current</label>
+                <input name="settings-curpwd" id="settings-curpwd" placeholder="Current password" value="" type="password">
+                <label for="settings-newpwd" class="ui-hidden-accessible">New</label>
+                <input name="settings-newpwd" id="settings-newpwd" placeholder="New password" value="" type="password">
+                <label for="settings-newpwd2" class="ui-hidden-accessible">Confirm</label>
+                <input name="settings-newpwd2" id="settings-newpwd2" placeholder="Confirm new password" value="" type="password">
+                <label for="settings-email" class="ui-hidden-accessible">Email</label>
+                <input name="settings-email" id="settings-email" placeholder="Email address" value="" type="email">
+            </form>
+        </p>
+        <p><a id="settings-changepwdbtn" class="ui-btn ui-shadow ui-corner-all">Change password</a></p>
+        <p><a id="settings-resetpwdbtn" class="ui-btn ui-shadow ui-corner-all">Reset password</a></p>
+    </div><!-- /content -->
 </div><!-- /page -->
 
 <!-- Start of add tree page -->

@@ -1,6 +1,3 @@
-// Scoping function avoids cluttering window object
-(function() { // Begin scoping function
-
     Parse.initialize("Pw7r5n6AfEqyu1qCWzPGFveMWwfkBDiNSAE33dnL", "eTo4A3yQclInUHyVSj96zDP45Hdy6XIxHtfl2yIe");
 
     var treeCount = 0;
@@ -12,6 +9,7 @@
     var loginStatus = 'none';
     var ignoreHashChange = false;
     var sortArray = new Array();
+
 
     var clusterStyles = [{
         url: 'img/m1.png',
@@ -719,6 +717,11 @@
         return 0;
     }
 
+    function attachButtons() {
+        initializeLogin();
+        settingsPage();
+    }
+
     function initializeLogin() {
         if (window.location.hash != '#login' && window.location.hash != '') {
             alert('Please login first to use Democratree');
@@ -842,7 +845,50 @@
         });
         $('.logoutButton').bind('click', logout);
     }
-            
+
+    function settingsPage() {
+        alert("sett page");
+        $('#settings-changepwdbtn').on('tap', function() {
+            var pwd = document.getElementById('settings-curpwd').value;
+            var newpwd = document.getElementById('settings-newpwd').value;
+            var newpwd2 = document.getElementById('settings-newpwd2').value;
+            var currentUser = Parse.User.current();
+            alert("blah");
+            Parse.User.logIn(currentUser, pwd, {
+                success: function(user) {
+                    if (newpwd == newpwd2) {
+                        document.getElementById("settings-curpwd").value = "";
+                        document.getElementById("settings-newpwd").value = "";
+                        document.getElementById("settings-newpwd2").value = "";
+                        openPopupInSettings("Successfully changed");
+                        currentUser.set('password', newpwd);
+                    }
+                    else {
+                        document.getElementById("settings-curpwd").value = "";
+                        document.getElementById("settings-newpwd").value = "";
+                        document.getElementById("settings-newpwd2").value = "";
+                        openPopupInSettings("The passwords you entered do not match,<p>please type them again");
+                    }
+                },
+                error: function(user, error) {
+                    openPopupInSettings("Incorrect username/password");
+                }
+            });
+        });
+        $('#settings-resetpwdbtn').on('tap', function() {
+            var email = $('settings-email').value;
+            Parse.User.requestPasswordReset(email, {
+              success: function() {
+                // Password reset request was sent successfully
+              },
+              error: function(error) {
+                // Show the error message somewhere
+                alert("Error: " + error.code + " " + error.message);
+              }
+            });
+        });
+    }
+
     function logout(){
         clearProfile();
         $('#profile_revokeAccess').empty();
@@ -1039,6 +1085,4 @@
       }
     })();
 
-    google.maps.event.addDomListener(window, 'load', initializeLogin);
-
-})();         // End scoping function
+    google.maps.event.addDomListener(window, 'load', attachButtons);
