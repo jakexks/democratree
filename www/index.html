@@ -54,6 +54,7 @@
     <script type="text/javascript" src="js/mobile/purl.js"></script>
     <script type="text/javascript" src="js/map.js"></script>
     <script type="text/javascript" src="js/addTreeHelper.js"></script>
+    <script type="text/javascript" src="js/popup.js"></script>
 
     <title>Democratree</title>
 </head>
@@ -66,6 +67,11 @@
 
 <!-- Login Page -->
 <div data-role="page" id="login">
+
+    <div data-role="popup" id="alertLogin" class="ui-content" align="center">
+        <a href="#" data-rel="back" data-role="button" data-theme="a" data-icon="delete" data-iconpos="notext" class="ui-btn-right">Close</a>
+        <p id="alertTextLogin"></p>
+    </div>
 
     <div role="main" class="ui-content" >
         <h2>Log In</h2>
@@ -91,9 +97,9 @@
 <!-- Democratree Sign up Page -->
 <div data-role="page" id="demoSignUp"> 
 
-    <div data-role="popup" id="alert" class="ui-content" align="center">
+    <div data-role="popup" id="alertSignup" class="ui-content" align="center">
         <a href="#" data-rel="back" data-role="button" data-theme="a" data-icon="delete" data-iconpos="notext" class="ui-btn-right">Close</a>
-        <p id="alertText"></p>
+        <p id="alertTextSignup"></p>
     </div>
 
     <div role="main" class="ui-content" >
@@ -128,9 +134,9 @@
     </div>
 
     <!-- Alert Popup -->
-    <div data-role="popup" id="alert" class="ui-content" align="center">
+    <div data-role="popup" id="alertMap" class="ui-content" align="center">
         <a href="#" data-rel="back" data-role="button" data-theme="a" data-icon="delete" data-iconpos="notext" class="ui-btn-right">Close</a>
-        <p id="alertText"></p>
+        <p id="alertTextMap"></p>
     </div>
     
     <div data-role="header" data-position="fixed" data-id="fixed_header">

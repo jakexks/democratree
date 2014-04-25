@@ -28,19 +28,13 @@ function initializeLogin() {
                     alert("Email address not verified");
                     openMapPage();
                 }
+                openMapPage();
             },
             error: function(user, error) {
-                openPopup("Incorrect username/password");
+                openPopupInLogin("Incorrect username/password");
             }
         });
     });
-    
-    function openPopup(message)
-    {
-        $("#alert").popup({theme: "a"});
-        document.getElementById("alertText").innerHTML = message;
-        $("#alert").popup("open");
-    }
     
     $('#democratreeSignupButton').bind('click', function() {
         loginStatus = 'signup';
@@ -61,7 +55,7 @@ function initializeLogin() {
                 user.set('votedOn', votedOn);
                 user.signUp(null, {
                     success: function(user) {
-                        openPopup("A verification email has been sent to the email address you entered. Please verify your email and then login");
+                        openPopupInSignup("A verification email has been sent to the email address you entered. Please verify your email and then login");
                         document.getElementById('demo-username').value = "";
                         document.getElementById('demo-name').value = "";
                         document.getElementById('demo-pwd').value = "";
@@ -76,7 +70,7 @@ function initializeLogin() {
                             document.getElementById('demo-pwd').value = "";
                             document.getElementById('demo-conf-pwd').value = "";
                         }
-                        openPopup(/*"Error: " + error.code + " " +*/error.message);
+                        openPopupInSignup(/*"Error: " + error.code + " " +*/error.message);
                     }
                 }); 
             }
@@ -84,7 +78,7 @@ function initializeLogin() {
             {
                 document.getElementById("demo-pwd").value = "";
                 document.getElementById("demo-conf-pwd").value = "";
-                openPopup("The passwords you entered do not match,<p>please type them again");
+                openPopupInSignup("The passwords you entered do not match,<p>please type them again");
             }
         });
     });
@@ -130,14 +124,13 @@ function initializeLogin() {
 }
         
 function logout(){
-    Parse.User.logout();
     clearProfile();
     $('#profile_revokeAccess').empty();
     if(loginStatus == 'googleplus') {
         gapi.auth.signOut();
     }
     if(loginStatus == 'democratree') {
-        Parse.User.logOut();
+        Parse.User.logOut(); // logout already here
     }
     loginStatus = 'none';
     ignoreHashChange = true;

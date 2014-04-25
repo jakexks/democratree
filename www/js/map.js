@@ -190,7 +190,7 @@ function initializeMap() {
     google.maps.event.addListener(plantArea, 'click', function(event)
     {
         if (loginStatus == "guest") {
-            openPopup("Please log in to place a new tree.");
+            openPopupInMap("Please log in to place a new tree.");
         }
         else if(map.getZoom() > 15) {
             if (markerCount != treeCount) {
@@ -200,7 +200,7 @@ function initializeMap() {
             else placeMarker(event.latLng, map);
         }
         else {
-            openPopup("Please zoom in to place a new tree more accurately.");
+            openPopupInMap("Please zoom in to place a new tree more accurately.");
         }
     });
     
@@ -362,13 +362,6 @@ function hideLoader()
     }, 1);  
 }
 
-function openPopup(message)
-{
-    $( "#alert" ).popup({ theme: "a" });
-    document.getElementById("alertText").innerHTML = message + '<br/><br/><div align="center" style="width:100px"><a href="#" class="ui-btn ui-shadow ui-corner-all" data-rel="back">OK</a></div>';
-    $( "#alert" ).popup("open");
-}
-
 // Function to place marker
 function placeMarker(location, map) {
     if(checkLocation(location))
@@ -409,13 +402,13 @@ function placeMarker(location, map) {
             }
             else 
             {
-                openPopup("That area is not plantable (according to our heuristic)<p>Try planting somewhere else!");
+                openPopupInMap("That area is not plantable (according to our heuristic)<p>Try planting somewhere else!");
             }
         });
     }
     else
     {
-        openPopup("You have tried to plant too close to another tree, please plant further away.");
+        openPopupInMap("You have tried to plant too close to another tree, please plant further away.");
     }
 }
 
@@ -447,7 +440,7 @@ function voteUp(objectId, infowindow) {
             currentUser.add("votedOn", tree.id) 
             currentUser.save();
             if (tree.get("username") == currentUser.get("username")) {
-                openPopup("You cannot vote on your own tree!");
+                openPopupInMap("You cannot vote on your own tree!");
             }
             else {
                 var score = tree.get("votes");
@@ -537,10 +530,10 @@ function attachMessageInit(marker, map, tree) {
                     voteUp(idForVote, infowindow);
                 }
                 else {
-                    openPopup("You have already voted on this tree!");
+                    openPopupInMap("You have already voted on this tree!");
                 }
             }
-            else openPopup("You must be logged in to vote on tree locations.");
+            else openPopupInMap("You must be logged in to vote on tree locations.");
         });
     });
 }
