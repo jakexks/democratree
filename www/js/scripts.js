@@ -118,13 +118,6 @@
         };
         map = new google.maps.Map(document.getElementById("map-canvas"),mapOptions);
         
-        // Listen for clicks to add labels
-        google.maps.event.addListener(map, 'click', function(event) {
-            infowindow.open(map);
-            infowindow.setPosition(event.latLng);
-        });
-        
-        
         // Rough BS1-16 (Bristol council jurisdiction) postcode bounds, needs refining to a polygon
         var allowedBounds = new google.maps.LatLngBounds(
             new google.maps.LatLng(51.389244, -2.709939), 
@@ -140,47 +133,13 @@
             map.panTo(lastValidCenter);
         });
         
-        // String to display when user tries to place tree in disallowed area
-        var badArea = 'Sorry, this area is outside the predefined allowed locations for tree planting';
-        
-        // Infowindow to display when tree planting is attempted in disallowed area
-        var infowindow = new google.maps.InfoWindow({ 
-            content: badArea
-        });
-        
-        var circleOptions = {
-            strokeColor: '#FF0000',
-            strokeOpacity: 0.1,
-            strokeWeight: 2,
-            fillColor: '#A1F4A1',
-            fillOpacity: 0.1,
-            map: map,
-            center: new google.maps.LatLng(51.421274, -2.599345),
-            radius: 2500
-        };
-        
-        plantArea = new google.maps.Circle(circleOptions);
-        
         var objectId = "xxxxxxx";
-        
-        var circleOptions = {
-            strokeColor: '#FF0000',
-            strokeOpacity: 0.1,
-            strokeWeight: 2,
-            fillColor: '#66FF66',
-            fillOpacity: 0.1,
-            map: map,
-            center: new google.maps.LatLng(51.421274, -2.599345),
-            radius: 2500
-        };
-        
-        plantArea = new google.maps.Circle(circleOptions);
         
         var warning = new google.maps.InfoWindow({ 
             content: "Please finish placing your previous tree first"
         });
         
-        google.maps.event.addListener(plantArea, 'click', function(event)
+        google.maps.event.addListener(map, 'click', function(event)
         {
             if (loginStatus == "guest") {
                 openPopupInMap("Please log in to place a new tree.");
