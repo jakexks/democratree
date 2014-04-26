@@ -11,8 +11,7 @@
     var sortArray = new Array();
     var gpsLat;
     var gpsLng;
-
-
+    
     var clusterStyles = [{
         url: 'img/m1.png',
         width: 35,
@@ -306,6 +305,7 @@
                     });
                     gmarkers.push(marker);
                     attachMessageInit(marker, map, tree);
+
                     treeArray.push(tree);
                 }
                 treeCount = results.length;
@@ -662,6 +662,53 @@
         if (a.get("votes") > b.get("votes"))
             return -1;
         return 0;
+    }
+
+    function settingsPage() {
+        // $('#settings-changepwdbtn').on('tap', function() {
+        //     var pwd = document.getElementById('settings-curpwd').value;
+        //     var newpwd = document.getElementById('settings-newpwd').value;
+        //     var newpwd2 = document.getElementById('settings-newpwd2').value;
+        //     var currentUser = Parse.User.current();
+        //     alert("blah");
+        //     Parse.User.logIn(currentUser, pwd, {
+        //         success: function(user) {
+        //             if (newpwd == newpwd2) {
+        //                 document.getElementById("settings-curpwd").value = "";
+        //                 document.getElementById("settings-newpwd").value = "";
+        //                 document.getElementById("settings-newpwd2").value = "";
+        //                 alert("Successfully changed");
+        //                 currentUser.set('password', newpwd);
+        //             }
+        //             else {
+        //                 document.getElementById("settings-curpwd").value = "";
+        //                 document.getElementById("settings-newpwd").value = "";
+        //                 document.getElementById("settings-newpwd2").value = "";
+        //                 alert("The passwords you entered do not match,<p>please type them again");
+        //             }
+        //         },
+        //         error: function(user, error) {
+        //             alert("Incorrect username/password");
+        //         }
+        //     });
+        // });
+        $('#settings-resetpwdbtn').on('tap', function() {
+            console.log("reset");
+            var email = document.getElementById('settings-email').value;
+            if(email === "") {
+                alert("no email entered");
+            }
+            Parse.User.requestPasswordReset(email, {
+              success: function() {
+                // Password reset request was sent successfully
+                alert("Reset instructions emailed to you.");
+              },
+              error: function(error) {
+                // Show the error message somewhere
+                alert("Error: " + error.code + " " + error.message);
+              }
+            });
+        });
     }
 
     function start() {
