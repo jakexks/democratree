@@ -684,9 +684,11 @@
                 console.log("updating parse true");
                 console.log(name);
                 currUser.set('displayPP', checkval);
+                currUser.save();
             } else {
                 console.log("updating parse false");
                 currUser.set('displayPP', checkval);
+                currUser.save();
             }
             
         });
