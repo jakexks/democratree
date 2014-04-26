@@ -402,6 +402,7 @@
 
     // Function to place marker
     function placeMarker(location, map) {
+        var trees;
         var treesPerDay = 3;
         var Tree = Parse.Object.extend("Tree");
         var query = new Parse.Query("Tree");
@@ -414,15 +415,18 @@
         showLoader();
         query.find({
             success: function(trees) {
-                var dayCount = 0;
-                for(var i = 0; i < treesPerDay; i++)
+                if(trees.length >= treesPerDay)
                 {
-                   var milliDiff = Math.abs(trees[i].createdAt - new Date());
-                   if(milliDiff < 86400000) dayCount++;
-                }
-                if(dayCount == treesPerDay)
-                {
-                    plantAllowed = false;
+                    var dayCount = 0;
+                    for(var i = 0; i < treesPerDay; i++)
+                    {
+                    var milliDiff = Math.abs(trees[i].createdAt - new Date());
+                    if(milliDiff < 86400000) dayCount++;
+                    }
+                    if(dayCount == treesPerDay)
+                    {
+                        plantAllowed = false;
+                    }
                 }
                 if(checkLocation(location) && plantAllowed)
                 {
@@ -480,53 +484,7 @@
                 alert("error");
             }
         });
-        if(checkLocation(location))
-        {
-            showLoader();
-            $.get("http://pecan.jakexks.com/democratree/plantable.php?lat=" + location.lat() + "&long=" + location.lng(), function(data) { 
-                hideLoader();
-                if(data == "true")
-                {
-                    var marker = new google.maps.Marker({
-                        position: location,
-                        map: map,
-                        title: ""+markerCount,    
-                        animation: google.maps.Animation.DROP,
-                        icon: 'img/tree1.png'
-                    });
-                    var currentUser = Parse.User.current();
-                    var Tree = Parse.Object.extend("Tree");
-                    var tree = new Tree();
-                    tree.set("lat", location.lat());
-                    tree.set("lng", location.lng());
-                    tree.set("type", "default");
-                    tree.set("username", currentUser.get("username"));
-                    tree.set("votes", 0); 
-                    tree.set("story", "none");
-                    tree.save(null, {
-                        success: function(tree) {
-                            objectId = tree.id;
-                            markerCount++;
-                            gmarkers.push(marker);
-                            map.panTo(location);
-                            attachMessage(marker, map);
-                        },
-                        error: function(error) {
-                            alert("error");
-                        }
-                    });
-                }
-                else 
-                {
-                    openPopupInMap("That area is not plantable (according to our heuristic)<p>Try planting somewhere else!");
-                }
-            });
-        }
-        else
-        {
-            openPopupInMap("You have tried to plant too close to another tree, please plant further away.");
-        }
-    }
+  }
 
     function cancelTree(i) {
         var Tree = Parse.Object.extend("Tree");
@@ -824,7 +782,9 @@
                             document.getElementById('demo-pwd').value = "";
                             document.getElementById('demo-conf-pwd').value = "";
                             document.getElementById('demo-email').value = "";
-                            window.location.hash = '';
+                            $('#closeSignup').bind('click', function() {
+                                window.location.hash = '';
+                            });
                         },
                         error: function(user, error) {
                             // Show the error message somewhere and let the user try again.
