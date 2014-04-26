@@ -129,7 +129,7 @@
         // Rough BS1-16 (Bristol council jurisdiction) postcode bounds, needs refining to a polygon
         var allowedBounds = new google.maps.LatLngBounds(
             new google.maps.LatLng(51.389244, -2.709939), 
-                                                         new google.maps.LatLng(51.552326,-2.41893));
+            new google.maps.LatLng(51.552326,-2.41893));
         
         var lastValidCenter = map.getCenter();
         
@@ -148,14 +148,6 @@
         var infowindow = new google.maps.InfoWindow({ 
             content: badArea
         });
-        // Coordinates for disallowed area
-        var polyCoords = [
-        new google.maps.LatLng(51.422368, -2.600615), new google.maps.LatLng(51.422281, -2.599920), new google.maps.LatLng(51.422303, -2.598823), 
-        new google.maps.LatLng(51.421931, -2.598190), new google.maps.LatLng(51.421291, -2.598362), new google.maps.LatLng(51.420220, -2.599207), 
-        new google.maps.LatLng(51.420162, -2.599341), new google.maps.LatLng(51.420210, -2.599928), new google.maps.LatLng(51.420321, -2.600121), 
-        new google.maps.LatLng(51.420759, -2.600387), new google.maps.LatLng(51.420884, -2.600556), new google.maps.LatLng(51.421294, -2.600470), 
-        new google.maps.LatLng(51.421716, -2.600202), new google.maps.LatLng(51.421925, -2.600481), new google.maps.LatLng(51.421946, -2.600620), 
-        ];
         
         var circleOptions = {
             strokeColor: '#FF0000',
@@ -169,25 +161,6 @@
         };
         
         plantArea = new google.maps.Circle(circleOptions);
-        
-        // Polygon for disallowed area
-        shading = new google.maps.Polygon({
-            paths: polyCoords,
-            strokeColor: '#595555',
-            strokeOpacity: 0.5,
-            strokeWeight: 1,
-            fillColour: '#595555',
-            fillOpacity: 0.3
-        });
-        
-        // Coordinates for disallowed area
-        var polyCoords = [
-        new google.maps.LatLng(51.422368, -2.600615), new google.maps.LatLng(51.422281, -2.599920), new google.maps.LatLng(51.422303, -2.598823), 
-        new google.maps.LatLng(51.421931, -2.598190), new google.maps.LatLng(51.421291, -2.598362), new google.maps.LatLng(51.420220, -2.599207), 
-        new google.maps.LatLng(51.420162, -2.599341), new google.maps.LatLng(51.420210, -2.599928), new google.maps.LatLng(51.420321, -2.600121), 
-        new google.maps.LatLng(51.420759, -2.600387), new google.maps.LatLng(51.420884, -2.600556), new google.maps.LatLng(51.421294, -2.600470), 
-        new google.maps.LatLng(51.421716, -2.600202), new google.maps.LatLng(51.421925, -2.600481), new google.maps.LatLng(51.421946, -2.600620), 
-        ];
         
         var objectId = "xxxxxxx";
         
@@ -203,27 +176,6 @@
         };
         
         plantArea = new google.maps.Circle(circleOptions);
-        
-        // Polygon for disallowed area
-        shading = new google.maps.Polygon({
-            paths: polyCoords,
-            strokeColor: '#FF0000',
-            strokeOpacity: 0.5,
-            strokeWeight: 1,
-            fillColour: '#FF0000',
-            fillOpacity: 0.3
-        });
-        
-        google.maps.event.addListener(shading, 'click', function(event) {
-            infowindow.open(map);
-            infowindow.setPosition(event.latLng);
-        });
-        
-        // Makes disallowed area polygon only appear above a certain zoom level 
-        google.maps.event.addListener(map, "zoom_changed", function() { 
-            if(map.getZoom() > 15) shading.setMap(map);
-                                      else shading.setMap(null);
-        });
         
         var warning = new google.maps.InfoWindow({ 
             content: "Please finish placing your previous tree first"
