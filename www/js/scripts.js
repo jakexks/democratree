@@ -11,7 +11,7 @@
     var sortArray = new Array();
     var gpsLat;
     var gpsLng;
-    
+
     var clusterStyles = [{
         url: 'img/m1.png',
         width: 35,
@@ -310,7 +310,15 @@
                 }
                 treeCount = results.length;
                 markerCount = treeCount;
-                
+            },
+            error: function(error) {
+                alert("failure");
+            }
+        });
+        var isLoad = false;
+        google.maps.event.addListener(map,'tilesloaded', function () {
+            if (!isLoad) {
+                isLoad = true;
                 // cluster            
                 var markerCluster = new MarkerClusterer(map, gmarkers, {
                     maxZoom: 14,
@@ -318,9 +326,6 @@
                     styles: clusterStyles
                 }
                 );
-            },
-            error: function(error) {
-                alert("failure");
             }
         });
     }
@@ -709,6 +714,24 @@
               }
             });
         });
+        $('#settings-dpcheckbox').change(function() {
+            console.log("change dp");
+            var $input = $( this );
+            var checkval = $input.is( ":checked" )
+            console.log(checkval);
+            var currUser = Parse.User.current();
+            var name = currUser.get("username");
+            if(checkval) {
+                console.log("updating parse true");
+                console.log(name);
+                currUser.set('displayPP', checkval);
+            } else {
+                console.log("updating parse false");
+                currUser.set('displayPP', checkval);
+            }
+            
+        });
+        
     }
 
     function start() {
