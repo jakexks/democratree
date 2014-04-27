@@ -12,6 +12,10 @@
     {
         echo "true";
     }
+    else if($r > 239 && $r < 243 && $g > 238 && $g < 242 && $b > 230 && $b < 235)
+    {
+        echo "true";
+    }
     else
     {
         echo "false";
