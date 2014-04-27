@@ -2,6 +2,7 @@
 
     var treeCount = 0;
     var markerCount = 0;
+    var lastTreeSynced = 0;
     var treeArray = new Array();
     var gmarkers = new Array();
     var infoWindowArray = new Array();
@@ -149,7 +150,11 @@
                     if(warning.getMap() == null) warning.open(map);
                     warning.setPosition(event.latLng);
                 } 
-                else placeMarker(event.latLng, map);
+                else 
+                {
+                    populateMap(map);
+                    placeMarker(event.latLng, map);
+                }
             }
             else {
                 openPopupInMap("Please zoom in to place a new tree more accurately.");
@@ -241,39 +246,48 @@
         });
         $('.cacheSize').bind('click', function() { console.log($.jStorage.storageSize()); });
         initializeArrays(map);
-        
         return map;
     } 
-
-    function initializeArrays(map) {
+    
+    function populateMap(map)
+    {
         var results;
         var Tree = Parse.Object.extend("Tree");
         var query = new Parse.Query("Tree");
+        if(lastTreeSynced != 0) query.greaterThan("createdAt", lastTreeSynced);
+        query.ascending("createdAt");
         query.find({
             // Load each tree
             success: function(results) {
-                for (var i = 0; i < results.length; i++) {
-                    var tree = results[i];
-                    var latlng = new google.maps.LatLng(tree.get("lat"), tree.get("lng"));
-                    var marker = new google.maps.Marker({
-                        position: latlng,
-                        map: map,
-                        title: ""+i,
-                        animation: google.maps.Animation.DROP,
-                        icon: 'img/tree1.png'
-                    });
-                    gmarkers.push(marker);
-                    attachMessageInit(marker, map, tree);
-
-                    treeArray.push(tree);
+                if(results.length > 0)
+                {
+                    for (var i = 0; i < results.length; i++) {
+                        var tree = results[i];
+                        var latlng = new google.maps.LatLng(tree.get("lat"), tree.get("lng"));
+                        var marker = new google.maps.Marker({
+                            position: latlng,
+                            map: map,
+                            title: ""+i,
+                            animation: google.maps.Animation.DROP,
+                            icon: 'img/tree1.png'
+                        });
+                        gmarkers.push(marker);
+                        attachMessageInit(marker, map, tree);
+                        treeArray.push(tree);
+                    }
+                    lastTreeSynced = results[i-1].createdAt;
+                    treeCount = treeCount + results.length;
+                    markerCount = treeCount;
                 }
-                treeCount = results.length;
-                markerCount = treeCount;
             },
             error: function(error) {
                 alert("failure");
             }
-        });
+        });       
+    }
+
+    function initializeArrays(map) {
+        populateMap(map);
         var isLoad = false;
         google.maps.event.addListener(map,'tilesloaded', function () {
             if (!isLoad) {
@@ -341,7 +355,7 @@
                     }
                     if(dayCount == treesPerDay)
                     {
-                        plantAllowed = false;
+                        //plantAllowed = false;
                     }
                 }
                 if(checkLocation(location) && plantAllowed)
@@ -369,6 +383,7 @@
                             tree.save(null, {
                                 success: function(tree) {
                                     objectId = tree.id;
+                                    lastTreeSynced = tree.createdAt;
                                     markerCount++;
                                     gmarkers.push(marker);
                                     map.panTo(location);
