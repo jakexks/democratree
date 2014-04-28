@@ -3,6 +3,9 @@
     var treeCount = 0;
     var markerCount = 0;
     var lastTreeSynced = 0;
+    var panToLat = 51.455;
+    var panToLong = -2.588;
+    var initZoom = 13;
     var treeArray = new Array();
     var gmarkers = new Array();
     var infoWindowArray = new Array();
@@ -35,6 +38,28 @@
 
     function onLoad() {
         document.addEventListener("deviceready", onDeviceReady, false);
+    }
+    
+    function checker()
+    {
+        var id = 'id'; 
+        if(id=(new RegExp('[?&]'+id+'=([^&]*)')).exec(location.search)) id = id[1];
+        var Tree = Parse.Object.extend("Tree");
+        var query = new Parse.Query("Tree");
+        if(id != null)
+        {
+            query.equalTo("objectId", id);
+            query.find({
+                success: function(result) {
+                    panToLat = result[0].get("lat");
+                    panToLong = result[0].get("lng");
+                    initZoom = 18;
+                },
+                error: function(error) {
+                    alert("error");
+                }
+            });
+        }
     }
 
     function onDeviceReady() {
@@ -91,8 +116,8 @@
             map = initializeMap();
         }
         else {
-            map.panTo(new google.maps.LatLng(51.455, -2.588));
-            map.setZoom(13);
+            map.panTo(new google.maps.LatLng(panToLat, panToLong));
+            map.setZoom(initZoom);
         }
         var c = map.getCenter();        
         
@@ -113,8 +138,8 @@
     // Initialize Map page
     function initializeMap() {
         var mapOptions = {
-            center: new google.maps.LatLng(51.455, -2.588),
-            zoom: 13,
+            center: new google.maps.LatLng(panToLat, panToLong),
+            zoom: initZoom,
             minZoom: 13
         };
         map = new google.maps.Map(document.getElementById("map-canvas"),mapOptions);
