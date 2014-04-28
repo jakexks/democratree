@@ -562,10 +562,11 @@
             <div id="confirmType"></div>
             <div><img id="confirmImg"></img></div>
             <div id="confirmStory"></div>
+            <a href="javascript:void(window.location='#map');placeMarker(newLatLng, map);" class="ui-btn">Plant it!</a>
         </p>
         <script type="text/javascript">
             $("body").on( "pagecontainershow", function( event, ui ) {
-                console.log(ui);
+                //console.log(ui);
                 $("#confirmTitle").html("<h2>" + newTreeLabel + "</h2>");
                 $("#confirmType").html(newChosenTree);
                 $("#confirmImg").src = "data:image/jpeg;base64," + newTreeImg;
