@@ -415,7 +415,7 @@
                 alert("error");
             }
         });
-  }
+    }
 
     function cancelTree(i) {
         var Tree = Parse.Object.extend("Tree");
@@ -495,7 +495,7 @@
         infoWindowArray.push(infowindow);
         infowindow.open(map, marker);
         google.maps.event.addListener(marker, 'click', function() {
-           infowindow.open(map,marker);
+            infowindow.open(map,marker);
         });
         google.maps.event.addListener(infowindow, 'domready', function(){
             var contentStr = '<p id="textInfoWindow"><b>New Tree Placed</b><p><form id="myForm"> Story: <input type="text" name="Story"><br></form><p><button id="btnSubmitTree" onclick="return addNewTree()">Submit</button><button id="btnCancelTree" onclick="return cancelTree(markerCount-1)">Cancel</button></p>'
@@ -523,7 +523,9 @@
         var idForVote = tree.id;
         infoWindowArray.push(infowindow);
         google.maps.event.addListener(marker, 'click', function() {
-            infowindow.open(map,marker);
+            console.log("new tree");
+            $( "#treepopup").popup("open", { x: event.pageX, y: event.pageY } );
+            // infowindow.open(map,marker);
         });
         google.maps.event.addListener(infowindow, 'domready', function(){
             // Attach listener
