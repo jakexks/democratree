@@ -2,7 +2,6 @@ var newChosenTree = "";
 var newTreeLabel = "";
 var newTreeStory = "";
 var newTreeImg = null;
-var newLatLng = null;
 
 $(document).on("pageshow","#plantconfirm",function(){
 });
@@ -10,7 +9,7 @@ $(document).on("pageshow","#plantconfirm",function(){
 $(document).on( "pagebeforeshow","#plantconfirm", function() {
     $("#confirmTitle").html("<h2>" + newTreeLabel + "</h2>");
     $("#confirmType").html(newChosenTree);
-    document.getElementById('confirmImg');.src = "data:image/jpeg;base64," + newTreeImg;
+    $("#confirmImg").src = "data:image/jpeg;base64," + newTreeImg;
     $("#confirmStory").html(newTreeStory);
 } );
 
