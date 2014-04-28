@@ -255,6 +255,7 @@
         var Tree = Parse.Object.extend("Tree");
         var query = new Parse.Query("Tree");
         if(lastTreeSynced != 0) query.greaterThan("createdAt", lastTreeSynced);
+        query.limit(1000);
         query.ascending("createdAt");
         query.find({
             // Load each tree
@@ -355,7 +356,7 @@
                     }
                     if(dayCount == treesPerDay)
                     {
-                        plantAllowed = false;
+                        //plantAllowed = false;
                     }
                 }
                 if(checkLocation(location) && plantAllowed)
@@ -472,10 +473,7 @@
                 tree.save();
                 infoWindowArray[treeCount].close();
                 infoWindowArray[treeCount].setContent('Tree submitted.<p>User Name: ' + tree.get("username") + '<p>Tree Story: ' + fStory + '<p><p>Votes: 0<p><button id="btnVoteUp'+tree.id+'">Vote Up</button>');
-                //What are these meant to do?
-                //document.getElementById("treeInfoText").innerHTML= 'Tree submitted.<p>User Name: ' + tree.get("username") + '<p>Tree Story: ' + fStory + '<p><p>Votes: 0';
-                //$( "#treeInfo" ).popup({ theme: "a" });
-                //$( "#treeInfo" ).popup("open");
+                openPopupPlant('Tree submitted.<p>User Name: ' + tree.get("username") + '<p>Tree Story: ' + fStory + '<p><p>Votes: 0');
                 treeArray.push(tree); 
                 treeCount++;
             },
