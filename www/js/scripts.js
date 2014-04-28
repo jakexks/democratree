@@ -513,6 +513,17 @@
         });
     }
 
+    function showTree(event, tree) {
+        var treeName = tree.get("name");
+        var treeUser = tree.get("username");
+        var treeStory = tree.get("story");
+        $( "#treepopup").popup("open", { x: event.pageX, y: event.pageY } );
+        console.log(treeUser);
+        $( "#popupTreeName").val(treeName);
+        $( "#popupTreeUser").val(treeUser);
+        $( "#popupTreeStory").val(treeStory);
+    }
+
     // Create infoWindows when loading from Parse Cloud
     function attachMessageInit(marker, map, tree) {
         {
@@ -524,7 +535,7 @@
         infoWindowArray.push(infowindow);
         google.maps.event.addListener(marker, 'click', function() {
             console.log("new tree");
-            $( "#treepopup").popup("open", { x: event.pageX, y: event.pageY } );
+            showTree(event, tree);
             // infowindow.open(map,marker);
         });
         google.maps.event.addListener(infowindow, 'domready', function(){
