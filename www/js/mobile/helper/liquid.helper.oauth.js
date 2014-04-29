@@ -5,7 +5,7 @@
  * The following files should be included before this file:
  * 
  * @requires cordova.js (Phonegap library)
- * @requires childbrowser.js (Phonegap Childbrowser plugin)
+ * @requires inappbrowser.js (Phonegap InAppBrowser plugin)
  * @requires jquery.js (jquery library)
  * @requires gapi-client.min.js (google API JS Client)
  * @requires liquid.js (The Base library)
@@ -268,8 +268,9 @@
 		    	data.error = false;
 		    	callback(data);
 		   	})
+            // Refresh token has expired as well
 		    .fail(function(xhr, textStatus) {
-                alert("Error retrieving token : " + xhr.responseText);
+                //alert("Error retrieving token : " + xhr.responseText);
 		    	callback({
 		    		error: true,
 		    		message: xhr.responseText

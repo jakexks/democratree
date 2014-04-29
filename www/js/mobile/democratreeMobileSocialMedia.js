@@ -11,20 +11,78 @@ function initializeLogin() {
         openMapPage();
     });
     $('#democratreeSigninButton').bind('click', function() {
-        // Temporary
         loginStatus = 'democratree';
-        openMapPage();
+        var username = document.getElementById('login-username').value;
+        var pwd = document.getElementById('login-pwd').value;
+        Parse.User.logIn(username, pwd, {
+            success: function(user) {
+                document.getElementById('login-username').value = "";
+                document.getElementById('login-pwd').value = "";
+                currUser = Parse.User.current();
+                if(user.get("emailVerified"))
+                {
+                    openMapPage();
+                }
+                else
+                {
+                    alert("Email address not verified");
+                    openMapPage();
+                }
+            },
+            error: function(user, error) {
+                openPopupInLogin("Incorrect username/password");
+            }
+        });
     });
     $('#democratreeSignupButton').bind('click', function() {
-        // Temporary
         loginStatus = 'signup';
-        openMapPage();
+        $('#democratreeCreateAccButton').bind('click', function() {
+            var username = document.getElementById('demo-username').value;
+            var name = document.getElementById('demo-name').value;
+            var pwd = document.getElementById('demo-pwd').value;
+            var secondpwd = document.getElementById('demo-conf-pwd').value;
+            var email = document.getElementById('demo-email').value;
+            if(pwd == secondpwd)
+            {
+                var votedOn = new Array();
+                var user = new Parse.User();
+                user.set('username', username);
+                user.set('name', name);
+                user.set('password', pwd);
+                user.set('email', email);
+                user.set('votedOn', votedOn);
+                user.signUp(null, {
+                    success: function(user) {
+                        openPopupInSignup("A verification email has been sent to the email address you entered. Please verify your email and then login");
+                        document.getElementById('demo-username').value = "";
+                        document.getElementById('demo-name').value = "";
+                        document.getElementById('demo-pwd').value = "";
+                        document.getElementById('demo-conf-pwd').value = "";
+                        document.getElementById('demo-email').value = "";
+                        window.location.hash = '';
+                    },
+                    error: function(user, error) {
+                        // Show the error message somewhere and let the user try again.
+                        if(error.code == 202)
+                        {
+                            document.getElementById('demo-pwd').value = "";
+                            document.getElementById('demo-conf-pwd').value = "";
+                        }
+                        openPopupInSignup(/*"Error: " + error.code + " " +*/error.message);
+                    }
+                }); 
+            }
+            else
+            {
+                document.getElementById("demo-pwd").value = "";
+                document.getElementById("demo-conf-pwd").value = "";
+                openPopupInSignup("The passwords you entered do not match,<p>please type them again");
+            }
+        });
     });
     $('#googleplusSigninButton').bind('click', function(event) {
         if(gOAuth.isAuthorized()) {
             loadGapi();
-            loginStatus = 'googleplus';
-            openMapPage();
         } else {
             gOAuth.authorize(googleAuthorizeWindowChange);
         }
@@ -47,8 +105,6 @@ function googleAuthorizeWindowChange(uriLocation) {
             if (gOAuth.isAuthorized()) {
                 // Refresh token saved properly, load client api and open map
                 loadGapi();
-                loginStatus = 'googleplus';
-                openMapPage();
             } else {
                 alert("There was an error authorizing the app");
             }
@@ -72,8 +128,13 @@ function loadGapi() {
             if (!gOAuth.isGapiLoaded) { 
                 gapi.client.load('plus','v1', function(){ gOAuth.isGapiLoaded = true; });
             }
+            loginStatus = 'googleplus';
+            openMapPage();
         } else {
-            alert("Error retrieving access token, client gapi not loaded");
+            // If there was an issue with the access token, ask the user to reauthorize
+            //alert("Error retrieving access token, client gapi not loaded");
+            window.localStorage.clear();
+            gOAuth.authorize(googleAuthorizeWindowChange);
         }
     });
 }
@@ -84,7 +145,16 @@ function logout(){
     if(loginStatus == 'twitter') {
         Twitter.logout();
     }
+    if(loginStatus == 'facebook') {
+        FB.logout(function(response) {
+        });
+    }
+    if(loginStatus == 'democratree') {
+        Parse.User.logOut(); // logout already here
+    }
+    $('#myTreeList').empty();
     loginStatus = 'none';
+    currUser = undefined;
     ignoreHashChange = true;
     window.location.hash = 'login'
     // For some reason this fires off two hash changes - the second #'s to window.location.pathname
@@ -116,6 +186,50 @@ function hashChangedProfile(){
     if(loginStatus == 'twitter'){
         Twitter.profile();
         // There is no revoke function in the api for twitter, users have to do it manually from twitter settings
+    }
+    if (loginStatus == 'democratree') { 
+        clearProfile();
+        user = Parse.User.current();
+        $('#profile_name').append(user.get('name'));
+        $('#profile_username').append(user.getUsername());
+    }
+    if(loginStatus != 'guest') {
+        var user = currUser;
+        var query = new Parse.Query("Tree");
+        query.equalTo('username', user.get('username'));
+        query.find({
+            success: function(trees) {
+                $('#myTreeList').empty();
+                for (var i = 0; i < trees.length; i++) {
+                    var t = trees[i].attributes
+                    if(i == 0) { 
+                        $('#myTreeList').append('<li class="ui-first-child">' +
+                            '<a onclick="window.location.href=\'#map\'; map.setCenter(new google.maps.LatLng('+t.lat+','+t.lng+')); map.setZoom(18);" class="ui-btn ui-btn-icon-right ui-icon-carat-r">' 
+                            + t.story + ' : ' + t.votes +
+                            '</a></li>'
+                        );
+                    } else if(i == trees.length && i != 0) {
+                        $('#myTreeList').append('<li class="ui-last-child">' +
+                            '<a onclick="window.location.href=\'#map\'; map.setCenter(new google.maps.LatLng('+t.lat+','+t.lng+')); map.setZoom(18);" class="ui-btn ui-btn-icon-right ui-icon-carat-r">' 
+                            + t.story + ' : ' + t.votes +
+                            '</a></li>'
+                        );
+                    } else {
+                        $('#myTreeList').append('<li>' +
+                            '<a onclick="window.location.href=\'#map\'; map.setCenter(new google.maps.LatLng('+t.lat+','+t.lng+')); map.setZoom(18);" class="ui-btn ui-btn-icon-right ui-icon-carat-r">' 
+                            + t.story + ' : ' + t.votes +
+                            '</a></li>'
+                        );
+                    }
+                }
+            },
+            error: function(error) {
+                console.log(error)
+            }
+        });
+    }
+    else {
+        $('#profile_name').append('Currently logged in as a guest');
     }
 }
 
