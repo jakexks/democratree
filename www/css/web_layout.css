@@ -138,3 +138,21 @@
 .layout_helpcontents:hover {
 	background-color:#DEFDDE;
 }
+
+.ui-icon-gpicon:after {
+    background-image: url("../img/gplus.png");
+    /* Make your icon fit */
+    background-size: 18px 18px;
+}
+.ui-icon-fbicon:after {
+    background-image: url("../img/fb.png");
+    /* Make your icon fit */
+    background-size: 18px 18px;
+}
+.ui-icon-twicon:after {
+    background-image: url("../img/twitter.png");
+    /* Make your icon fit */
+    background-size: 18px 18px;
+}
+
+#map-canvas { height: 100%}
