@@ -97,21 +97,21 @@
         <p>
             <form>
                 <label for="login-username" class="ui-hidden-accessible">Username:</label>
-                <input name="login-username" id="login-username" placeholder="Username" value="" type="text">
+                <input name="login-username" id="login-username" placeholder="Username" value="" type="text" data-corners="false">
                 <label for="login-pwd" class="ui-hidden-accessible">Password:</label>
-                <input name="login-pwd" id="login-pwd" placeholder="Password" value="" type="password">
+                <input name="login-pwd" id="login-pwd" placeholder="Password" value="" type="password" data-corners="false">
             </form>
         </p>
 
         <div class="ui-grid-a">
             <div class="ui-block-a">
                 <div class="button-wrap">
-                <a href="#demoSignUp" id="democratreeSignupButton" class="ui-btn ui-shadow ui-corner-all">Sign Up</a>
+                <a href="#demoSignUp" id="democratreeSignupButton" class="ui-btn ui-shadow">Sign Up</a>
                 </div>
             </div>
             <div class="ui-block-b">
                 <div class="button-wrap">
-                <button id="democratreeSigninButton" class="ui-shadow ui-btn ui-corner-all">Login</button>
+                <button id="democratreeSigninButton" class="ui-shadow ui-btn">Login</button>
                 </div>
             </div>
         </div>
@@ -119,22 +119,22 @@
         <div class="ui-grid-b">
             <div class="ui-block-a">
                 <div class="button-wrap">
-                <button id="googleplusSigninButton" class="ui-shadow ui-btn ui-corner-all">Google+</button>
+                <button id="googleplusSigninButton" class="ui-shadow ui-btn">Google+</button>
                 </div>
             </div>
             <div class="ui-block-b">
                 <div class="button-wrap">
-                <button id="facebookSigninButton" class="ui-shadow ui-btn ui-corner-all">Facebook</button>
+                <button id="facebookSigninButton" class="ui-shadow ui-btn">Facebook</button>
                 </div>
             </div>
             <div class="ui-block-c">
                 <div class="button-wrap">
-                <button id="twitterSigninButton" class="ui-shadow ui-btn ui-corner-all">Twitter</button>
+                <button id="twitterSigninButton" class="ui-shadow ui-btn">Twitter</button>
                 </div>
             </div>
         </div>
 
-        <p><a id="guestLoginButton" class="ui-btn ui-shadow ui-corner-all ui-mini">Guest</a></p>
+        <p><a id="guestLoginButton" class="ui-btn ui-shadow ui-mini">Guest</a></p>
 
     </div><!-- /content -->
 
@@ -151,23 +151,27 @@
 
 
     <div role="main" class="ui-content" >
-        <h2>Create a Democratree Account</h2>
+        <div align="center">
+        <img src="img/logo.png" alt="Democratree" width="100" height="100">
+        <h1>Democratree</h1>
+        </div>
 
         <p>
             <form>
                 <label for="demo-username" class="ui-hidden-accessible">Username:</label>
-                <input name="demo-username" id="demo-username" placeholder="Username" value="" type="text">
+                <input name="demo-username" id="demo-username" placeholder="Username" value="" type="text" data-corners="false">
                 <label for="demo-name" class="ui-hidden-accessible">Name:</label>
-                <input name="demo-name" id="demo-name" placeholder="Name" value="" type="text">
+                <input name="demo-name" id="demo-name" placeholder="Name" value="" type="text" data-corners="false">
                 <label for="demo-pwd" class="ui-hidden-accessible">Password:</label>
-                <input name="demo-pwd" id="demo-pwd" placeholder="Password" value="" type="password">
+                <input name="demo-pwd" id="demo-pwd" placeholder="Password" value="" type="password" data-corners="false">
                 <label for="demo-conf-pwd" class="ui-hidden-accessible">Confirm Password:</label>
-                <input name="demo-conf-pwd" id="demo-conf-pwd" placeholder="Confirm Password" value="" type="password">
+                <input name="demo-conf-pwd" id="demo-conf-pwd" placeholder="Confirm Password" value="" type="password" data-corners="false">
                 <label for="demo-email" class="ui-hidden-accessible">Email:</label>
-                <input name="demo-email" id="demo-email" placeholder="Email" value="" type="text">
+                <input name="demo-email" id="demo-email" placeholder="Email" value="" type="text" data-corners="false">
             </form>
         </p>
-        <p><a id="democratreeCreateAccButton" class="ui-btn ui-shadow ui-corner-all">Create Account</a></p>
+        <p><a id="democratreeCreateAccButton" class="ui-btn ui-shadow">Create Account</a></p>
+        <a href="#" data-rel="back" id="democratreeCreateAccButton" class="ui-btn ui-shadow ui-mini">Back</a>
     </div><!-- /content -->
 
 </div><!-- /Democratree Sign up Page -->
@@ -217,7 +221,9 @@
         <h1>Map</h1>
     </div><!-- /header -->
 
-        <input id="search-input" data-mini="true" data-clear-btn="true" type="text" placeholder="Search">
+    <div>
+    <input id="search-input" data-mini="true" data-corners="false" data-clear-btn="true" type="text" placeholder="Search">
+    </div>
 
     <div data-role="content" id="map-canvas">        
     
