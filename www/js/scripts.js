@@ -729,7 +729,7 @@
         for (var i = 0; i < 15; i++) {
             if (i < lbsize) {
                 document.getElementById("lb" + (i+1) + "no").innerHTML=sortArray[i].get("votes");
-                document.getElementById("lb" + (i+1) + "name").innerHTML=sortArray[i].get("username");
+                document.getElementById("lb" + (i+1) + "name").innerHTML=sortArray[i].get("name");
             }
             else {
                 document.getElementById("lb" + (i+1) + "no").innerHTML='-'
