@@ -36,3 +36,15 @@
     /* Make your icon fit */
     background-size: 18px 18px;
 }
+
+.layout_helpcontents {
+	background-color:#98E882;
+	width:80%;
+	padding:6px;
+	text-align:center;
+	font-weight:lighter;
+}
+
+.layout_helpcontents:active {
+	background-color:#DEFDDE;
+}
