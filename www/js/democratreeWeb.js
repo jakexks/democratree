@@ -17,7 +17,6 @@ function initializeLogin() {
         gmarkers[currentBouncer].setAnimation(null);
         currentBouncer = null;
     });
-    op
     $('#democratreeSigninButton').bind('click', function() {
         // Temporary
         loginStatus = 'democratree';

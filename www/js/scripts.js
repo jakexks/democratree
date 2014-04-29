@@ -429,7 +429,7 @@
                                     markerCount++;
                                     gmarkers.push(marker);
                                     map.panTo(location);
-                                    attachMessage(marker, map);
+                                    attachMessage(marker, map, tree);
                                 },
                                 error: function(error) {
                                     alert("error");
@@ -526,7 +526,7 @@
     }
 
     // Attaches infowindow to each marker
-    function attachMessage(marker, map) {           
+    function attachMessage(marker, map, tree) {           
         var contentString = '<p id="textInfoWindow"><b>New Tree Placed</b><p><form id="myForm"> Story: <input type="text" name="Story"><br></form><p><button id="btnSubmitTree" onclick="return addNewTree()">Submit</button><button id="btnCancelTree" onclick="return cancelTree(markerCount-1)">Cancel</button></p>'
         var infowindow = new google.maps.InfoWindow({
             content: contentString
@@ -534,7 +534,9 @@
         infoWindowArray.push(infowindow);
         infowindow.open(map, marker);
         google.maps.event.addListener(marker, 'click', function() {
-            infowindow.open(map,marker);
+            //infowindow.open(map,marker);
+            showTree(event, tree);
+            
         });
         google.maps.event.addListener(infowindow, 'domready', function(){
             var contentStr = '<p id="textInfoWindow"><b>New Tree Placed</b><p><form id="myForm"> Story: <input type="text" name="Story"><br></form><p><button id="btnSubmitTree" onclick="return addNewTree()">Submit</button><button id="btnCancelTree" onclick="return cancelTree(markerCount-1)">Cancel</button></p>'
@@ -558,6 +560,12 @@
         var treeName = tree.get("name");
         var treeUser = tree.get("username");
         var treeStory = tree.get("story");
+        if(tree.get("story") == "none") 
+        {
+            tree.set("story", treeArray[treeArray.length - 1].get("story"));
+            tree.save();
+        }
+        treeStory = tree.get("story");
         var treeVote = tree.get("votes");
         $( "#popupTreeName").val(treeName);
         $( "#popupTreeUser").val(treeUser);
