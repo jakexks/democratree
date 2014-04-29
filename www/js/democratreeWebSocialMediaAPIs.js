@@ -34,7 +34,7 @@ window.fbAsyncInit = function() {
 
 (function(d, s, id){
     var js, fjs = d.getElementsByTagName(s)[0];
-    if (d.getElementById(id)) {return;}
+    if (d.getElementById(id)) return;
     js = d.createElement(s); js.id = id;
     //js.src = "//connect.facebook.net/en_UK/all.js"; For some reason this fails to get the page.
     js.src = "js/fb_all.js";
