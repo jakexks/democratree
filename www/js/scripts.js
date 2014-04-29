@@ -134,7 +134,7 @@
         });
 
         //gps location
-        if (loadId == 0) {
+        if (loadId == null) {
         	if(navigator.geolocation)
             	navigator.geolocation.getCurrentPosition(showCurrentLocation,showLocationError);
         	else openPopupInMap("Location services not available in your browser");
@@ -310,7 +310,7 @@
                     lastTreeSynced = results[i-1].createdAt;
                     treeCount = treeCount + results.length;
                     markerCount = treeCount;
-                    if(loadId != 0)
+                    if(loadId != null)
                     {
                         for(var i = 0; i < treeArray.length; i++)
                         {
