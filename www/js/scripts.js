@@ -513,7 +513,7 @@
         });
     }
 
-    function showTree(event, tree) {
+    function showTree(event, tree, triggerpage) {
         // msg = "";
         $('#popupMsg').html('');
         var treeName = tree.get("name");
@@ -524,7 +524,18 @@
         $( "#popupTreeUser").val(treeUser);
         $( "#popupTreeStory").val(treeStory);
         $( "#popupTreeVote").val(treeVote);
-        $( "#treepopup").popup("open", { x: event.pageX, y: event.pageY } );
+        if (triggerpage === 'map') {
+            $( "#treepopup").popup("open", { x: event.pageX, y: event.pageY } );
+        }
+        else if (triggerpage === 'leaderboard') {
+            var moffset = $("#map-canvas").offset();
+            var mwidth = $("#map-canvas").width();
+            var mheight = $("#map-canvas").height();
+            var mcenterX = moffset.left + mwidth / 2;
+            var mcenterY = moffset.top + mheight / 2;
+
+            $( "#treepopup").popup("open", { x: mcenterX, y: mcenterY } );
+        }
         $( "#popupBtnVote").on('tap', function() {
 
             console.log("pressed vote");
@@ -590,7 +601,7 @@
         var idForVote = tree.id;
         infoWindowArray.push(infowindow);
         google.maps.event.addListener(marker, 'click', function() {
-            showTree(event, tree);
+            showTree(event, tree, 'map');
             // infowindow.open(map,marker);
         });
         google.maps.event.addListener(infowindow, 'domready', function(){
@@ -691,7 +702,11 @@
             map.setCenter(new google.maps.LatLng(lat,lng));
             map.setZoom(18);
 
-            for (var i = 0; i < gmarkers.length; i++) {
+            // waits 1s for map page to load before showing tree popup
+            setTimeout(function(){showTree(event, sortArray[pos-1], 'leaderboard')},1000);
+
+            // old infowindow code
+            /*for (var i = 0; i < gmarkers.length; i++) {
                 if (gmarkers[i].position.toString() === ('(' + lat + ', ' + lng + ')')) {
                     mark = gmarkers[i];
                     index = i;
@@ -699,7 +714,7 @@
                 }
                 if (found) break;
             }
-            infoWindowArray[index].open(map,mark);
+            infoWindowArray[index].open(map,mark);*/
         }
     }
             

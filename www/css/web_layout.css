@@ -10,7 +10,7 @@
 
 .layout_menu {
 	background-color:#CEF7C3;
-	height:50px;
+	height:80px;
 	width:150px;
 	padding:25px;
 	color:#000000;
@@ -24,7 +24,7 @@
 
 .layout_selectedmenu {
 	background-color:#98E882;
-	height:50px;
+	height:80px;
 	width:150px;
 	padding:25px;
 	color:#000000;
