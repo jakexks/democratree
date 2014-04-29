@@ -649,7 +649,7 @@
         });
         var idForVote = tree.id;
         infoWindowArray.push(infowindow);
-        google.maps.event.addListener(marker, 'click', function(event) {
+        google.maps.event.addListener(marker, 'click', function() {
             showTree(event, tree);
             // infowindow.open(map,marker);
         });
