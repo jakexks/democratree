@@ -22,7 +22,7 @@ function openPopupInLogin(message)
 function openPopupInSignup(message)
 {
     $( "#alertSignup" ).popup({ theme: "a" });
-    document.getElementById("alertTextSignup").innerHTML = message + '<br/><br/><div align="center" style="width:100px"><a href="#" class="ui-btn ui-shadow ui-corner-all" data-rel="back">OK</a></div>';
+    document.getElementById("alertTextSignup").innerHTML = message;
     $( "#alertSignup" ).popup("open");
 }
 
