@@ -25,7 +25,7 @@
     <script type="text/javascript" src="js/markerclusterer_packed.js"></script>
 
     <script type="application/javascript" src="js/fastclick.min.js"></script>
-    <script type="text/javascript" src="cordova.js"></script>
+    <!--<script type="text/javascript" src="cordova.js"></script>-->
     <!--<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>-->
     <script type="text/javascript" src="http://www.parsecdn.com/js/parse-1.2.16.min.js"></script>
     <script type="text/javascript" src="js/json2.js"></script>
@@ -59,7 +59,7 @@
     <title>Democratree</title>
 </head>
 
-<body>
+<body onload="checker()">
 <div id="fb-root"></div>
 <!-- Web scripts p2 -->
 <script type="text/javascript" src="js/democratreeWebSocialMediaAPIs.js"></script>
@@ -182,6 +182,7 @@
         <a href="#" data-rel="back" data-role="button" data-theme="a" data-icon="delete" data-iconpos="notext" class="ui-btn-right">Close</a>
         <p id="treeInfoText"></p>
     </div>
+    
 
     <!-- Tree marker  -->
     <div data-role="popup" id="treepopup" data-close-btn="right" data-overlay-theme="a" data-arrow="t,r,l,b">
@@ -212,10 +213,19 @@
         <p id="alertTextMap"></p>
     </div>
     
+    <!-- Sharing Popup         -->
+    <div data-role="popup" id="plantMap" class="ui-content" align="center">
+        <a href="#" data-rel="back" data-role="button" data-theme="a" data-icon="delete" data-iconpos="notext" class="ui-btn-right">Close</a>
+        <!--<a href="https://twitter.com/share" class="twitter-share-button" data-lang="en">Tweet</a>
+        <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="https://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+        -->
+        <p id="plantTextMap"></p>
+    </div>
+    
     <div align=center>
     <table width="1100">
         <tr>
-            <td colspan="2" class="layout_header">
+            <td id="mapDiv" colspan="2" class="layout_header">
                 Map
             </td>
         </tr>

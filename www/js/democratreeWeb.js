@@ -12,6 +12,11 @@ function initializeLogin() {
         loginStatus = 'guest';
         openMapPage();
     });
+    $('#mapOk').bind('click', function() {
+        alert("hey");
+        gmarkers[currentBouncer].setAnimation(null);
+        currentBouncer = null;
+    });
     $('#democratreeSigninButton').bind('click', function() {
         // Temporary
         loginStatus = 'democratree';
@@ -28,8 +33,7 @@ function initializeLogin() {
                 }
                 else
                 {
-                    alert("Email address not verified");
-                    openMapPage();
+                    openPopupInLogin("Email address not verified, please verify before continuing");
                 }
             },
             error: function(user, error) {
