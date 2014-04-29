@@ -87,12 +87,13 @@
         var gpsLat = location.coords.latitude;
         var gpsLng = location.coords.longitude;
 
+        //if (loadId === 0) {
         // checks for Bristol area
         if ((gpsLat > 51.389244) && (gpsLat < 51.552326) && (gpsLng > -2.709939) && (gpsLng < -2.41893)) {
-            map.panTo(new google.maps.LatLng(gpsLat, gpsLng));
-            map.setZoom(18);
+           	setTimeout(function() {map.panTo(new google.maps.LatLng(gpsLat, gpsLng));map.setZoom(18)}, 1000);
         }
         else openPopupInMap("You are currently outside of the Bristol area so your location cannot be displayed");
+        //}
     }
 
     function showLocationError(error) {
@@ -132,9 +133,11 @@
         });
 
         //gps location
-        if(navigator.geolocation)
-            navigator.geolocation.getCurrentPosition(showCurrentLocation,showLocationError);
-        else openPopupInMap("Location services not available in your browser");
+        if (loadId === 0) {
+        	if(navigator.geolocation)
+            	navigator.geolocation.getCurrentPosition(showCurrentLocation,showLocationError);
+        	else openPopupInMap("Location services not available in your browser");
+    	}
     }
 
     // Initialize Map page
