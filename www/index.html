@@ -172,6 +172,31 @@
         <p id="treeInfoText"></p>
     </div>
 
+    <!-- Tree marker  -->
+    <div data-role="popup" id="treepopup" data-close-btn="right" data-overlay-theme="a" data-arrow="t,r,l,b">
+        <div data-role="header">
+            <h2>Tree details</h2>
+                <a href="#" data-rel="back" data-role="button" data-theme="a" data-icon="delete" data-iconpos="notext" class="ui-btn-right">Close</a>
+
+        </div>
+        <div role="main" class="ui-content">
+            <form>
+                <label for="popupTreeName">Tree name:</label>
+                <input type="text" disabled="disabled" name="popupTreeName" id="popupTreeName" value="">
+                <label for="popupTreeVote">Votes:</label>
+                <input type="text" disabled="disabled" name="popupTreeVote" id="popupTreeVote" value="">
+                <label for="popupTreeUser">Tree planted by:</label>
+                <input type="text" disabled="disabled" name="popupTreeUser" id="popupTreeUser" value="">
+                <label for="popupTreeStory">Tree story:</label>
+                <textarea disabled="disabled" cols="40" rows="8" name="popupTreeStory" id="popupTreeStory"></textarea>
+            </form>
+            <a class="ui-btn ui-shadow ui-corner-all ui-btn-b" id="popupBtnVote">Vote up</a>
+            <div id="popupMsg"></div>
+        </div>
+    </div>
+
+
+
     <!-- Alert Popup -->
     <div data-role="popup" id="alertMap" class="ui-content" align="center">
         <a href="#" data-rel="back" data-role="button" data-theme="a" data-icon="delete" data-iconpos="notext" class="ui-btn-right">Close</a>

@@ -204,10 +204,7 @@ function initializeMap() {
                 if(warning.getMap() == null) warning.open(map);
                 warning.setPosition(event.latLng);
             } 
-            else {
-                newLatLng = event.latLng;
-                window.location = "#add_tree";
-            } //placeMarker(event.latLng, map);
+            else placeMarker(event.latLng, map);
         }
         else {
             openPopupInMap("Please zoom in to place a new tree more accurately.");

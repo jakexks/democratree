@@ -4,9 +4,11 @@ var newTreeStory = "";
 var newTreeImg = null;
 
 $(document).on("pageshow","#plantconfirm",function(){
+  alert("pageshow event fired");
 });
 
 $(document).on( "pagebeforeshow","#plantconfirm", function() {
+    alert("SSSSSSSS");
     $("#confirmTitle").html("<h2>" + newTreeLabel + "</h2>");
     $("#confirmType").html(newChosenTree);
     $("#confirmImg").src = "data:image/jpeg;base64," + newTreeImg;
