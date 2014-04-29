@@ -9,14 +9,10 @@
 
     <meta name="ui" content="mobile"/>
 
-    <link rel="stylesheet" href="css/mobile_layout.css" />
-    <link rel="stylesheet" href="css/themes/green3.min.css" />
+    <link rel="stylesheet" href="css/themes/green4.min.css" />
     <link rel="stylesheet" href="css/themes/jquery.mobile.icons.min.css" />
     <link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.0/jquery.mobile.structure-1.4.0.min.css" />
-
-    <style type="text/css">
-        #map-canvas { height: 100%}
-    </style>
+    <link rel="stylesheet" href="css/mobile_layout.css" />
 
     <script src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
     <script type="text/javascript">
@@ -79,7 +75,12 @@
 <!-- /Web scripts p2 -->
 
 <!-- Login Page -->
-<div data-role="page" id="login">
+<div data-role="page" data-theme="b" id="login" style="background-color:#5de100;
+background-image: -moz-linear-gradient(top , #5de100, #3d9200 66.0%);
+background-image: -webkit-linear-gradient(top , #5de100, #3d9200 66.0%);
+background-image: -o-linear-gradient(top , #5de100, #3d9200 66.0%);
+background-image: -ms-linear-gradient(top , #5de100, #3d9200 66.0%);
+background-image: linear-gradient(top , #5de100, #3d9200 66.0%);">
 
     <div data-role="popup" id="alertLogin" class="ui-content" align="center">
     <p id="alertTextLogin"></p>
@@ -91,7 +92,7 @@
 
         <div align="center">
         <img src="img/logo.png" alt="Democratree" width="100" height="100">
-        <h1>Democratree</h1>
+        <h1 style="color:white;">Democratree</h1>
         </div>
 
         <p>
@@ -106,7 +107,7 @@
         <div class="ui-grid-a">
             <div class="ui-block-a">
                 <div class="button-wrap">
-                <a href="#demoSignUp" id="democratreeSignupButton" class="ui-btn ui-shadow">Sign Up</a>
+                <a href="#demoSignUp" id="democratreeSignupButton" class="ui-btn ui-shadow" style="background:#4A4A4A; color:white; font-weight:normal;">Sign Up</a>
                 </div>
             </div>
             <div class="ui-block-b">
@@ -119,17 +120,17 @@
         <div class="ui-grid-b">
             <div class="ui-block-a">
                 <div class="button-wrap">
-                <button id="googleplusSigninButton" class="ui-shadow ui-btn">Google+</button>
+                <button id="googleplusSigninButton" class="ui-shadow ui-btn ui-btn-icon-left ui-icon-gpicon ui-nodisc-icon" style="background: #dd4b39; color: white; font-weight:normal;">Google+</button>
                 </div>
             </div>
             <div class="ui-block-b">
                 <div class="button-wrap">
-                <button id="facebookSigninButton" class="ui-shadow ui-btn">Facebook</button>
+                <button id="facebookSigninButton" class="ui-shadow ui-btn ui-btn-icon-left ui-icon-fbicon ui-nodisc-icon" style="background: #3b5998; color: white; font-weight:normal;">Facebook</button>
                 </div>
             </div>
             <div class="ui-block-c">
                 <div class="button-wrap">
-                <button id="twitterSigninButton" class="ui-shadow ui-btn">Twitter</button>
+                <button id="twitterSigninButton" class="ui-shadow ui-btn ui-btn-icon-left ui-icon-twicon ui-nodisc-icon" style="background: #55acee; color: white; font-weight:normal;">Twitter</button>
                 </div>
             </div>
         </div>
@@ -138,10 +139,17 @@
 
     </div><!-- /content -->
 
+
+
 </div><!-- /Login Page -->
 
 <!-- Democratree Sign up Page -->
-<div data-role="page" id="demoSignUp"> 
+<div data-role="page" data-theme="b" id="demoSignUp" style="background-color:#5de100;
+background-image: -moz-linear-gradient(top , #5de100, #3d9200 66.0%);
+background-image: -webkit-linear-gradient(top , #5de100, #3d9200 66.0%);
+background-image: -o-linear-gradient(top , #5de100, #3d9200 66.0%);
+background-image: -ms-linear-gradient(top , #5de100, #3d9200 66.0%);
+background-image: linear-gradient(top , #5de100, #3d9200 66.0%);"> 
 
     <div data-role="popup" id="alertSignup" class="ui-content" align="center">
     <p id="alertTextSignup"></p>
@@ -153,7 +161,7 @@
     <div role="main" class="ui-content" >
         <div align="center">
         <img src="img/logo.png" alt="Democratree" width="100" height="100">
-        <h1>Democratree</h1>
+        <h1 style="color:white;">Democratree</h1>
         </div>
 
         <p>

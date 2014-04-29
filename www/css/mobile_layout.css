@@ -1,3 +1,5 @@
+#map-canvas { height: 100%}
+
 .layout_leaderboardno {
 	background-color:#98E882;
 	width:20%;
@@ -17,4 +19,20 @@
 
 .layout_leaderboardname:active {
 	background-color:#DEFDDE;
+}
+
+.ui-icon-gpicon:after {
+    background-image: url("../img/gplus.png");
+    /* Make your icon fit */
+    background-size: 18px 18px;
+}
+.ui-icon-fbicon:after {
+    background-image: url("../img/fb.png");
+    /* Make your icon fit */
+    background-size: 18px 18px;
+}
+.ui-icon-twicon:after {
+    background-image: url("../img/twitter.png");
+    /* Make your icon fit */
+    background-size: 18px 18px;
 }
