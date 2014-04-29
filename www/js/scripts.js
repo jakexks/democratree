@@ -134,7 +134,7 @@
         });
 
         //gps location
-        if (loadId === 0) {
+        if (loadId == 0) {
         	if(navigator.geolocation)
             	navigator.geolocation.getCurrentPosition(showCurrentLocation,showLocationError);
         	else openPopupInMap("Location services not available in your browser");

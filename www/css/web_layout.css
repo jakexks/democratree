@@ -114,3 +114,27 @@
 .layout_leaderboardname:hover {
 	background-color:#DEFDDE;
 }
+
+.layout_helpmain {
+	background-color:#CEF7C3;
+	height:670px;
+	width:850px;
+	padding:0px;
+	color:#000000;
+	font:20px roboto,sans-serif;
+	font-weight:lighter;
+	vertical-align:top;
+}
+
+.layout_helpcontents {
+	background-color:#98E882;
+	width:600px;
+	padding:6px;
+	text-align:center;
+	font:20px roboto,sans-serif;
+	font-weight:lighter;
+}
+
+.layout_helpcontents:hover {
+	background-color:#DEFDDE;
+}
