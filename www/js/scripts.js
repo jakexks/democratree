@@ -134,7 +134,7 @@
         });
 
         //gps location
-        if (loadId == 0) {
+        if (loadId == null) {
         	if(navigator.geolocation)
             	navigator.geolocation.getCurrentPosition(showCurrentLocation,showLocationError);
         	else openPopupInMap("Location services not available in your browser");
@@ -310,7 +310,7 @@
                     lastTreeSynced = results[i-1].createdAt;
                     treeCount = treeCount + results.length;
                     markerCount = treeCount;
-                    if(loadId != 0)
+                    if(loadId != null)
                     {
                         for(var i = 0; i < treeArray.length; i++)
                         {
@@ -729,7 +729,7 @@
         for (var i = 0; i < 15; i++) {
             if (i < lbsize) {
                 document.getElementById("lb" + (i+1) + "no").innerHTML=sortArray[i].get("votes");
-                document.getElementById("lb" + (i+1) + "name").innerHTML=sortArray[i].get("username");
+                document.getElementById("lb" + (i+1) + "name").innerHTML=sortArray[i].get("name");
             }
             else {
                 document.getElementById("lb" + (i+1) + "no").innerHTML='-'
