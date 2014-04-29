@@ -316,8 +316,6 @@
                         {
                             if(treeArray[i].id == loadId)
                             {
-                                // For guest --- openPopupInMap("Username: " + treeArray[i].get("username") + "<p> Tree Name: " + "temp nothing" + "<p> Story: " + treeArray[i].get("story") + "<p> Votes: " + treeArray[i].get("votes"));
-                                //openPopupInMap("Username: " + treeArray[i].get("username") + "<p> Tree Name: " + "temp nothing" + "<p> Story: " + treeArray[i].get("story") + "<p> Votes: " + treeArray[i].get("votes"));
                                 showTree(null, treeArray[i]);
                                 break;
                             }
@@ -585,6 +583,8 @@
         {
             $( "#treepopup").popup("open", { x: event.pageX, y: event.pageY } );
         }
+        $("#twitter-button").html('<a href="https://twitter.com/share" class="twitter-share-button" data-url="http://democratree.jakexks.com?id=' + tree.id + '" data-text="I just planted a tree!" data-via="democratreeuk" data-hashtags="1000Trees">Tweet</a>');
+        twttr.widgets.load();
         $( "#popupBtnVote").on('tap', function() {
 
             console.log("pressed vote");
