@@ -6,7 +6,7 @@
     var panToLat = 51.455;
     var panToLong = -2.588;
     var initZoom = 13;
-    var loadId = 0;
+    var loadId = null;
     var currentBouncer = null;
     var treeArray = new Array();
     var gmarkers = new Array();
