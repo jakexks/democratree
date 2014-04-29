@@ -51,10 +51,11 @@
         var query = new Parse.Query("Tree");
         if(id != null)
         {
+            $("#redirect-text").html("Please login with an account or as guest to view the tree");
             query.equalTo("objectId", id);
             query.find({
                 success: function(result) {
-                    panToLat = result[0].get("lat"); //Adding this number makes the popup appear above the tree
+                    panToLat = result[0].get("lat");
                     panToLong = result[0].get("lng");
                     initZoom = 18;
                 },
