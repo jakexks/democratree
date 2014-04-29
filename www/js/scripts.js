@@ -514,14 +514,70 @@
     }
 
     function showTree(event, tree) {
+        // msg = "";
+        $('#popupMsg').html('');
         var treeName = tree.get("name");
         var treeUser = tree.get("username");
         var treeStory = tree.get("story");
-        $( "#treepopup").popup("open", { x: event.pageX, y: event.pageY } );
-        console.log(treeUser);
+        var treeVote = tree.get("votes");
         $( "#popupTreeName").val(treeName);
         $( "#popupTreeUser").val(treeUser);
         $( "#popupTreeStory").val(treeStory);
+        $( "#popupTreeVote").val(treeVote);
+        $( "#treepopup").popup("open", { x: event.pageX, y: event.pageY } );
+        $( "#popupBtnVote").on('tap', function() {
+
+            console.log("pressed vote");
+
+            if (loginStatus != "guest") {
+                var user = Parse.User.current();
+                var votedOn = user.get("votedOn");
+                console.log(votedOn.indexOf(1));
+                if(votedOn.indexOf(tree.id) == -1) {
+                    console.log("didnt vote on this tree");
+                    objectId = tree.id;
+                    var Tree = Parse.Object.extend("Tree");
+                    var query = new Parse.Query("Tree");
+                    query.equalTo("objectId", objectId);
+                    query.first({
+                        success: function(tree) {
+                            var currentUser = Parse.User.current();
+                            currentUser.add("votedOn", tree.id) 
+                            currentUser.save();
+                            if (tree.get("username") == currentUser.get("username")) {
+                                $('#popupMsg').html('<p style="color:red;">You cannot vote on your own tree!</p>');
+                            }
+                            else {
+                                console.log(treeUser);
+                                var score = tree.get("votes") + 1;
+                                tree.set("votes", score);
+                                tree.save();
+                                $( "#popupTreeVote").val(score);
+                                console.log(tree.get("votes"));
+                                // update the infowindow
+                                $('#popupMsg').html('Thank you for voting!');
+                            }
+                        },
+                        error: function(error) {
+                            $('#popupMsg').html('<p style="color:red;">Failed to retrieve data from the server.</p>');
+                        }
+                    });
+
+                }
+                else {
+                    // not sure why this appears first before the thank you msg
+                    // msg = '<p style="color:red;">You have already voted on this tree!</p>';
+                    $('#popupMsg').html('<p style="color:red;">You have already voted on this tree!</p>');
+                }
+            }
+            else $('#popupMsg').html('<p style="color:red;">You must be logged in to vote.</p>');
+
+            // console.log("hi");
+            // console.log(msg);
+            // $('#popupMsg').html(msg);
+
+        });
+
     }
 
     // Create infoWindows when loading from Parse Cloud
@@ -534,7 +590,6 @@
         var idForVote = tree.id;
         infoWindowArray.push(infowindow);
         google.maps.event.addListener(marker, 'click', function() {
-            console.log("new tree");
             showTree(event, tree);
             // infowindow.open(map,marker);
         });
@@ -685,7 +740,6 @@
         //     });
         // });
         $('#settings-resetpwdbtn').on('tap', function() {
-            console.log("reset");
             var email = document.getElementById('settings-email').value;
             if(email === "") {
                 alert("no email entered");

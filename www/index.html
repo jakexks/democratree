@@ -183,12 +183,15 @@
             <form>
                 <label for="popupTreeName">Tree name:</label>
                 <input type="text" disabled="disabled" name="popupTreeName" id="popupTreeName" value="">
+                <label for="popupTreeVote">Votes:</label>
+                <input type="text" disabled="disabled" name="popupTreeVote" id="popupTreeVote" value="">
                 <label for="popupTreeUser">Tree planted by:</label>
                 <input type="text" disabled="disabled" name="popupTreeUser" id="popupTreeUser" value="">
                 <label for="popupTreeStory">Tree story:</label>
                 <textarea disabled="disabled" cols="40" rows="8" name="popupTreeStory" id="popupTreeStory"></textarea>
             </form>
-            <a class="ui-btn ui-shadow ui-corner-all ui-btn-b">Vote up</a>
+            <a class="ui-btn ui-shadow ui-corner-all ui-btn-b" id="popupBtnVote">Vote up</a>
+            <div id="popupMsg"></div>
         </div>
     </div>
 
