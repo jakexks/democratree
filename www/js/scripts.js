@@ -54,7 +54,7 @@
             query.equalTo("objectId", id);
             query.find({
                 success: function(result) {
-                    panToLat = result[0].get("lat") + 0.0010; //Adding this number makes the popup appear above the tree
+                    panToLat = result[0].get("lat"); //Adding this number makes the popup appear above the tree
                     panToLong = result[0].get("lng");
                     initZoom = 18;
                 },
@@ -98,7 +98,7 @@
     function showLocationError(error) {
         switch(error.code) {
             case error.PERMISSION_DENIED:
-                openPopupInMap("Location services blocked by user. To allow location services, consult your device/browser settings");
+                //openPopupInMap("Location services blocked by user. To allow location services, consult your device/browser settings");
                 break;
             case error.POSITION_UNAVAILABLE:
                 openPopupInMap("Location information is unavailable");
@@ -313,9 +313,8 @@
                             if(treeArray[i].id == loadId)
                             {
                                 // For guest --- openPopupInMap("Username: " + treeArray[i].get("username") + "<p> Tree Name: " + "temp nothing" + "<p> Story: " + treeArray[i].get("story") + "<p> Votes: " + treeArray[i].get("votes"));
-                                openPopupInMap("Username: " + treeArray[i].get("username") + "<p> Tree Name: " + "temp nothing" + "<p> Story: " + treeArray[i].get("story") + "<p> Votes: " + treeArray[i].get("votes"));
-                                gmarkers[i].setAnimation(google.maps.Animation.BOUNCE);
-                                currentBouncer = i;
+                                //openPopupInMap("Username: " + treeArray[i].get("username") + "<p> Tree Name: " + "temp nothing" + "<p> Story: " + treeArray[i].get("story") + "<p> Votes: " + treeArray[i].get("votes"));
+                                showTree(null, treeArray[i]);
                                 break;
                             }
                         }
@@ -571,7 +570,17 @@
         $( "#popupTreeUser").val(treeUser);
         $( "#popupTreeStory").val(treeStory);
         $( "#popupTreeVote").val(treeVote);
-        $( "#treepopup").popup("open", { x: event.pageX, y: event.pageY } );
+        //alert(event.pageX + " " + event.pageY);
+        if(event == null) 
+        {
+            var xpos = $('#map-canvas').offset().left + ($('#map-canvas').width()/2);
+            var ypos = $('#map-canvas').offset().top + ($('#map-canvas').height()/2);
+            $( "#treepopup").popup("open", { x: xpos, y: ypos} );
+        }
+        else
+        {
+            $( "#treepopup").popup("open", { x: event.pageX, y: event.pageY } );
+        }
         $( "#popupBtnVote").on('tap', function() {
 
             console.log("pressed vote");
