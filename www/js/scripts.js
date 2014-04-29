@@ -19,23 +19,25 @@
     var gpsLng;
 
     var clusterStyles = [{
-        url: 'img/m1.png',
-        width: 35,
-        height: 35,
-        textColor: '#ff00ff',
-        textSize: 10
+        url: 'img/cluster1.png',
+        width: 50,
+        height: 50,
+        textColor: '#0000FF',
+        textSize: 13,
+        anchorText: [-4,-4]
     }, {
-        url: 'img/m1.png',
-        width: 45,
-        height: 45,
-        textColor: '#ff0000',
-        textSize: 11
+        url: 'img/cluster2.png',
+        width: 50,
+        height: 50,
+        textColor: '#00FF00',
+        textSize: 14,
+        anchorText: [-4,-2]
     }, {
-        url: 'img/m1.png',
+        url: 'img/cluster2.png',
         width: 55,
         height: 55,
-        textColor: '#ffffff',
-        textSize: 12
+        textColor: '#00FF00',
+        textSize: 14
     }];
 
     function onLoad() {
