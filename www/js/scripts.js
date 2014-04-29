@@ -6,6 +6,8 @@
     var panToLat = 51.455;
     var panToLong = -2.588;
     var initZoom = 13;
+    var loadId = 0;
+    var currentBouncer = null;
     var treeArray = new Array();
     var gmarkers = new Array();
     var infoWindowArray = new Array();
@@ -44,6 +46,7 @@
     {
         var id = 'id'; 
         if(id=(new RegExp('[?&]'+id+'=([^&]*)')).exec(location.search)) id = id[1];
+        loadId = id;
         var Tree = Parse.Object.extend("Tree");
         var query = new Parse.Query("Tree");
         if(id != null)
@@ -51,7 +54,7 @@
             query.equalTo("objectId", id);
             query.find({
                 success: function(result) {
-                    panToLat = result[0].get("lat");
+                    panToLat = result[0].get("lat") + 0.0010; //Adding this number makes the popup appear above the tree
                     panToLong = result[0].get("lng");
                     initZoom = 18;
                 },
@@ -120,7 +123,6 @@
             map.setZoom(initZoom);
         }
         var c = map.getCenter();        
-        
         // Fix for loading map into 'hidden' div on other page
         // If the login takes a long time this sometimes doesn't work
         google.maps.event.addListener(map, 'idle', function(){
@@ -304,6 +306,20 @@
                     lastTreeSynced = results[i-1].createdAt;
                     treeCount = treeCount + results.length;
                     markerCount = treeCount;
+                    if(loadId != 0)
+                    {
+                        for(var i = 0; i < treeArray.length; i++)
+                        {
+                            if(treeArray[i].id == loadId)
+                            {
+                                // For guest --- openPopupInMap("Username: " + treeArray[i].get("username") + "<p> Tree Name: " + "temp nothing" + "<p> Story: " + treeArray[i].get("story") + "<p> Votes: " + treeArray[i].get("votes"));
+                                openPopupInMap("Username: " + treeArray[i].get("username") + "<p> Tree Name: " + "temp nothing" + "<p> Story: " + treeArray[i].get("story") + "<p> Votes: " + treeArray[i].get("votes"));
+                                gmarkers[i].setAnimation(google.maps.Animation.BOUNCE);
+                                currentBouncer = i;
+                                break;
+                            }
+                        }
+                    }       
                 }
             },
             error: function(error) {
@@ -538,11 +554,9 @@
 
     // Create infoWindows when loading from Parse Cloud
     function attachMessageInit(marker, map, tree) {
-        {
-            var infowindow = new google.maps.InfoWindow({
-                content: '<p>User Name: ' + tree.get("username") + '<p>Tree Story: ' + tree.get("story") + '<p>Votes: ' + tree.get("votes") + '<p><button id="btnVoteUp'+tree.id+'">Vote Up</button>'
-            });
-        }
+        var infowindow = new google.maps.InfoWindow({
+            content: '<p>User Name: ' + tree.get("username") + '<p>Tree Story: ' + tree.get("story") + '<p>Votes: ' + tree.get("votes") + '<p><button id="btnVoteUp'+tree.id+'">Vote Up</button>'
+        });
         var idForVote = tree.id;
         infoWindowArray.push(infowindow);
         google.maps.event.addListener(marker, 'click', function() {
