@@ -3,6 +3,11 @@
     var treeCount = 0;
     var markerCount = 0;
     var lastTreeSynced = 0;
+    var panToLat = 51.455;
+    var panToLong = -2.588;
+    var initZoom = 13;
+    var loadId = 0;
+    var currentBouncer = null;
     var treeArray = new Array();
     var gmarkers = new Array();
     var infoWindowArray = new Array();
@@ -35,6 +40,29 @@
 
     function onLoad() {
         document.addEventListener("deviceready", onDeviceReady, false);
+    }
+    
+    function checker()
+    {
+        var id = 'id'; 
+        if(id=(new RegExp('[?&]'+id+'=([^&]*)')).exec(location.search)) id = id[1];
+        loadId = id;
+        var Tree = Parse.Object.extend("Tree");
+        var query = new Parse.Query("Tree");
+        if(id != null)
+        {
+            query.equalTo("objectId", id);
+            query.find({
+                success: function(result) {
+                    panToLat = result[0].get("lat"); //Adding this number makes the popup appear above the tree
+                    panToLong = result[0].get("lng");
+                    initZoom = 18;
+                },
+                error: function(error) {
+                    alert("error");
+                }
+            });
+        }
     }
 
     function onDeviceReady() {
@@ -70,7 +98,7 @@
     function showLocationError(error) {
         switch(error.code) {
             case error.PERMISSION_DENIED:
-                openPopupInMap("Location services blocked by user. To allow location services, consult your device/browser settings");
+                //openPopupInMap("Location services blocked by user. To allow location services, consult your device/browser settings");
                 break;
             case error.POSITION_UNAVAILABLE:
                 openPopupInMap("Location information is unavailable");
@@ -91,11 +119,10 @@
             map = initializeMap();
         }
         else {
-            map.panTo(new google.maps.LatLng(51.455, -2.588));
-            map.setZoom(13);
+            map.panTo(new google.maps.LatLng(panToLat, panToLong));
+            map.setZoom(initZoom);
         }
         var c = map.getCenter();        
-        
         // Fix for loading map into 'hidden' div on other page
         // If the login takes a long time this sometimes doesn't work
         google.maps.event.addListener(map, 'idle', function(){
@@ -113,8 +140,8 @@
     // Initialize Map page
     function initializeMap() {
         var mapOptions = {
-            center: new google.maps.LatLng(51.455, -2.588),
-            zoom: 13,
+            center: new google.maps.LatLng(panToLat, panToLong),
+            zoom: initZoom,
             minZoom: 13
         };
         map = new google.maps.Map(document.getElementById("map-canvas"),mapOptions);
@@ -255,6 +282,7 @@
         var Tree = Parse.Object.extend("Tree");
         var query = new Parse.Query("Tree");
         if(lastTreeSynced != 0) query.greaterThan("createdAt", lastTreeSynced);
+        query.limit(1000);
         query.ascending("createdAt");
         query.find({
             // Load each tree
@@ -278,6 +306,19 @@
                     lastTreeSynced = results[i-1].createdAt;
                     treeCount = treeCount + results.length;
                     markerCount = treeCount;
+                    if(loadId != 0)
+                    {
+                        for(var i = 0; i < treeArray.length; i++)
+                        {
+                            if(treeArray[i].id == loadId)
+                            {
+                                // For guest --- openPopupInMap("Username: " + treeArray[i].get("username") + "<p> Tree Name: " + "temp nothing" + "<p> Story: " + treeArray[i].get("story") + "<p> Votes: " + treeArray[i].get("votes"));
+                                //openPopupInMap("Username: " + treeArray[i].get("username") + "<p> Tree Name: " + "temp nothing" + "<p> Story: " + treeArray[i].get("story") + "<p> Votes: " + treeArray[i].get("votes"));
+                                showTree(null, treeArray[i]);
+                                break;
+                            }
+                        }
+                    }       
                 }
             },
             error: function(error) {
@@ -355,7 +396,7 @@
                     }
                     if(dayCount == treesPerDay)
                     {
-                        plantAllowed = false;
+                        //plantAllowed = false;
                     }
                 }
                 if(checkLocation(location) && plantAllowed)
@@ -387,7 +428,7 @@
                                     markerCount++;
                                     gmarkers.push(marker);
                                     map.panTo(location);
-                                    attachMessage(marker, map);
+                                    attachMessage(marker, map, tree);
                                 },
                                 error: function(error) {
                                     alert("error");
@@ -472,10 +513,7 @@
                 tree.save();
                 infoWindowArray[treeCount].close();
                 infoWindowArray[treeCount].setContent('Tree submitted.<p>User Name: ' + tree.get("username") + '<p>Tree Story: ' + fStory + '<p><p>Votes: 0<p><button id="btnVoteUp'+tree.id+'">Vote Up</button>');
-                //What are these meant to do?
-                //document.getElementById("treeInfoText").innerHTML= 'Tree submitted.<p>User Name: ' + tree.get("username") + '<p>Tree Story: ' + fStory + '<p><p>Votes: 0';
-                //$( "#treeInfo" ).popup({ theme: "a" });
-                //$( "#treeInfo" ).popup("open");
+                openPopupPlant('Tree submitted.<p>User Name: ' + tree.get("username") + '<p>Tree Story: ' + fStory + '<p><p>Votes: 0');
                 treeArray.push(tree); 
                 treeCount++;
             },
@@ -487,7 +525,7 @@
     }
 
     // Attaches infowindow to each marker
-    function attachMessage(marker, map) {           
+    function attachMessage(marker, map, tree) {           
         var contentString = '<p id="textInfoWindow"><b>New Tree Placed</b><p><form id="myForm"> Story: <input type="text" name="Story"><br></form><p><button id="btnSubmitTree" onclick="return addNewTree()">Submit</button><button id="btnCancelTree" onclick="return cancelTree(markerCount-1)">Cancel</button></p>'
         var infowindow = new google.maps.InfoWindow({
             content: contentString
@@ -495,7 +533,9 @@
         infoWindowArray.push(infowindow);
         infowindow.open(map, marker);
         google.maps.event.addListener(marker, 'click', function() {
-            infowindow.open(map,marker);
+            //infowindow.open(map,marker);
+            showTree(event, tree);
+            
         });
         google.maps.event.addListener(infowindow, 'domready', function(){
             var contentStr = '<p id="textInfoWindow"><b>New Tree Placed</b><p><form id="myForm"> Story: <input type="text" name="Story"><br></form><p><button id="btnSubmitTree" onclick="return addNewTree()">Submit</button><button id="btnCancelTree" onclick="return cancelTree(markerCount-1)">Cancel</button></p>'
@@ -513,28 +553,33 @@
         });
     }
 
-    function showTree(event, tree, triggerpage) {
+    function showTree(event, tree) {
         // msg = "";
         $('#popupMsg').html('');
         var treeName = tree.get("name");
         var treeUser = tree.get("username");
         var treeStory = tree.get("story");
+        if(tree.get("story") == "none") 
+        {
+            tree.set("story", treeArray[treeArray.length - 1].get("story"));
+            tree.save();
+        }
+        treeStory = tree.get("story");
         var treeVote = tree.get("votes");
         $( "#popupTreeName").val(treeName);
         $( "#popupTreeUser").val(treeUser);
         $( "#popupTreeStory").val(treeStory);
         $( "#popupTreeVote").val(treeVote);
-        if (triggerpage === 'map') {
-            $( "#treepopup").popup("open", { x: event.pageX, y: event.pageY } );
+        //alert(event.pageX + " " + event.pageY);
+        if(event == null) 
+        {
+            var xpos = $('#map-canvas').offset().left + ($('#map-canvas').width()/2);
+            var ypos = $('#map-canvas').offset().top + ($('#map-canvas').height()/2);
+            $( "#treepopup").popup("open", { x: xpos, y: ypos} );
         }
-        else if (triggerpage === 'leaderboard') {
-            var moffset = $("#map-canvas").offset();
-            var mwidth = $("#map-canvas").width();
-            var mheight = $("#map-canvas").height();
-            var mcenterX = moffset.left + mwidth / 2;
-            var mcenterY = moffset.top + mheight / 2;
-
-            $( "#treepopup").popup("open", { x: mcenterX, y: mcenterY } );
+        else
+        {
+            $( "#treepopup").popup("open", { x: event.pageX, y: event.pageY } );
         }
         $( "#popupBtnVote").on('tap', function() {
 
@@ -593,15 +638,13 @@
 
     // Create infoWindows when loading from Parse Cloud
     function attachMessageInit(marker, map, tree) {
-        {
-            var infowindow = new google.maps.InfoWindow({
-                content: '<p>User Name: ' + tree.get("username") + '<p>Tree Story: ' + tree.get("story") + '<p>Votes: ' + tree.get("votes") + '<p><button id="btnVoteUp'+tree.id+'">Vote Up</button>'
-            });
-        }
+        var infowindow = new google.maps.InfoWindow({
+            content: '<p>User Name: ' + tree.get("username") + '<p>Tree Story: ' + tree.get("story") + '<p>Votes: ' + tree.get("votes") + '<p><button id="btnVoteUp'+tree.id+'">Vote Up</button>'
+        });
         var idForVote = tree.id;
         infoWindowArray.push(infowindow);
         google.maps.event.addListener(marker, 'click', function() {
-            showTree(event, tree, 'map');
+            showTree(event, tree);
             // infowindow.open(map,marker);
         });
         google.maps.event.addListener(infowindow, 'domready', function(){
@@ -702,11 +745,7 @@
             map.setCenter(new google.maps.LatLng(lat,lng));
             map.setZoom(18);
 
-            // waits 1s for map page to load before showing tree popup
-            setTimeout(function(){showTree(event, sortArray[pos-1], 'leaderboard')},1000);
-
-            // old infowindow code
-            /*for (var i = 0; i < gmarkers.length; i++) {
+            for (var i = 0; i < gmarkers.length; i++) {
                 if (gmarkers[i].position.toString() === ('(' + lat + ', ' + lng + ')')) {
                     mark = gmarkers[i];
                     index = i;
@@ -714,7 +753,7 @@
                 }
                 if (found) break;
             }
-            infoWindowArray[index].open(map,mark);*/
+            infoWindowArray[index].open(map,mark);
         }
     }
             

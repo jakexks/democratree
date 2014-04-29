@@ -16,20 +16,20 @@ $(document).on( "pagebeforeshow","#plantconfirm", function() {
 } );
 
 function addTree1() {
-	newChosenTree = $("#chosenTree :radio:checked").val();
+    newChosenTree = $("#chosenTree :radio:checked").val();
 }
 
 function addTree2() {
-	newTreeLabel = $("#tree-label").val();
-	newTreeStory = $("#tree-story").val();
+    newTreeLabel = $("#tree-label").val();
+    newTreeStory = $("#tree-story").val();
 }
 
 function attachPhoto1() {
-	navigator.camera.getPicture(onAddTreeSuccess, onAddTreeFail, { quality: 50, destinationType: Camera.DestinationType.DATA_URL});
+    navigator.camera.getPicture(onAddTreeSuccess, onAddTreeFail, { quality: 50, destinationType: Camera.DestinationType.DATA_URL});
 }
 
 function attachPhoto2() {
-	navigator.camera.getPicture(onAddTreeSuccess, onAddTreeFail, { quality: 50, sourceType: Camera.PictureSourceType.PHOTOLIBRARY, destinationType: Camera.DestinationType.DATA_URL});
+    navigator.camera.getPicture(onAddTreeSuccess, onAddTreeFail, { quality: 50, sourceType: Camera.PictureSourceType.PHOTOLIBRARY, destinationType: Camera.DestinationType.DATA_URL});
 }
 
 
