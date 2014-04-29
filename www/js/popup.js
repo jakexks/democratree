@@ -1,7 +1,7 @@
 function openPopupInMap(message)
 {
     $( "#alertMap" ).popup({ theme: "a" });
-    document.getElementById("alertTextMap").innerHTML = message + '<br/><br/><div align="center" style="width:100px"><a href="#" class="ui-btn ui-shadow ui-corner-all" data-rel="back">OK</a></div>';
+    document.getElementById("alertTextMap").innerHTML = message;
     $( "#alertMap" ).popup("open");
 }
 
@@ -15,7 +15,7 @@ function openPopupPlant(message)
 function openPopupInLogin(message)
 {
     $( "#alertLogin" ).popup({ theme: "a" });
-    document.getElementById("alertTextLogin").innerHTML = message + '<br/><br/><div align="center" style="width:100px"><a href="#" class="ui-btn ui-shadow ui-corner-all" data-rel="back">OK</a></div>';
+    document.getElementById("alertTextLogin").innerHTML = message;
     $( "#alertLogin" ).popup("open");
 }
 
@@ -29,6 +29,6 @@ function openPopupInSignup(message)
 function openPopupInSettings(message)
 {
     $( "#alertSettings" ).popup({ theme: "a" });
-    document.getElementById("alertTextSettings").innerHTML = message + '<br/><br/><div align="center" style="width:100px"><a href="#" class="ui-btn ui-shadow ui-corner-all" data-rel="back">OK</a></div>';
+    document.getElementById("alertTextSettings").innerHTML = message;
     $( "#alertSettings" ).popup("open");
 }

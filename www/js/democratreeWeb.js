@@ -66,7 +66,7 @@ function initializeLogin() {
                         document.getElementById('demo-pwd').value = "";
                         document.getElementById('demo-conf-pwd').value = "";
                         document.getElementById('demo-email').value = "";
-                        window.location.hash = '';
+                        // window.location.hash = '';
                     },
                     error: function(user, error) {
                         // Show the error message somewhere and let the user try again.

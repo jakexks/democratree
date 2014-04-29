@@ -70,6 +70,7 @@
     }
 
     function hashChanged(event){
+        //console.log(loginStatus);
         if(ignoreHashChange == false){
             if(loginStatus == 'none' && window.location.hash != '#login' && window.location.hash != '') {
                 ignoreHashChange = true;
