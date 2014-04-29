@@ -584,6 +584,8 @@
             $( "#treepopup").popup("open", { x: event.pageX, y: event.pageY } );
         }
         $("#twitter-button").html('<a href="https://twitter.com/share" class="twitter-share-button" data-url="http://democratree.jakexks.com?id=' + tree.id + '" data-text="I just planted a tree!" data-via="democratreeuk" data-hashtags="1000Trees">Tweet</a>');
+        $("#fb-button").html('<fb:share-button href="http://democratree.jakexks.com?id=' + tree.id + '" type="button_count"></fb:share-button>');
+        FB.XFBML.parse();
         twttr.widgets.load();
         $( "#popupBtnVote").on('tap', function() {
 
@@ -647,7 +649,7 @@
         });
         var idForVote = tree.id;
         infoWindowArray.push(infowindow);
-        google.maps.event.addListener(marker, 'click', function() {
+        google.maps.event.addListener(marker, 'click', function(event) {
             showTree(event, tree);
             // infowindow.open(map,marker);
         });
