@@ -233,7 +233,7 @@
             <td class="layout_selectedmenu">
                 Map
             </td>
-            <td rowspan="8" class="layout_map">
+            <td rowspan="6" class="layout_map">
                 <input id="search-input" data-mini="true" data-clear-btn="true" type="text" placeholder="Search">
                 <div data-role="content" id="map-canvas"></div>
             </td>
@@ -246,16 +246,6 @@
         <tr>
             <td class="layout_menu" onclick="window.location.href='#profile'">
                 My Profile
-            </td>
-        </tr>
-        <tr>
-            <td class="layout_menu" onclick="window.location.href='#friends'">
-                Friends
-            </td>
-        </tr>
-        <tr>
-            <td class="layout_menu" onclick="window.location.href='#treeinfo'">
-                Tree Information
             </td>
         </tr>
         <tr>
@@ -299,7 +289,7 @@
             <td class="layout_menu" onclick="window.location.href='#map'">
                 Map
             </td>
-            <td rowspan="8" class="layout_contentmain">
+            <td rowspan="6" class="layout_contentmain">
                 <div class="layout_leaderboarddropdown">
                     <form>
                         Select leaderboard filter:
@@ -448,16 +438,6 @@
             </td>
         </tr>
         <tr>
-            <td class="layout_menu" onclick="window.location.href='#friends'">
-                Friends
-            </td>
-        </tr>
-        <tr>
-            <td class="layout_menu" onclick="window.location.href='#treeinfo'">
-                Tree Information
-            </td>
-        </tr>
-        <tr>
             <td class="layout_menu" onclick="window.location.href='#settings'">
                 Account Settings
             </td>
@@ -496,7 +476,7 @@
             <td class="layout_menu" onclick="window.location.href='#map'">
                 Map
             </td>
-            <td rowspan="8" class="layout_contentmain">
+            <td rowspan="6" class="layout_contentmain">
                 <!-- CONTENT -->
                 <div role="main" class="ui-content" style="text-align:center;">
                     <p>
@@ -529,16 +509,6 @@
             </td>
         </tr>
         <tr>
-            <td class="layout_menu" onclick="window.location.href='#friends'">
-                Friends
-            </td>
-        </tr>
-        <tr>
-            <td class="layout_menu" onclick="window.location.href='#treeinfo'">
-                Tree Information
-            </td>
-        </tr>
-        <tr>
             <td class="layout_menu" onclick="window.location.href='#settings'">
                 Account Settings
             </td>
@@ -562,147 +532,6 @@
     </div>
 
 </div><!-- /page -->
-
-<!-- Start of friends page -->
-<div data-role="page" id="friends">
-
-    <div align=center>
-    <table width="1100">
-        <tr>
-            <td colspan="2" class="layout_header">
-                Friends
-            </td>
-        </tr>
-        <tr>
-            <td class="layout_menu" onclick="window.location.href='#map'">
-                Map
-            </td>
-            <td rowspan="8" class="layout_contentmain">
-                <!-- CONTENT -->
-                <div role="main" class="ui-content">
-                    <p>
-                        <ul data-role="listview" data-autodividers="true" data-filter="true" data-inset="true">
-                            <li>Abbbbbby</li>
-                            <li>JLVNOOO(</li>
-                            <li>RATATA</li>
-                        </ul>
-                    </p>
-                </div>
-                <!-- CONTENT -->
-            </td>
-        </tr>
-        <tr>
-            <td class="layout_menu" onclick="updateLeaderboard();window.location.href='#leaderboard'">
-                Leaderboard
-            </td>
-        </tr>
-        <tr>
-            <td class="layout_menu" onclick="window.location.href='#profile'">
-                My Profile
-            </td>
-        </tr>
-        <tr>
-            <td class="layout_selectedmenu">
-                Friends
-            </td>
-        </tr>
-        <tr>
-            <td class="layout_menu" onclick="window.location.href='#treeinfo'">
-                Tree Information
-            </td>
-        </tr>
-        <tr>
-            <td class="layout_menu" onclick="window.location.href='#settings'">
-                Account Settings
-            </td>
-        </tr>
-        <tr>
-            <td class="layout_menu" onclick="window.location.href='#help'">
-                Help
-            </td>
-        </tr>
-        <tr>
-            <td class="layout_menu logoutButton">
-                Log Out
-            </td>
-        </tr>
-        <tr>
-            <td colspan="2" class="layout_footer">
-                © Democratree v1.1 
-            </td>
-        </tr>
-    </table>
-    </div>
-
-</div><!-- /page -->
-
-
-<!-- Start of Tree Info page -->
-<div data-role="page" id="treeinfo">
-
-    <div align=center>
-    <table width="1100">
-        <tr>
-            <td colspan="2" class="layout_header">
-                Tree Information
-            </td>
-        </tr>
-        <tr>
-            <td class="layout_menu" onclick="window.location.href='#map'">
-                Map
-            </td>
-            <td rowspan="8" class="layout_contentmain">
-                <!-- CONTENT -->
-                <!-- CONTENT -->
-                <!-- CONTENT -->
-            </td>
-        </tr>
-        <tr>
-            <td class="layout_menu" onclick="updateLeaderboard();window.location.href='#leaderboard'">
-                Leaderboard
-            </td>
-        </tr>
-        <tr>
-            <td class="layout_menu" onclick="window.location.href='#profile'">
-                My Profile
-            </td>
-        </tr>
-        <tr>
-            <td class="layout_menu" onclick="window.location.href='#friends'">
-                Friends
-            </td>
-        </tr>
-        <tr>
-            <td class="layout_selectedmenu">
-                Tree Information
-            </td>
-        </tr>
-        <tr>
-            <td class="layout_menu" onclick="window.location.href='#settings'">
-                Account Settings
-            </td>
-        </tr>
-        <tr>
-            <td class="layout_menu" onclick="window.location.href='#help'">
-                Help
-            </td>
-        </tr>
-        <tr>
-            <td class="layout_menu logoutButton">
-                Log Out
-            </td>
-        </tr>
-        <tr>
-            <td colspan="2" class="layout_footer">
-                © Democratree v1.1 
-            </td>
-        </tr>
-    </table>
-    </div>
-
-</div> <!-- /page -->
-
-
 
 <!-- Start of settings page -->
 <div data-role="page" id="settings">
@@ -718,7 +547,7 @@
             <td class="layout_menu" onclick="window.location.href='#map'">
                 Map
             </td>
-            <td rowspan="8" class="layout_contentmain">
+            <td rowspan="6" class="layout_contentmain">
                 <!-- CONTENT -->
                 <div role="main" class="ui-content">
                     <p>
@@ -745,16 +574,6 @@
         <tr>
             <td class="layout_menu" onclick="window.location.href='#profile'">
                 My Profile
-            </td>
-        </tr>
-        <tr>
-            <td class="layout_menu" onclick="window.location.href='#friends'">
-                Friends
-            </td>
-        </tr>
-        <tr>
-            <td class="layout_menu" onclick="window.location.href='#treeinfo'">
-                Tree Information
             </td>
         </tr>
         <tr>
@@ -797,7 +616,7 @@
             <td class="layout_menu" onclick="window.location.href='#map'">
                 Map
             </td>
-            <td rowspan="8" class="layout_contentmain">
+            <td rowspan="6" class="layout_contentmain">
                 <!-- CONTENT -->
                 <!-- CONTENT -->
                 <!-- CONTENT -->
@@ -811,16 +630,6 @@
         <tr>
             <td class="layout_menu" onclick="window.location.href='#profile'">
                 My Profile
-            </td>
-        </tr>
-        <tr>
-            <td class="layout_menu" onclick="window.location.href='#friends'">
-                Friends
-            </td>
-        </tr>
-        <tr>
-            <td class="layout_menu" onclick="window.location.href='#treeinfo'">
-                Tree Information
             </td>
         </tr>
         <tr>

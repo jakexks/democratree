@@ -745,7 +745,10 @@
             map.setCenter(new google.maps.LatLng(lat,lng));
             map.setZoom(18);
 
-            for (var i = 0; i < gmarkers.length; i++) {
+            // waits 1s for map page to load before showing tree popup
+            setTimeout(function(){showTree(null, sortArray[pos-1])},1000);
+
+            /*for (var i = 0; i < gmarkers.length; i++) {
                 if (gmarkers[i].position.toString() === ('(' + lat + ', ' + lng + ')')) {
                     mark = gmarkers[i];
                     index = i;
@@ -753,7 +756,7 @@
                 }
                 if (found) break;
             }
-            infoWindowArray[index].open(map,mark);
+            infoWindowArray[index].open(map,mark);*/
         }
     }
             
