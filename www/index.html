@@ -810,7 +810,7 @@ background-image: linear-gradient(top , #5de100, #3d9200 66.0%);">
 
     <div data-role="header" data-position="fixed" data-id="fixed_header">
         <a data-icon="arrow-l" href="javascript:window.history.back();" data-iconpos="notext">Back</a>
-        <h1>Check out your tree</h1>
+        <h1>Confirm tree details</h1>
     </div><!-- /header -->
 
     <div role="main" class="ui-content">
@@ -819,8 +819,8 @@ background-image: linear-gradient(top , #5de100, #3d9200 66.0%);">
             <div id="confirmType"></div>
             <div><img id="confirmImg"></img></div>
             <div id="confirmStory"></div>
-            <div><img id="confirmMap"></img></div>
-            <a href="javascript:window.location.href='#map';placeMarker(newLatLng, map);" class="ui-btn">Plant it!</a>
+            <div>Location:<br /><img id="confirmMap"></img></div>
+            <a href="javascript:addTreePlant();" class="ui-btn">Plant it!</a>
         </p>
     </div><!-- /content -->
 </div><!-- /page -->

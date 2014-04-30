@@ -188,8 +188,18 @@
                 {
                     populateMap(map);
                     //placeMarker(event.latLng, map);
-                    newLatLng = event.latLng;
-                    window.location = "#add_tree"
+                    showLoader();
+                    $.get("http://pecan.jakexks.com/democratree/plantable.php?lat=" + event.latLng.lat() + "&long=" + event.latLng.lng(), function(data) { 
+                        hideLoader(); 
+                        if (data == "true") {
+                            newLatLng = event.latLng;
+                            window.location = "#add_tree";
+                        }
+                        else {
+                            openPopupInMap("That area is not suitable for tree planting, try somewhere else!");
+                        }
+                    });
+                    
                 }
             }
             else {
