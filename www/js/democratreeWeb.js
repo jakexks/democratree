@@ -332,7 +332,7 @@ function onSignInCallback(authResult) {
                             var socialMediaUsers = Parse.Object.extend("socialMediaUsers");
                             var socialMediaUser = new socialMediaUsers();
                             socialMediaUser.set('email', email);
-                            socialMediaUser.set('google', userInfo.id);
+                            socialMediaUser.set('googleplus', userInfo.id);
                             socialMediaUser.set('name', userInfo.displayName);
                             socialMediaUser.set('votedOn', []);
                             socialMediaUser.save();
