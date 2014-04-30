@@ -13,7 +13,7 @@ function render() {
         'clientid':'472542569529-mfjun68cmt6gojdfis32u465hpkbjij8.apps.googleusercontent.com',
         'cookiepolicy':'single_host_origin',
         'requestvisibleactions':'http://schemas.google.com/AddActivity',
-        'scope':'https://www.googleapis.com/auth/plus.login'
+        'scope':'https://www.googleapis.com/auth/plus.login https://www.googleapis.com/auth/plus.profile.emails.read'
     };
 
     // Attach a click listener to a button to trigger the flow.

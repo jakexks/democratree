@@ -324,7 +324,7 @@ function onSignInCallback(authResult) {
                     return v.type === 'account'; // Filter out the primary email
                 })[0].value;
                 var query = new Parse.Query("socialMediaUsers");
-                query.equalTo("google", userInfo.id);
+                query.equalTo("googleplus", userInfo.id);
                 query.first({
                     success: function(socialMediaUser) {
                         // If there's no current entry, add it, otherwise just set the current users to it
