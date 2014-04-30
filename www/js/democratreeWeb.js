@@ -123,7 +123,7 @@ function initializeLogin() {
                             var query = new Parse.Query("socialMediaUsers");
                             query.equalTo("facebook", userInfo.id);
                             query.first({
-                                success: function(linkedUser) {
+                                success: function(socialMediaUser) {
                                     // If there's no current entry, add it, otherwise just set the current users to it
                                     if (socialMediaUser == undefined) {
                                         var socialMediaUsers = Parse.Object.extend("socialMediaUsers");
@@ -318,7 +318,7 @@ function onSignInCallback(authResult) {
             var request = gapi.client.plus.people.get( {'userId' : 'me'} );
             request.execute( function(userInfo) {
                 //console.log(userInfo);
-                var query = new Parse.Query("linkedUsers");
+                var query = new Parse.Query("socialMediaUsers");
                 // Filter emails to find primary account
                 var email = userInfo['emails'].filter(function(v) {
                     return v.type === 'account'; // Filter out the primary email
@@ -326,7 +326,7 @@ function onSignInCallback(authResult) {
                 var query = new Parse.Query("socialMediaUsers");
                 query.equalTo("google", userInfo.id);
                 query.first({
-                    success: function(linkedUser) {
+                    success: function(socialMediaUser) {
                         // If there's no current entry, add it, otherwise just set the current users to it
                         if (socialMediaUser == undefined) {
                             var socialMediaUsers = Parse.Object.extend("socialMediaUsers");
