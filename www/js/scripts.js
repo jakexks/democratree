@@ -362,7 +362,7 @@
         {
             latDif = Math.abs(Math.abs(treeArray[i].get("lat")) - Math.abs(newLoc.lat()));
             lngDif = Math.abs(Math.abs(treeArray[i].get("lng")) - Math.abs(newLoc.lng()));
-            if(latDif < 0.0003 && lngDif < 0.0003)
+            if(latDif < 0.0001 && lngDif < 0.0001)
             {
                 return false;
             }

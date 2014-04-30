@@ -16,6 +16,10 @@
     {
         echo "true";
     }
+    else if($r > 202 && $r < 212 && $g > 232 && $g < 240 && $b > 164 && $b < 164)
+    {
+        echo "true";
+    }
     else
     {
         echo "false";
