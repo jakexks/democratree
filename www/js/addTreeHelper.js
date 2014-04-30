@@ -2,17 +2,15 @@ var newChosenTree = "";
 var newTreeLabel = "";
 var newTreeStory = "";
 var newTreeImg = null;
+var newLatLng = null;
 
-$(document).on("pageshow","#plantconfirm",function(){
-  alert("pageshow event fired");
-});
 
 $(document).on( "pagebeforeshow","#plantconfirm", function() {
-    alert("SSSSSSSS");
     $("#confirmTitle").html("<h2>" + newTreeLabel + "</h2>");
     $("#confirmType").html(newChosenTree);
     $("#confirmImg").src = "data:image/jpeg;base64," + newTreeImg;
     $("#confirmStory").html(newTreeStory);
+    $("#confirmMap").attr("src", "http://maps.googleapis.com/maps/api/staticmap?center=" + newLatLng.lat() + "," + newLatLng.lng() + "&key=AIzaSyAHfzX08GH1op3bMCsv7FqpkzxBwwQO4Rw&size=300x300&zoom=14");
 } );
 
 function addTree1() {
@@ -40,5 +38,5 @@ function onAddTreeSuccess(imageData) {
 }
 
 function onAddTreeFail(message) {
-    alert('Failed because: ' + message);
+    //alert('Failed because: ' + message);
 }

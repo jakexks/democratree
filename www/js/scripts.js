@@ -187,7 +187,9 @@
                 else 
                 {
                     populateMap(map);
-                    placeMarker(event.latLng, map);
+                    //placeMarker(event.latLng, map);
+                    newLatLng = event.latLng;
+                    window.location = "#add_tree"
                 }
             }
             else {
