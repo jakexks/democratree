@@ -1,4 +1,4 @@
-var currUser;
+var socialMediaUserID;
 
 /* Attach all the listeners to the login buttons */
 function initializeLogin() {
@@ -18,7 +18,6 @@ function initializeLogin() {
         currentBouncer = null;
     });
     $('#democratreeSigninButton').bind('click', function() {
-        // Temporary
         loginStatus = 'democratree';
         var username = document.getElementById('login-username').value;
         var pwd = document.getElementById('login-pwd').value;
@@ -26,7 +25,6 @@ function initializeLogin() {
             success: function(user) {
                 document.getElementById('login-username').value = "";
                 document.getElementById('login-pwd').value = "";
-                currUser = Parse.User.current();
                 if(user.get("emailVerified"))
                 {
                     openMapPage();
@@ -90,15 +88,27 @@ function initializeLogin() {
     $('#facebookSigninButton').bind('click', function(){
         FB.getLoginStatus(function(response) {
             if (response.status === 'connected') {
-                FB.api('/me', function(fbUser) {
-                    var query = new Parse.Query(Parse.User);
-                    query.equalTo("email", fbUser.email);
+                FB.api('/me', function(userInfo) {
+                    var query = new Parse.Query("socialMediaUsers");
+                    query.equalTo("facebook", userInfo.id);
                     query.first({
-                        success: function(pUser) {
-                            currUser = pUser;
+                        success: function(socialMediaUser) {
+                            // If there's no current entry, add it, otherwise just set the current users to it
+                            if (socialMediaUser == undefined) {
+                                var socialMediaUsers = Parse.Object.extend("socialMediaUsers");
+                                var socialMediaUser = new socialMediaUsers();
+                                socialMediaUser.set('email', userInfo.email);
+                                socialMediaUser.set('facebook', userInfo.id);
+                                socialMediaUser.set('name', userInfo.name);
+                                socialMediaUser.set('votedOn', []);
+                                socialMediaUser.save();
+                                socialMediaUserID = userInfo.id;
+                            } else {
+                                socialMediaUserID = userInfo.id;
+                            }
                         },
                         error: function(error) {
-                            console.log(error);
+                            console.log(error)
                         }
                     });
                 });
@@ -110,19 +120,26 @@ function initializeLogin() {
                         loginStatus = 'facebook';
                         openMapPage();
                         FB.api('/me', function(userInfo) {
-                            var query = new Parse.Query(Parse.User);
-                            query.equalTo("email", userInfo.email);
+                            var query = new Parse.Query("socialMediaUsers");
+                            query.equalTo("facebook", userInfo.id);
                             query.first({
-                                success: function(user) {
-                                    //console.log(user)
-                                    //user.set('facebook', userInfo.id);
-                                    //user.save();
-                                    if (user != undefined) {
-                                        currUser = user;
+                                success: function(linkedUser) {
+                                    // If there's no current entry, add it, otherwise just set the current users to it
+                                    if (socialMediaUser == undefined) {
+                                        var socialMediaUsers = Parse.Object.extend("socialMediaUsers");
+                                        var socialMediaUser = new socialMediaUsers();
+                                        socialMediaUser.set('email', userInfo.email);
+                                        socialMediaUser.set('facebook', userInfo.id);
+                                        socialMediaUser.set('name', userInfo.name);
+                                        socialMediaUser.set('votedOn', []);
+                                        socialMediaUser.save();
+                                        socialMediaUserID = userInfo.id;
+                                    } else {
+                                        socialMediaUserID = userInfo.id;
                                     }
                                 },
-                                error: function(error)  {
-                                    console.log(error);
+                                error: function(error) {
+                                    console.log(error)
                                 }
                             });
                         });
@@ -156,6 +173,38 @@ function initializeLogin() {
     });
     $('.logoutButton').bind('click', logout);
 }
+
+function twitterLoginSuccess() {
+    $.ajax({
+        url: "twitterWeb/twitter_profile.php",
+        type: "GET",
+        dataType: "json"
+    }).done(function(userInfo) {
+        //console.log(userInfo);
+        var query = new Parse.Query("socialMediaUsers");
+        query.equalTo("twitter", userInfo.response.id);
+        query.first({
+            success: function(socialMediaUser) {
+                // If there's no current entry, add it, otherwise just set the current users to it
+                if (socialMediaUser == undefined) {
+                    var socialMediaUsers = Parse.Object.extend("socialMediaUsers");
+                    var socialMediaUser = new socialMediaUsers();
+                    // There is no way to access a users email with the twitter API
+                    socialMediaUser.set('twitter', userInfo.response.id_str);
+                    socialMediaUser.set('name', userInfo.response.name);
+                    socialMediaUser.set('votedOn', []);
+                    socialMediaUser.save();
+                    socialMediaUserID = userInfo.response.id_str;
+                } else {
+                    socialMediaUserID = userInfo.response.id_str;
+                }
+            },
+            error: function(error) {
+                console.log(error)
+            }
+        });
+    });
+}
         
 function logout(){
     clearProfile();
@@ -172,7 +221,7 @@ function logout(){
     }
     $('#myTreeList').empty();
     loginStatus = 'none';
-    currUser = undefined;
+    currentUser = undefined;
     ignoreHashChange = true;
     window.location.hash = '#login'
     // For some reason this fires off two hash changes - the second #'s to window.location.pathname
@@ -180,6 +229,7 @@ function logout(){
 
 /* Fill in profile fields and generate list of users trees */
 function hashChangedProfile(){
+    var user;
     if(loginStatus == 'googleplus'){
         googleplusHelper.profile();
         var $button = $('<button/>', {
@@ -213,9 +263,15 @@ function hashChangedProfile(){
         $('#profile_username').append(user.getUsername());
     }
     if(loginStatus != 'guest') {
-        var user = currUser;
+        var userid;
+        if (loginStatus == 'democratree') {
+            userid = user.get('username');
+        } else {
+            userid = socialMediaUserID;
+        }
         var query = new Parse.Query("Tree");
-        query.equalTo('username', user.get('username'));
+        query.equalTo('username', userid);
+        query.equalTo('userType', loginStatus);
         query.find({
             success: function(trees) {
                 $('#myTreeList').empty();
@@ -224,19 +280,19 @@ function hashChangedProfile(){
                     if(i == 0) { 
                         $('#myTreeList').append('<li class="ui-first-child">' +
                             '<a onclick="window.location.href=\'#map\'; map.setCenter(new google.maps.LatLng('+t.lat+','+t.lng+')); map.setZoom(18);" class="ui-btn ui-btn-icon-right ui-icon-carat-r">' 
-                            + t.story + ' : ' + t.votes +
+                            + t.name + ' : ' + t.votes +
                             '</a></li>'
                         );
                     } else if(i == trees.length && i != 0) {
                         $('#myTreeList').append('<li class="ui-last-child">' +
                             '<a onclick="window.location.href=\'#map\'; map.setCenter(new google.maps.LatLng('+t.lat+','+t.lng+')); map.setZoom(18);" class="ui-btn ui-btn-icon-right ui-icon-carat-r">' 
-                            + t.story + ' : ' + t.votes +
+                            + t.name + ' : ' + t.votes +
                             '</a></li>'
                         );
                     } else {
                         $('#myTreeList').append('<li>' +
                             '<a onclick="window.location.href=\'#map\'; map.setCenter(new google.maps.LatLng('+t.lat+','+t.lng+')); map.setZoom(18);" class="ui-btn ui-btn-icon-right ui-icon-carat-r">' 
-                            + t.story + ' : ' + t.votes +
+                            + t.name + ' : ' + t.votes +
                             '</a></li>'
                         );
                     }
@@ -257,12 +313,44 @@ function onSignInCallback(authResult) {
     if (authResult['status']['signed_in'] && authResult['status']['method'] == "PROMPT") {
         // Update the app to reflect a signed in user
         // Hide the sign-in button now that the user is authorized, for example:
-        console.log(authResult);
-        gapi.client.load('plus','v1');
+        //console.log(authResult);
+        gapi.client.load('plus','v1', function() {
+            var request = gapi.client.plus.people.get( {'userId' : 'me'} );
+            request.execute( function(userInfo) {
+                //console.log(userInfo);
+                var query = new Parse.Query("linkedUsers");
+                // Filter emails to find primary account
+                var email = userInfo['emails'].filter(function(v) {
+                    return v.type === 'account'; // Filter out the primary email
+                })[0].value;
+                var query = new Parse.Query("socialMediaUsers");
+                query.equalTo("google", userInfo.id);
+                query.first({
+                    success: function(linkedUser) {
+                        // If there's no current entry, add it, otherwise just set the current users to it
+                        if (socialMediaUser == undefined) {
+                            var socialMediaUsers = Parse.Object.extend("socialMediaUsers");
+                            var socialMediaUser = new socialMediaUsers();
+                            socialMediaUser.set('email', email);
+                            socialMediaUser.set('google', userInfo.id);
+                            socialMediaUser.set('name', userInfo.displayName);
+                            socialMediaUser.set('votedOn', []);
+                            socialMediaUser.save();
+                            currentUser = socialMediaUser;
+                        } else {
+                            currentUser = socialMediaUser;
+                        }
+                    },
+                    error: function(error) {
+                        console.log(error)
+                    }
+                });
+            });
+        });
         loginStatus = 'googleplus';
         openMapPage();
     } else {
-        console.log(authResult);
+        //console.log(authResult);
         // Update the app to reflect a signed out user
         // Possible error values:
         //   "user_signed_out" - User is signed-out
@@ -331,7 +419,7 @@ var googleplusHelper = (function() {
       var request = gapi.client.plus.people.get( {'userId' : 'me'} );
       request.execute( function(profile) {
         clearProfile();
-        console.log(profile);
+        //console.log(profile);
         if (profile.error) {
           console.log(profile.error);
           return;
@@ -386,7 +474,7 @@ var facebookHelper = (function() {
         FB.api("/me", function(response) {
             if(response && !response.error){
                 clearProfile();
-                console.log(response);
+                //console.log(response);
                 $('#profile_picture').append(
                     $('<img src=\"//graph.facebook.com/'+response.id+'/picture\">'));
                 $('#profile_name').append(response.name);
@@ -407,7 +495,7 @@ var twitterHelper = (function() {
             type: "GET",
             dataType: "json"
         }).done(function(data) {
-            console.log(data);
+            //console.log(data);
             clearProfile();
             if(data.msg == 'OK') {
                 // Retrieved properly

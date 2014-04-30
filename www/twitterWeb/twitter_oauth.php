@@ -9,7 +9,7 @@ if(!empty($_GET['oauth_verifier']) && !empty($_SESSION['oauth_token']) && !empty
     // Save it in a session var
     $_SESSION['access_token'] = $access_token;
     // Login successful - direct original window to map page
-    echo "<script>window.opener.loginStatus = 'twitter'; window.opener.openMapPage();</script>";
+    echo "<script>window.opener.loginStatus = 'twitter'; window.opener.twitterLoginSuccess(); window.opener.openMapPage();</script>";
     echo "<script>window.close();</script>";
 } else {
     // Something's missing, did the user deny access
