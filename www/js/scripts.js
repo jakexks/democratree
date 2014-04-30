@@ -296,6 +296,7 @@
                 if(results.length > 0)
                 {
                     for (var i = 0; i < results.length; i++) {
+                        var tree = results[i];
                         var latlng = new google.maps.LatLng(tree.get("lat"), tree.get("lng"));
                         var marker = new google.maps.Marker({
                             position: latlng,
@@ -306,7 +307,7 @@
                         });
                         gmarkers.push(marker);
                         attachMessageInit(marker, map, tree);
-                        treeArray.push(results[i]);
+                        treeArray.push(tree);
                     }
                     lastTreeSynced = results[i-1].createdAt;
                     treeCount = treeCount + results.length;
@@ -361,7 +362,7 @@
         {
             latDif = Math.abs(Math.abs(treeArray[i].get("lat")) - Math.abs(newLoc.lat()));
             lngDif = Math.abs(Math.abs(treeArray[i].get("lng")) - Math.abs(newLoc.lng()));
-            if(latDif < 0.0005 && lngDif < 0.0005)
+            if(latDif < 0.0003 && lngDif < 0.0003)
             {
                 return false;
             }
