@@ -285,7 +285,6 @@
     
     function populateMap(map)
     {
-        var results;
         var Tree = Parse.Object.extend("Tree");
         var query = new Parse.Query("Tree");
         if(lastTreeSynced != 0) query.greaterThan("createdAt", lastTreeSynced);
@@ -297,7 +296,6 @@
                 if(results.length > 0)
                 {
                     for (var i = 0; i < results.length; i++) {
-                        var tree = results[i];
                         var latlng = new google.maps.LatLng(tree.get("lat"), tree.get("lng"));
                         var marker = new google.maps.Marker({
                             position: latlng,
@@ -308,7 +306,7 @@
                         });
                         gmarkers.push(marker);
                         attachMessageInit(marker, map, tree);
-                        treeArray.push(tree);
+                        treeArray.push(results[i]);
                     }
                     lastTreeSynced = results[i-1].createdAt;
                     treeCount = treeCount + results.length;
@@ -324,6 +322,15 @@
                             }
                         }
                     }       
+                    query.greaterThan("createdAt", lastTreeSynced);
+                    query.find({
+                        success: function(results) {
+                            if(results.length > 0) populateMap(map);
+                        },
+                        error: function(error) {
+                            alert("error");
+                        }
+                    });
                 }
             },
             error: function(error) {
