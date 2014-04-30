@@ -182,7 +182,7 @@ function twitterLoginSuccess() {
     }).done(function(userInfo) {
         //console.log(userInfo);
         var query = new Parse.Query("socialMediaUsers");
-        query.equalTo("twitter", userInfo.response.id);
+        query.equalTo("twitter", userInfo.response.id_str);
         query.first({
             success: function(socialMediaUser) {
                 // If there's no current entry, add it, otherwise just set the current users to it
