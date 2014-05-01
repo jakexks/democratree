@@ -323,6 +323,7 @@
                             }
                         }
                     }       
+                    loadId = null;
                     query.greaterThan("createdAt", lastTreeSynced);
                     query.find({
                         success: function(results) {
@@ -399,7 +400,7 @@
         showLoader();
         query.find({
             success: function(trees) {
-                if(trees.length >= treesPerDay)
+                if(trees.length == treesPerDay)
                 {
                     var dayCount = 0;
                     for(var i = 0; i < treesPerDay; i++)
@@ -409,7 +410,7 @@
                     }
                     if(dayCount == treesPerDay)
                     {
-                        //plantAllowed = false;
+                        plantAllowed = false;
                     }
                 }
                 if(checkLocation(location) && plantAllowed)
@@ -583,7 +584,6 @@
         $( "#popupTreeUser").val(treeUser);
         $( "#popupTreeStory").val(treeStory);
         $( "#popupTreeVote").val(treeVote);
-        //alert(event.pageX + " " + event.pageY);
         if(event == null) 
         {
             var xpos = $('#map-canvas').offset().left + ($('#map-canvas').width()/2);
