@@ -598,6 +598,7 @@
         $("#fb-button").html('<fb:share-button href="http://democratree.jakexks.com?id=' + tree.id + '" type="button_count"></fb:share-button>');
         FB.XFBML.parse();
         twttr.widgets.load();
+        gapi.plus.render("google-button", { "action" : "share", "href" : "http://democratree.jakexks.com?id=" + tree.id, "width" : "200", "height" : "20" });
         $( "#popupBtnVote").on('tap', function() {
 
             console.log("pressed vote");
