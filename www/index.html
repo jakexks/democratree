@@ -1,19 +1,15 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" xmlns:fb="http://www.facebook.com/2008/fbml" xmlns:og="http://opengraphprotocol.org/schema/" lang="en">
-
 <head>
     <meta charset="utf-8" />
     <meta name="format-detection" content="telephone=no" />
     <!-- WARNING: for iOS 7, remove the width=device-width and height=device-height attributes. See https://issues.apache.org/jira/browse/CB-4323 -->
     <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height, target-densitydpi=medium-dpi" />
-
-    <meta name="ui" content="mobile"/>
-
+    <meta name="ui" content="mobile" />
     <link rel="stylesheet" href="css/themes/greenmob.min.css" />
     <link rel="stylesheet" href="css/themes/jquery.mobile.icons.min.css" />
     <link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.0/jquery.mobile.structure-1.4.0.min.css" />
     <link rel="stylesheet" href="css/mobile_layout.css" />
-
     <script src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
     <script type="text/javascript">
         var dd = $.Deferred();
@@ -34,7 +30,6 @@
         function deviceReady() {
             dd.resolve();
         }
-
         function doInit() {
             alert('Ready');
         }
@@ -45,12 +40,11 @@
     <script type="text/javascript" src="http://www.parsecdn.com/js/parse-1.2.16.min.js"></script>
     <script type="text/javascript" src="js/json2.js"></script>
     <script type="text/javascript" src="js/jstorage.js"></script>
-    <script type="text/javascript"
-        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyATdd83fKwz8LOVfeVfTe5nVpbNI_0kxSI&libraries=places&sensor=false">
+    <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyATdd83fKwz8LOVfeVfTe5nVpbNI_0kxSI&libraries=places&sensor=false">
     </script>
     <script type="text/javascript" src="http://google-maps-utility-library-v3.googlecode.com/svn/trunk/infobox/src/infobox.js"></script>
     <!-- Mobile scripts -->
-     <script type="text/javascript" src="https://apis.google.com/js/client:plusone.js"></script>
+    <script type="text/javascript" src="https://apis.google.com/js/client:plusone.js"></script>
     <script type="text/javascript" src="js/mobile/liquid.js"></script>
     <script type="text/javascript" src="js/mobile/democratreeMobileSocialMedia.js"></script>
     <script type="text/javascript" src="js/mobile/helper/liquid.helper.oauth.js"></script>
@@ -64,777 +58,792 @@
     <script type="text/javascript" src="js/scripts.js"></script>
     <script type="text/javascript" src="js/addTreeHelper.js"></script>
     <script type="text/javascript" src="js/popup.js"></script>
-
     <title>Democratree</title>
 </head>
 
 <body>
-<div id="fb-root"></div>
-<!-- Web scripts p2 -->
-<script type="text/javascript" src="js/democratreeWebSocialMediaAPIs.js"></script>
-<!-- /Web scripts p2 -->
-
-<!-- Login Page -->
-<div data-role="page" data-theme="b" id="login" style="background-color:#5de100;
+    <div id="fb-root"></div>
+    <!-- Web scripts p2 -->
+    <script type="text/javascript" src="js/democratreeWebSocialMediaAPIs.js"></script>
+    <!-- /Web scripts p2 -->
+    <!-- Login Page -->
+    <div data-role="page" data-theme="b" id="login" style="background-color:#5de100;
 background-image: -moz-linear-gradient(top , #5de100, #3d9200 66.0%);
 background-image: -webkit-linear-gradient(top , #5de100, #3d9200 66.0%);
 background-image: -o-linear-gradient(top , #5de100, #3d9200 66.0%);
 background-image: -ms-linear-gradient(top , #5de100, #3d9200 66.0%);
 background-image: linear-gradient(top , #5de100, #3d9200 66.0%);">
+        <div data-role="popup" id="alertLogin" class="ui-content" align="center">
+            <p id="alertTextLogin"></p>
+            <br>
+            <div align="center" style="width:100px"><a href="#" class="ui-btn ui-shadow ui-corner-all" data-rel="back">OK</a>
+            </div>
+        </div>
+        <div role="main" class="ui-content">
+            <div align="center">
+                <img src="img/logo.png" alt="Democratree" width="100" height="100">
+                <h1 style="color:white;">Democratree</h1>
+            </div>
+            <p>
+                <form>
+                    <label for="login-username" class="ui-hidden-accessible">Username:</label>
+                    <input name="login-username" id="login-username" placeholder="Username" value="" type="text" data-corners="false">
+                    <label for="login-pwd" class="ui-hidden-accessible">Password:</label>
+                    <input name="login-pwd" id="login-pwd" placeholder="Password" value="" type="password" data-corners="false">
+                </form>
+            </p>
+            <div class="ui-grid-a">
+                <div class="ui-block-a">
+                    <div class="button-wrap">
+                        <a href="#demoSignUp" id="democratreeSignupButton" class="ui-btn ui-shadow" style="background:#4A4A4A; color:white; font-weight:normal;">Sign Up</a>
+                    </div>
+                </div>
+                <div class="ui-block-b">
+                    <div class="button-wrap">
+                        <button id="democratreeSigninButton" class="ui-shadow ui-btn">Login</button>
+                    </div>
+                </div>
+            </div>
+            <div class="ui-grid-b">
+                <div class="ui-block-a">
+                    <div class="button-wrap">
+                        <button id="googleplusSigninButton" class="ui-shadow ui-btn ui-btn-icon-left ui-icon-gpicon ui-nodisc-icon" style="background: #dd4b39; color: white; font-weight:normal;">Google+</button>
+                    </div>
+                </div>
+                <div class="ui-block-b">
+                    <div class="button-wrap">
+                        <button id="facebookSigninButton" class="ui-shadow ui-btn ui-btn-icon-left ui-icon-fbicon ui-nodisc-icon" style="background: #3b5998; color: white; font-weight:normal;">Facebook</button>
+                    </div>
+                </div>
+                <div class="ui-block-c">
+                    <div class="button-wrap">
+                        <button id="twitterSigninButton" class="ui-shadow ui-btn ui-btn-icon-left ui-icon-twicon ui-nodisc-icon" style="background: #55acee; color: white; font-weight:normal;">Twitter</button>
+                    </div>
+                </div>
+            </div>
 
-    <div data-role="popup" id="alertLogin" class="ui-content" align="center">
-    <p id="alertTextLogin"></p>
-    <br>
-    <div align="center" style="width:100px"><a href="#" class="ui-btn ui-shadow ui-corner-all" data-rel="back">OK</a></div>
+            <p><a id="guestLoginButton" class="ui-btn ui-shadow ui-mini">Guest</a>
+            </p>
+        </div>
+        <!-- /content -->
     </div>
-
-    <div role="main" class="ui-content" >
-
-        <div align="center">
-        <img src="img/logo.png" alt="Democratree" width="100" height="100">
-        <h1 style="color:white;">Democratree</h1>
-        </div>
-
-        <p>
-            <form>
-                <label for="login-username" class="ui-hidden-accessible">Username:</label>
-                <input name="login-username" id="login-username" placeholder="Username" value="" type="text" data-corners="false">
-                <label for="login-pwd" class="ui-hidden-accessible">Password:</label>
-                <input name="login-pwd" id="login-pwd" placeholder="Password" value="" type="password" data-corners="false">
-            </form>
-        </p>
-
-        <div class="ui-grid-a">
-            <div class="ui-block-a">
-                <div class="button-wrap">
-                <a href="#demoSignUp" id="democratreeSignupButton" class="ui-btn ui-shadow" style="background:#4A4A4A; color:white; font-weight:normal;">Sign Up</a>
-                </div>
-            </div>
-            <div class="ui-block-b">
-                <div class="button-wrap">
-                <button id="democratreeSigninButton" class="ui-shadow ui-btn">Login</button>
-                </div>
-            </div>
-        </div>
-
-        <div class="ui-grid-b">
-            <div class="ui-block-a">
-                <div class="button-wrap">
-                <button id="googleplusSigninButton" class="ui-shadow ui-btn ui-btn-icon-left ui-icon-gpicon ui-nodisc-icon" style="background: #dd4b39; color: white; font-weight:normal;">Google+</button>
-                </div>
-            </div>
-            <div class="ui-block-b">
-                <div class="button-wrap">
-                <button id="facebookSigninButton" class="ui-shadow ui-btn ui-btn-icon-left ui-icon-fbicon ui-nodisc-icon" style="background: #3b5998; color: white; font-weight:normal;">Facebook</button>
-                </div>
-            </div>
-            <div class="ui-block-c">
-                <div class="button-wrap">
-                <button id="twitterSigninButton" class="ui-shadow ui-btn ui-btn-icon-left ui-icon-twicon ui-nodisc-icon" style="background: #55acee; color: white; font-weight:normal;">Twitter</button>
-                </div>
-            </div>
-        </div>
-
-        <p><a id="guestLoginButton" class="ui-btn ui-shadow ui-mini">Guest</a></p>
-
-    </div><!-- /content -->
-
-
-
-</div><!-- /Login Page -->
-
-<!-- Democratree Sign up Page -->
-<div data-role="page" data-theme="b" id="demoSignUp" style="background-color:#5de100;
+    <!-- /Login Page -->
+    <!-- Democratree Sign up Page -->
+    <div data-role="page" data-theme="b" id="demoSignUp" style="background-color:#5de100;
 background-image: -moz-linear-gradient(top , #5de100, #3d9200 66.0%);
 background-image: -webkit-linear-gradient(top , #5de100, #3d9200 66.0%);
 background-image: -o-linear-gradient(top , #5de100, #3d9200 66.0%);
 background-image: -ms-linear-gradient(top , #5de100, #3d9200 66.0%);
-background-image: linear-gradient(top , #5de100, #3d9200 66.0%);"> 
-
-    <div data-role="popup" id="alertSignup" class="ui-content" align="center">
-    <p id="alertTextSignup"></p>
-    <br>
-    <div align="center" style="width:100px"><a href="#" class="ui-btn ui-shadow ui-corner-all" data-rel="back">OK</a></div>
-    </div>
-
-
-    <div role="main" class="ui-content" >
-        <div align="center">
-        <img src="img/logo.png" alt="Democratree" width="100" height="100">
-        <h1 style="color:white;">Democratree</h1>
-        </div>
-
-        <p>
-            <form>
-                <label for="demo-username" class="ui-hidden-accessible">Username:</label>
-                <input name="demo-username" id="demo-username" placeholder="Username" value="" type="text" data-corners="false">
-                <label for="demo-name" class="ui-hidden-accessible">Name:</label>
-                <input name="demo-name" id="demo-name" placeholder="Name" value="" type="text" data-corners="false">
-                <label for="demo-pwd" class="ui-hidden-accessible">Password:</label>
-                <input name="demo-pwd" id="demo-pwd" placeholder="Password" value="" type="password" data-corners="false">
-                <label for="demo-conf-pwd" class="ui-hidden-accessible">Confirm Password:</label>
-                <input name="demo-conf-pwd" id="demo-conf-pwd" placeholder="Confirm Password" value="" type="password" data-corners="false">
-                <label for="demo-email" class="ui-hidden-accessible">Email:</label>
-                <input name="demo-email" id="demo-email" placeholder="Email" value="" type="text" data-corners="false">
-            </form>
-        </p>
-        <p><a id="democratreeCreateAccButton" class="ui-btn ui-shadow">Create Account</a></p>
-        <a href="#" data-rel="back" id="democratreeCreateAccButton" class="ui-btn ui-shadow ui-mini">Back</a>
-    </div><!-- /content -->
-
-</div><!-- /Democratree Sign up Page -->
-
-<!-- Start of map page -->
-<div data-role="page" id="map">
-    
-    <!-- Tree Info Popup         -->
-    <div data-role="popup" id="treeInfo" class="ui-content" align="center">
-        <a href="#" data-rel="back" data-role="button" data-theme="a" data-icon="delete" data-iconpos="notext" class="ui-btn-right">Close</a>
-        <p id="treeInfoText"></p>
-    </div>
-
-    <!-- Tree marker  -->
-    <div data-role="popup" id="treepopup" data-close-btn="right" data-overlay-theme="a" data-arrow="t,r,l,b">
-        <div data-role="header">
-            <h2>Tree details</h2>
-                <a href="#" data-rel="back" data-role="button" data-theme="a" data-icon="delete" data-iconpos="notext" class="ui-btn-right">Close</a>
-
+background-image: linear-gradient(top , #5de100, #3d9200 66.0%);">
+        <div data-role="popup" id="alertSignup" class="ui-content" align="center">
+            <p id="alertTextSignup"></p>
+            <br>
+            <div align="center" style="width:100px"><a href="#" class="ui-btn ui-shadow ui-corner-all" data-rel="back">OK</a>
+            </div>
         </div>
         <div role="main" class="ui-content">
-            <form>
-                <label for="popupTreeName">Tree name:</label>
-                <input type="text" disabled="disabled" name="popupTreeName" id="popupTreeName" value="">
-                <label for="popupTreeVote">Votes:</label>
-                <input type="text" disabled="disabled" name="popupTreeVote" id="popupTreeVote" value="">
-                <label for="popupTreeUser">Tree planted by:</label>
-                <input type="text" disabled="disabled" name="popupTreeUser" id="popupTreeUser" value="">
-                <label for="popupTreeStory">Tree story:</label>
-                <textarea disabled="disabled" cols="40" rows="8" name="popupTreeStory" id="popupTreeStory"></textarea>
-            </form>
-            <a class="ui-btn ui-shadow ui-corner-all ui-btn-b" id="popupBtnVote">Vote up</a>
-            <div id="popupMsg"></div>
-        </div>
-    </div>
-
-    <!-- Alert Popup -->
-    <div data-role="popup" id="alertMap" class="ui-content" align="center">
-    <p id="alertTextMap"></p>
-    <br>
-    <div align="center" style="width:100px"><a href="#" class="ui-btn ui-shadow ui-corner-all" data-rel="back">OK</a></div>
-    </div>
-    
-    <div data-role="header" data-position="fixed" data-id="fixed_header">
-        <a href="#map_left_panel" data-icon="bars" data-iconpos="notext" data-direction="reverse">Home</a>
-        <a href="#" data-icon="info" data-iconpos="notext" data-rel="dialog" data-transition="fade">Search</a>
-        <h1>Map</h1>
-    </div><!-- /header -->
-
-    <div>
-    <input id="search-input" data-mini="true" data-corners="false" data-clear-btn="true" type="text" placeholder="Search">
-    </div>
-
-    <div data-role="content" id="map-canvas">        
-    
-    <!-- <div id="deviceproperties"></div> -->
-
-    </div><!-- /content -->
-
-            
-    <div data-role="panel" id="map_left_panel">
-        <ul data-role="listview">
-            <li><a href="#map" class="ui-icon-grid">Map</a></li>
-            <li><a href="#leaderboard" class="ui-icon-bullets" onclick="updateLeaderboard()">Leaderboard</a></li>
-            <li><a href="#profile" class="ui-icon-user">My Profile</a></li>
-            <li><a href="#settings" class="ui-icon-gear">Account Settings</a></li>
-            <li><a href="#help" class="ui-icon-info">Help</a></li>
-            <li><a href="#about" class="ui-icon-edit">About</a></li>
-            <li><a class="ui-icon-power logoutButton">Log Out</a></li>
-            <li><a href="#add_tree">Add Tree TODO</a></li>
-        </ul>
-        
-    </div><!-- /panel -->
-
-</div><!-- /page -->
-
-<!-- Start of leaderboard page -->
-<div data-role="page" id="leaderboard">
-
-    <div data-role="header" data-position="fixed" data-id="fixed_header">
-        <a data-icon="bars" href="#leaderboard_left_panel" data-iconpos="notext">Menu</a>
-        <h1>Leaderboard</h1>
-    </div><!-- /header -->
-
-    <div role="main" class="ui-content">
-        <p>
-            <form>
-            Select leaderboard filter:
-            <select id="leaderboardFilter" onchange="updateLeaderboard()">
-                <option>Overall</option>
-                <option>This Month</option>  
-                <option>This Week</option>
-                <option>Today</option>
-                <option>Hot</option>
-            </select>
-            </form>
-            <br/>
+            <div align="center">
+                <img src="img/logo.png" alt="Democratree" width="100" height="100">
+                <h1 style="color:white;">Democratree</h1>
+            </div>
             <p>
-            <table align=center width="100%">
-                <tr>
-                    <td id="lb1no" class="layout_leaderboardno">
-                        1
-                    </td>
-                    <td id="lb1name" class="layout_leaderboardname" onclick="goToLeaderboardMapLocation(1)">
-                        First
-                    </td>
-                </tr>
-                <tr>
-                    <td id="lb2no" class="layout_leaderboardno">
-                        2
-                    </td>
-                    <td id="lb2name" class="layout_leaderboardname" onclick="goToLeaderboardMapLocation(2)">
-                        Second
-                    </td>
-                </tr>
-                <tr>
-                    <td id="lb3no" class="layout_leaderboardno">
-                        3
-                    </td>
-                    <td id="lb3name" class="layout_leaderboardname" onclick="goToLeaderboardMapLocation(3)">
-                        Third
-                    </td>
-                </tr>
-                <tr>
-                    <td id="lb4no" class="layout_leaderboardno">
-                        4
-                    </td>
-                    <td id="lb4name" class="layout_leaderboardname" onclick="goToLeaderboardMapLocation(4)">
-                        Fourth
-                    </td>
-                </tr>
-                <tr>
-                    <td id="lb5no" class="layout_leaderboardno">
-                        5
-                    </td>
-                    <td id="lb5name" class="layout_leaderboardname" onclick="goToLeaderboardMapLocation(5)">
-                        Fifth
-                    </td>
-                </tr>
-                <tr>
-                    <td id="lb6no" class="layout_leaderboardno">
-                        6
-                    </td>
-                    <td id="lb6name" class="layout_leaderboardname" onclick="goToLeaderboardMapLocation(6)">
-                        Sixth
-                    </td>
-                </tr>
-                <tr>
-                    <td id="lb7no" class="layout_leaderboardno">
-                        7
-                    </td>
-                    <td id="lb7name" class="layout_leaderboardname" onclick="goToLeaderboardMapLocation(7)">
-                        Seventh
-                    </td>
-                </tr>
-                <tr>
-                    <td id="lb8no" class="layout_leaderboardno">
-                        8
-                    </td>
-                    <td id="lb8name" class="layout_leaderboardname" onclick="goToLeaderboardMapLocation(8)">
-                        Eighth
-                    </td>
-                </tr>
-                <tr>
-                    <td id="lb9no" class="layout_leaderboardno">
-                        9
-                    </td>
-                    <td id="lb9name" class="layout_leaderboardname" onclick="goToLeaderboardMapLocation(9)">
-                        Ninth
-                    </td>
-                </tr>
-                <tr>
-                    <td id="lb10no" class="layout_leaderboardno">
-                        10
-                    </td>
-                    <td id="lb10name" class="layout_leaderboardname" onclick="goToLeaderboardMapLocation(10)">
-                        Tenth
-                    </td>
-                </tr>
-                <tr>
-                    <td id="lb11no" class="layout_leaderboardno">
-                        11
-                    </td>
-                    <td id="lb11name" class="layout_leaderboardname" onclick="goToLeaderboardMapLocation(11)">
-                        Eleventh
-                    </td>
-                </tr>
-                <tr>
-                    <td id="lb12no" class="layout_leaderboardno">
-                        12
-                    </td>
-                    <td id="lb12name" class="layout_leaderboardname" onclick="goToLeaderboardMapLocation(12)">
-                        Twelfth
-                    </td>
-                </tr>
-                <tr>
-                    <td id="lb13no" class="layout_leaderboardno">
-                        13
-                    </td>
-                    <td id="lb13name" class="layout_leaderboardname" onclick="goToLeaderboardMapLocation(13)">
-                        Thirteenth
-                    </td>
-                </tr>
-                <tr>
-                    <td id="lb14no" class="layout_leaderboardno">
-                        14
-                    </td>
-                    <td id="lb14name" class="layout_leaderboardname" onclick="goToLeaderboardMapLocation(14)">
-                        Fourteenth
-                    </td>
-                </tr>
-                <tr>
-                    <td id="lb15no" class="layout_leaderboardno">
-                        15
-                    </td>
-                    <td id="lb15name" class="layout_leaderboardname" onclick="goToLeaderboardMapLocation(15)">
-                        Fifteenth
-                    </td>
-                </tr>
-                </table>
+                <form>
+                    <label for="demo-username" class="ui-hidden-accessible">Username:</label>
+                    <input name="demo-username" id="demo-username" placeholder="Username" value="" type="text" data-corners="false">
+                    <label for="demo-name" class="ui-hidden-accessible">Name:</label>
+                    <input name="demo-name" id="demo-name" placeholder="Name" value="" type="text" data-corners="false">
+                    <label for="demo-pwd" class="ui-hidden-accessible">Password:</label>
+                    <input name="demo-pwd" id="demo-pwd" placeholder="Password" value="" type="password" data-corners="false">
+                    <label for="demo-conf-pwd" class="ui-hidden-accessible">Confirm Password:</label>
+                    <input name="demo-conf-pwd" id="demo-conf-pwd" placeholder="Confirm Password" value="" type="password" data-corners="false">
+                    <label for="demo-email" class="ui-hidden-accessible">Email:</label>
+                    <input name="demo-email" id="demo-email" placeholder="Email" value="" type="text" data-corners="false">
+                </form>
             </p>
-        </p>
-
-    </div><!-- /content -->
-            
-    <div data-role="panel" id="leaderboard_left_panel">
-        <ul data-role="listview">
-            <li><a href="#map" class="ui-icon-grid">Map</a></li>
-            <li><a href="#leaderboard" class="ui-icon-bullets" onclick="updateLeaderboard()">Leaderboard</a></li>
-            <li><a href="#profile" class="ui-icon-user">My Profile</a></li>
-            <li><a href="#settings" class="ui-icon-gear">Account Settings</a></li>
-            <li><a href="#help" class="ui-icon-info">Help</a></li>
-            <li><a href="#about" class="ui-icon-edit">About</a></li>
-            <li><a class="ui-icon-power logoutButton">Log Out</a></li>
-        </ul>
-        
-    </div><!-- /panel -->
-
-</div><!-- /page -->
-
-<!-- Start of profile page -->
-<div data-role="page" id="profile">
-
-    <div data-role="header" data-position="fixed" data-id="fixed_header">
-        <a data-icon="bars" href="#profile_left_panel" data-iconpos="notext">Menu</a>
-        <h1>My Profile</h1>
-    </div><!-- /header -->
-
-    <div role="main" class="ui-content" style="text-align: center;">
-        <h2><div id="profile_name"></div></h2>
-        <h4><div id="profile_username"></div></h4>
-        <p>
-            <div id="profile_picture"></div>
-        </p>
-        <p>
-        <div id="profile_revokeAccess"></div>
-        </p>
-        <h4>My Trees:</h4>
-        <p>
-            <ul data-role="listview" id="myTreeList">
-                <li><a href="#map">Clifton Down</a></li>
-                <li><a href="#map">Waterfront</a></li>
-            </ul>
-        </p>
-    </div><!-- /content -->
-            
-    <div data-role="panel" id="profile_left_panel">
-        <ul data-role="listview">
-            <li><a href="#map" class="ui-icon-grid">Map</a></li>
-            <li><a href="#leaderboard" class="ui-icon-bullets" onclick="updateLeaderboard()">Leaderboard</a></li>
-            <li><a href="#profile" class="ui-icon-user">My Profile</a></li>
-            <li><a href="#settings" class="ui-icon-gear">Account Settings</a></li>
-            <li><a href="#help" class="ui-icon-info">Help</a></li>
-            <li><a href="#about" class="ui-icon-edit">About</a></li>
-            <li><a class="ui-icon-power logoutButton">Log Out</a></li>
-        </ul>
-        
-    </div><!-- /panel -->
-
-</div><!-- /page -->
-
-<!-- Start of friends page -->
-<div data-role="page" id="friends">
-
-    <div data-role="header" data-position="fixed" data-id="fixed_header">
-        <a data-icon="bars" href="#friends_left_panel" data-iconpos="notext">Menu</a>
-        <h1>Friends</h1>
-    </div><!-- /header -->
-
-    <div role="main" class="ui-content">
-        <p>
-            <ul data-role="listview" data-autodividers="true" data-filter="true" data-inset="true">
-                <li>Abbbbbby</li>
-                <li>JLVNOOO(</li>
-                <li>RATATA</li>
-            </ul>
-        </p>
-
-    </div><!-- /content -->
-            
-    <div data-role="panel" id="friends_left_panel">
-        <ul data-role="listview">
-            <li><a href="#map" class="ui-icon-grid">Map</a></li>
-            <li><a href="#leaderboard" class="ui-icon-bullets" onclick="updateLeaderboard()">Leaderboard</a></li>
-            <li><a href="#profile" class="ui-icon-user">My Profile</a></li>
-            <li><a href="#settings" class="ui-icon-gear">Account Settings</a></li>
-            <li><a href="#help" class="ui-icon-info">Help</a></li>
-            <li><a href="#about" class="ui-icon-edit">About</a></li>
-            <li><a class="ui-icon-power logoutButton">Log Out</a></li>
-        </ul>
-        
-    </div><!-- /panel -->
-
-</div><!-- /page -->
-
-<!-- Start of settings page -->
-<div data-role="page" id="settings">
-
-    <div data-role="header" data-position="fixed" data-id="fixed_header">
-        <a data-icon="bars" href="#settings_left_panel" data-iconpos="notext">Menu</a>
-        <h1>Settings</h1>
-    </div><!-- /header -->
-
-    <div data-role="popup" id="alertSettings" class="ui-content" align="center">
-    <p id="alertTextSettings"></p>
-    <br>
-    <div align="center" style="width:100px"><a href="#" class="ui-btn ui-shadow ui-corner-all" data-rel="back">OK</a></div>
+            <p><a id="democratreeCreateAccButton" class="ui-btn ui-shadow">Create Account</a>
+            </p>
+            <a href="#" data-rel="back" id="democratreeCreateAccButton" class="ui-btn ui-shadow ui-mini">Back</a>
+        </div>
+        <!-- /content -->
     </div>
-
-    <div role="main" class="ui-content">
-        <p>
-            </form>
+    <!-- /Democratree Sign up Page -->
+    <!-- Start of map page -->
+    <div data-role="page" id="map">
+        <!-- Tree Info Popup         -->
+        <div data-role="popup" id="treeInfo" class="ui-content" align="center">
+            <a href="#" data-rel="back" data-role="button" data-theme="a" data-icon="delete" data-iconpos="notext" class="ui-btn-right">Close</a>
+            <p id="treeInfoText"></p>
+        </div>
+        <!-- Tree marker  -->
+        <div data-role="popup" id="treepopup" data-close-btn="right" data-overlay-theme="a" data-arrow="t,r,l,b">
+            <div data-role="header">
+                <h2>Tree details</h2>
+                <a href="#" data-rel="back" data-role="button" data-theme="a" data-icon="delete" data-iconpos="notext" class="ui-btn-right">Close</a>
+            </div>
+            <div role="main" class="ui-content">
+                <form>
+                    <label for="popupTreeName">Tree name:</label>
+                    <input type="text" disabled="disabled" name="popupTreeName" id="popupTreeName" value="">
+                    <label for="popupTreeVote">Votes:</label>
+                    <input type="text" disabled="disabled" name="popupTreeVote" id="popupTreeVote" value="">
+                    <label for="popupTreeUser">Tree planted by:</label>
+                    <input type="text" disabled="disabled" name="popupTreeUser" id="popupTreeUser" value="">
+                    <label for="popupTreeStory">Tree story:</label>
+                    <textarea disabled="disabled" cols="40" rows="8" name="popupTreeStory" id="popupTreeStory"></textarea>
+                </form>
+                <a class="ui-btn ui-shadow ui-corner-all ui-btn-b" id="popupBtnVote">Vote up</a>
+                <div id="popupMsg"></div>
+            </div>
+        </div>
+        <!-- Alert Popup -->
+        <div data-role="popup" id="alertMap" class="ui-content" align="center">
+            <p id="alertTextMap"></p>
+            <br>
+            <div align="center" style="width:100px"><a href="#" class="ui-btn ui-shadow ui-corner-all" data-rel="back">OK</a>
+            </div>
+        </div>
+        <div data-role="header" data-position="fixed" data-id="fixed_header">
+            <a href="#map_left_panel" data-icon="bars" data-iconpos="notext" data-direction="reverse">Home</a>
+            <a href="#" data-icon="info" data-iconpos="notext" data-rel="dialog" data-transition="fade">Search</a>
+            <h1>Map</h1>
+        </div>
+        <!-- /header -->
+        <div>
+            <input id="search-input" data-mini="true" data-corners="false" data-clear-btn="true" type="text" placeholder="Search">
+        </div>
+        <div data-role="content" id="map-canvas">
+            <!-- <div id="deviceproperties"></div> -->
+        </div>
+        <!-- /content -->
+        <div data-role="panel" id="map_left_panel">
             <ul data-role="listview">
-                <li data-role="list-divider">Account settings</li>
-                <li><a href="#changepass" class="ui-btn" id="changepass-click">Change password</a></li>
-                <li><a href="#" class = "ui-btn" onclick="">Unlink accounts</a></li>
-                <li><label>
-                        <input type="checkbox" name="settings-dpcheckbox" id="settings-dpcheckbox" data-iconpos="right">Display profile picture
-                    </label></li>
-                <li data-role="list-divider">Notification Settings</li>
-                <li>
-                    <label>
-                        <input type="checkbox" name="checkbox_settings_notif" data-iconpos="right">Notifications
-                    </label></li>
+                <li><a href="#map" class="ui-icon-grid">Map</a>
                 </li>
-                <li>In-App Sounds</li>
-                <li>Vibrate</li>
+                <li><a href="#leaderboard" class="ui-icon-bullets" onclick="updateLeaderboard()">Leaderboard</a>
+                </li>
+                <li><a href="#profile" class="ui-icon-user">My Profile</a>
+                </li>
+                <li><a href="#settings" class="ui-icon-gear">Account Settings</a>
+                </li>
+                <li><a href="#help" class="ui-icon-info">Help</a>
+                </li>
+                <li><a href="#about" class="ui-icon-edit">About</a>
+                </li>
+                <li><a class="ui-icon-power logoutButton">Log Out</a>
+                </li>
+                <li><a href="#add_tree">Add Tree TODO</a>
+                </li>
             </ul>
-        </p>
-
-    </div><!-- /content -->
-            
-    <div data-role="panel" id="settings_left_panel">
-        <ul data-role="listview">
-            <li><a href="#map" class="ui-icon-grid">Map</a></li>
-            <li><a href="#leaderboard" class="ui-icon-bullets" onclick="updateLeaderboard()">Leaderboard</a></li>
-            <li><a href="#profile" class="ui-icon-user">My Profile</a></li>
-            <li><a href="#settings" class="ui-icon-gear">Account Settings</a></li>
-            <li><a href="#help" class="ui-icon-info">Help</a></li>
-            <li><a href="#about" class="ui-icon-edit">About</a></li>
-            <li><a class="ui-icon-power logoutButton">Log Out</a></li>
-        </ul>
-        
-    </div><!-- /panel -->
-</div><!-- /page -->
-
-<div data-role="page" id="changepass">
-    <div data-role="header" data-position="fixed" data-id="fixed_header">
-        <a data-icon="arrow-l" href="javascript:window.history.back();" data-iconpos="notext">Back</a>
-        <h1>Change password</h1>
-    </div><!-- /header -->
-    <div role="main" class="ui-content" >
-        <p>
-            <form>
-<!--                 <label for="settings-curpwd" class="ui-hidden-accessible">Current</label>
-                <input name="settings-curpwd" id="settings-curpwd" placeholder="Current password" value="" type="password">
-                <label for="settings-newpwd" class="ui-hidden-accessible">New</label>
-                <input name="settings-newpwd" id="settings-newpwd" placeholder="New password" value="" type="password">
-                <label for="settings-newpwd2" class="ui-hidden-accessible">Confirm</label>
-                <input name="settings-newpwd2" id="settings-newpwd2" placeholder="Confirm new password" value="" type="password"> -->
-                <label for="settings-email" class="ui-hidden-accessible">Email</label>
-                <input name="settings-email" id="settings-email" placeholder="Email address" value="" type="text">
-            </form>
-        </p>
-<!--         <p><a id="settings-changepwdbtn" class="ui-btn ui-shadow ui-corner-all">Change password</a></p> -->
-        <p><a id="settings-resetpwdbtn" class="ui-btn ui-shadow ui-corner-all">Reset password</a></p>
-    </div><!-- /content -->
-</div><!-- /page -->
-
-
-<!-- Start of help page -->
-<div data-role="page" id="help">
-
-    <div data-role="header" data-position="fixed" data-id="fixed_header">
-        <a data-icon="bars" href="#settings_left_panel" data-iconpos="notext">Menu</a>
-        <h1>Help</h1>
-    </div><!-- /header -->
-
-    <div role="main" class="ui-content" style="overflow:auto">
-        <p>Jump to:</p>
-        <table align=center width=80%>
-            <tr>
-                <td class="layout_helpcontents" onclick="window.location.href='#helpintro'">
-                    Introduction to the Project
-                </td>
-            </tr>
-            <tr>
-                <td class="layout_helpcontents" onclick="window.location.href='#helplogin'">
-                    Logging In
-                </td>
-            </tr>
-            <tr>
-                <td class="layout_helpcontents" onclick="window.location.href='#helpsignup'">
-                    Signing Up
-                </td>
-            </tr>
-            <tr>
-                <td class="layout_helpcontents" onclick="window.location.href='#helpmap'">
-                    Using the Map
-                </td>
-            </tr>
-            <tr>
-                <td class="layout_helpcontents" onclick="window.location.href='#helpleaderboard'">
-                    The Leaderboard page
-                </td>
-            </tr>
-            <tr>
-                <td class="layout_helpcontents" onclick="window.location.href='#helpprofile'">
-                    Your Profile page
-                </td>
-            </tr>
-            <tr>
-                <td class="layout_helpcontents" onclick="window.location.href='#helpsettings'">
-                    Your Account Settings page
-                </td>
-            </tr>
-            <tr>
-                <td class="layout_helpcontents" onclick="window.location.href='#helplogout'">
-                    Logging Out
-                </td>
-            </tr>
-        </table>
-        <br/>
-        <br/>
-        <a id="helpintro"><h2>Introduction to the Project</h2></a>
+        </div>
+        <!-- /panel -->
+    </div>
+    <!-- /page -->
+    <!-- Start of leaderboard page -->
+    <div data-role="page" id="leaderboard">
+        <div data-role="header" data-position="fixed" data-id="fixed_header">
+            <a data-icon="bars" href="#leaderboard_left_panel" data-iconpos="notext">Menu</a>
+            <h1>Leaderboard</h1>
+        </div>
+        <!-- /header -->
+        <div role="main" class="ui-content">
             <p>
-                Bristol has won the European Green Capital Award for 2015 - an award that no other UK city has ever won. This is a great platform for promoting the city on the world stage, driving investment, innovation and growth, and improving quality of life. 
+                <form>
+                    Select leaderboard filter:
+                    <select id="leaderboardFilter" onchange="updateLeaderboard()">
+                        <option>Overall</option>
+                        <option>This Month</option>
+                        <option>This Week</option>
+                        <option>Today</option>
+                        <option>Hot</option>
+                    </select>
+                </form>
+                <br/>
+                <p>
+                    <table align=center width="100%">
+                        <tr>
+                            <td id="lb1no" class="layout_leaderboardno">
+                                1
+                            </td>
+                            <td id="lb1name" class="layout_leaderboardname" onclick="goToLeaderboardMapLocation(1)">
+                                First
+                            </td>
+                        </tr>
+                        <tr>
+                            <td id="lb2no" class="layout_leaderboardno">
+                                2
+                            </td>
+                            <td id="lb2name" class="layout_leaderboardname" onclick="goToLeaderboardMapLocation(2)">
+                                Second
+                            </td>
+                        </tr>
+                        <tr>
+                            <td id="lb3no" class="layout_leaderboardno">
+                                3
+                            </td>
+                            <td id="lb3name" class="layout_leaderboardname" onclick="goToLeaderboardMapLocation(3)">
+                                Third
+                            </td>
+                        </tr>
+                        <tr>
+                            <td id="lb4no" class="layout_leaderboardno">
+                                4
+                            </td>
+                            <td id="lb4name" class="layout_leaderboardname" onclick="goToLeaderboardMapLocation(4)">
+                                Fourth
+                            </td>
+                        </tr>
+                        <tr>
+                            <td id="lb5no" class="layout_leaderboardno">
+                                5
+                            </td>
+                            <td id="lb5name" class="layout_leaderboardname" onclick="goToLeaderboardMapLocation(5)">
+                                Fifth
+                            </td>
+                        </tr>
+                        <tr>
+                            <td id="lb6no" class="layout_leaderboardno">
+                                6
+                            </td>
+                            <td id="lb6name" class="layout_leaderboardname" onclick="goToLeaderboardMapLocation(6)">
+                                Sixth
+                            </td>
+                        </tr>
+                        <tr>
+                            <td id="lb7no" class="layout_leaderboardno">
+                                7
+                            </td>
+                            <td id="lb7name" class="layout_leaderboardname" onclick="goToLeaderboardMapLocation(7)">
+                                Seventh
+                            </td>
+                        </tr>
+                        <tr>
+                            <td id="lb8no" class="layout_leaderboardno">
+                                8
+                            </td>
+                            <td id="lb8name" class="layout_leaderboardname" onclick="goToLeaderboardMapLocation(8)">
+                                Eighth
+                            </td>
+                        </tr>
+                        <tr>
+                            <td id="lb9no" class="layout_leaderboardno">
+                                9
+                            </td>
+                            <td id="lb9name" class="layout_leaderboardname" onclick="goToLeaderboardMapLocation(9)">
+                                Ninth
+                            </td>
+                        </tr>
+                        <tr>
+                            <td id="lb10no" class="layout_leaderboardno">
+                                10
+                            </td>
+                            <td id="lb10name" class="layout_leaderboardname" onclick="goToLeaderboardMapLocation(10)">
+                                Tenth
+                            </td>
+                        </tr>
+                        <tr>
+                            <td id="lb11no" class="layout_leaderboardno">
+                                11
+                            </td>
+                            <td id="lb11name" class="layout_leaderboardname" onclick="goToLeaderboardMapLocation(11)">
+                                Eleventh
+                            </td>
+                        </tr>
+                        <tr>
+                            <td id="lb12no" class="layout_leaderboardno">
+                                12
+                            </td>
+                            <td id="lb12name" class="layout_leaderboardname" onclick="goToLeaderboardMapLocation(12)">
+                                Twelfth
+                            </td>
+                        </tr>
+                        <tr>
+                            <td id="lb13no" class="layout_leaderboardno">
+                                13
+                            </td>
+                            <td id="lb13name" class="layout_leaderboardname" onclick="goToLeaderboardMapLocation(13)">
+                                Thirteenth
+                            </td>
+                        </tr>
+                        <tr>
+                            <td id="lb14no" class="layout_leaderboardno">
+                                14
+                            </td>
+                            <td id="lb14name" class="layout_leaderboardname" onclick="goToLeaderboardMapLocation(14)">
+                                Fourteenth
+                            </td>
+                        </tr>
+                        <tr>
+                            <td id="lb15no" class="layout_leaderboardno">
+                                15
+                            </td>
+                            <td id="lb15name" class="layout_leaderboardname" onclick="goToLeaderboardMapLocation(15)">
+                                Fifteenth
+                            </td>
+                        </tr>
+                    </table>
+                </p>
+            </p>
+        </div>
+        <!-- /content -->
+        <div data-role="panel" id="leaderboard_left_panel">
+            <ul data-role="listview">
+                <li><a href="#map" class="ui-icon-grid">Map</a>
+                </li>
+                <li><a href="#leaderboard" class="ui-icon-bullets" onclick="updateLeaderboard()">Leaderboard</a>
+                </li>
+                <li><a href="#profile" class="ui-icon-user">My Profile</a>
+                </li>
+                <li><a href="#settings" class="ui-icon-gear">Account Settings</a>
+                </li>
+                <li><a href="#help" class="ui-icon-info">Help</a>
+                </li>
+                <li><a href="#about" class="ui-icon-edit">About</a>
+                </li>
+                <li><a class="ui-icon-power logoutButton">Log Out</a>
+                </li>
+            </ul>
+
+        </div>
+        <!-- /panel -->
+    </div>
+    <!-- /page -->
+    <!-- Start of profile page -->
+    <div data-role="page" id="profile">
+        <div data-role="header" data-position="fixed" data-id="fixed_header">
+            <a data-icon="bars" href="#profile_left_panel" data-iconpos="notext">Menu</a>
+            <h1>My Profile</h1>
+        </div>
+        <!-- /header -->
+        <div role="main" class="ui-content" style="text-align: center;">
+            <h2><div id="profile_name"></div></h2>
+            <h4><div id="profile_username"></div></h4>
+            <p>
+                <div id="profile_picture"></div>
+            </p>
+            <p>
+                <div id="profile_revokeAccess"></div>
+            </p>
+            <h4>My Trees:</h4>
+            <p>
+                <ul data-role="listview" id="myTreeList">
+                    <li><a href="#map">Clifton Down</a>
+                    </li>
+                    <li><a href="#map">Waterfront</a>
+                    </li>
+                </ul>
+            </p>
+        </div>
+        <!-- /content -->
+        <div data-role="panel" id="profile_left_panel">
+            <ul data-role="listview">
+                <li><a href="#map" class="ui-icon-grid">Map</a>
+                </li>
+                <li><a href="#leaderboard" class="ui-icon-bullets" onclick="updateLeaderboard()">Leaderboard</a>
+                </li>
+                <li><a href="#profile" class="ui-icon-user">My Profile</a>
+                </li>
+                <li><a href="#settings" class="ui-icon-gear">Account Settings</a>
+                </li>
+                <li><a href="#help" class="ui-icon-info">Help</a>
+                </li>
+                <li><a href="#about" class="ui-icon-edit">About</a>
+                </li>
+                <li><a class="ui-icon-power logoutButton">Log Out</a>
+                </li>
+            </ul>
+        </div>
+        <!-- /panel -->
+    </div>
+    <!-- /page -->
+    <!-- Start of friends page -->
+    <div data-role="page" id="friends">
+        <div data-role="header" data-position="fixed" data-id="fixed_header">
+            <a data-icon="bars" href="#friends_left_panel" data-iconpos="notext">Menu</a>
+            <h1>Friends</h1>
+        </div>
+        <!-- /header -->
+        <div role="main" class="ui-content">
+            <p>
+                <ul data-role="listview" data-autodividers="true" data-filter="true" data-inset="true">
+                    <li>Abbbbbby</li>
+                    <li>JLVNOOO(</li>
+                    <li>RATATA</li>
+                </ul>
+            </p>
+        </div>
+        <!-- /content -->
+        <div data-role="panel" id="friends_left_panel">
+            <ul data-role="listview">
+                <li><a href="#map" class="ui-icon-grid">Map</a>
+                </li>
+                <li><a href="#leaderboard" class="ui-icon-bullets" onclick="updateLeaderboard()">Leaderboard</a>
+                </li>
+                <li><a href="#profile" class="ui-icon-user">My Profile</a>
+                </li>
+                <li><a href="#settings" class="ui-icon-gear">Account Settings</a>
+                </li>
+                <li><a href="#help" class="ui-icon-info">Help</a>
+                </li>
+                <li><a href="#about" class="ui-icon-edit">About</a>
+                </li>
+                <li><a class="ui-icon-power logoutButton">Log Out</a>
+                </li>
+            </ul>
+        </div>
+        <!-- /panel -->
+    </div>
+    <!-- /page -->
+    <!-- Start of settings page -->
+    <div data-role="page" id="settings">
+        <div data-role="header" data-position="fixed" data-id="fixed_header">
+            <a data-icon="bars" href="#settings_left_panel" data-iconpos="notext">Menu</a>
+            <h1>Settings</h1>
+        </div>
+        <!-- /header -->
+        <div data-role="popup" id="alertSettings" class="ui-content" align="center">
+            <p id="alertTextSettings"></p>
+            <br>
+            <div align="center" style="width:100px"><a href="#" class="ui-btn ui-shadow ui-corner-all" data-rel="back">OK</a>
+            </div>
+        </div>
+        <div role="main" class="ui-content">
+            <p>
+                </form>
+                <ul data-role="listview">
+                    <li data-role="list-divider">Account settings</li>
+                    <li><a href="#changepass" class="ui-btn" id="changepass-click">Change password</a>
+                    </li>
+                    <li><a href="#" class="ui-btn" onclick="">Unlink accounts</a>
+                    </li>
+                    <li>
+                        <label>
+                            <input type="checkbox" name="settings-dpcheckbox" id="settings-dpcheckbox" data-iconpos="right">Display profile picture
+                        </label>
+                    </li>
+                    <li data-role="list-divider">Notification Settings</li>
+                    <li>
+                        <label>
+                            <input type="checkbox" name="checkbox_settings_notif" data-iconpos="right">Notifications
+                        </label>
+                    </li>
+                    </li>
+                    <li>In-App Sounds</li>
+                    <li>Vibrate</li>
+                </ul>
+            </p>
+        </div>
+        <!-- /content -->
+        <div data-role="panel" id="settings_left_panel">
+            <ul data-role="listview">
+                <li><a href="#map" class="ui-icon-grid">Map</a>
+                </li>
+                <li><a href="#leaderboard" class="ui-icon-bullets" onclick="updateLeaderboard()">Leaderboard</a>
+                </li>
+                <li><a href="#profile" class="ui-icon-user">My Profile</a>
+                </li>
+                <li><a href="#settings" class="ui-icon-gear">Account Settings</a>
+                </li>
+                <li><a href="#help" class="ui-icon-info">Help</a>
+                </li>
+                <li><a href="#about" class="ui-icon-edit">About</a>
+                </li>
+                <li><a class="ui-icon-power logoutButton">Log Out</a>
+                </li>
+            </ul>
+        </div>
+        <!-- /panel -->
+    </div>
+    <!-- /page -->
+    <div data-role="page" id="changepass">
+        <div data-role="header" data-position="fixed" data-id="fixed_header">
+            <a data-icon="arrow-l" href="javascript:window.history.back();" data-iconpos="notext">Back</a>
+            <h1>Change password</h1>
+        </div>
+        <!-- /header -->
+        <div role="main" class="ui-content">
+            <p>
+                <form>
+                    <label for="settings-email" class="ui-hidden-accessible">Email</label>
+                    <input name="settings-email" id="settings-email" placeholder="Email address" value="" type="text">
+                </form>
+            </p>
+            <p><a id="settings-resetpwdbtn" class="ui-btn ui-shadow ui-corner-all">Reset password</a>
+            </p>
+        </div>
+        <!-- /content -->
+    </div>
+    <!-- /page -->
+    <!-- Start of help page -->
+    <div data-role="page" id="help">
+        <div data-role="header" data-position="fixed" data-id="fixed_header">
+            <a data-icon="bars" href="#settings_left_panel" data-iconpos="notext">Menu</a>
+            <h1>Help</h1>
+        </div>
+        <!-- /header -->
+        <div role="main" class="ui-content" style="overflow:auto">
+            <p>Jump to:</p>
+            <table align=center width=80%>
+                <tr>
+                    <td class="layout_helpcontents" onclick="window.location.href='#helpintro'">
+                        Introduction to the Project
+                    </td>
+                </tr>
+                <tr>
+                    <td class="layout_helpcontents" onclick="window.location.href='#helplogin'">
+                        Logging In
+                    </td>
+                </tr>
+                <tr>
+                    <td class="layout_helpcontents" onclick="window.location.href='#helpsignup'">
+                        Signing Up
+                    </td>
+                </tr>
+                <tr>
+                    <td class="layout_helpcontents" onclick="window.location.href='#helpmap'">
+                        Using the Map
+                    </td>
+                </tr>
+                <tr>
+                    <td class="layout_helpcontents" onclick="window.location.href='#helpleaderboard'">
+                        The Leaderboard page
+                    </td>
+                </tr>
+                <tr>
+                    <td class="layout_helpcontents" onclick="window.location.href='#helpprofile'">
+                        Your Profile page
+                    </td>
+                </tr>
+                <tr>
+                    <td class="layout_helpcontents" onclick="window.location.href='#helpsettings'">
+                        Your Account Settings page
+                    </td>
+                </tr>
+                <tr>
+                    <td class="layout_helpcontents" onclick="window.location.href='#helplogout'">
+                        Logging Out
+                    </td>
+                </tr>
+            </table>
+            <br/>
+            <br/>
+            <a id="helpintro"><h2>Introduction to the Project</h2></a>
+            <p>
+                Bristol has won the European Green Capital Award for 2015 - an award that no other UK city has ever won. This is a great platform for promoting the city on the world stage, driving investment, innovation and growth, and improving quality of life.
             </p>
             <p>
                 As part of this promotion, Mayor of Bristol George Ferguson has called for 1000 new trees to be planted around the Bristol area. The locations of these trees are to be based on local democracy. The initial idea and brand 'Democratree' was proposed by local school children as part of the Young Rewired State's Festival of Code initiative. This idea was then taken by five Computer Science students at the University of Bristol, analysed, and developed into a fully functional website and mobile application with several features which allow the residents of Bristol to choose locations for newly planted trees and vote on tree locations proposed by other users.
             </p>
-        <br/>
-        <a id="helplogin"><h2>Logging In</h2></a>
+            <br/>
+            <a id="helplogin"><h2>Logging In</h2></a>
             <p>
                 There are a number of ways of logging into Democratree: using your Democratree account, using your social media account, or logging in as a Guest.
-            <p>
-            <h4>Using your Democratree account</h4>
                 <p>
-                    By entering your username and password on the Login page, you will be logged into your Democratree account. From there you will be taken to the Map page where you can use the full range of features that Democratree has to offer. To sign up for a Democratree account, consult the Signing Up section of this guide.
-                </p>
-            <h4>Using your social media account</h4>
-                <p>
-                    If you do not wish to sign up for a Democratree account, you can easily log in to Democratree using your Facebook, Twitter or Google+ account details. Simply press the button of the type of account you wish to log in with on the Login page, enter your details in the popup and you will be logged into Democratree and taken to the Map page where you can use the full range of features that Democratree has to offer.
-                </p>
-                <p>
-                    Whilst logged in to your social media account, any trees you plant or any votes you cast will be saved to the database using the email address of your social media account. This means that all your accounts, providing you used the same email address for each, will be linked together and changes made when logged into one account will automatically apply to the others.
-                </p>
-            <h4>Logging in as a Guest</h4>
-                <p>
-                    If you do not wish log into Democratree, or simply want to see what services it has to offer before you sign up, you can log in as a Guest. This will allow you access to the system, where you can view the Map and other features. However while logged in as a Guest, some features will be blocked such as placing a new tree, or voting on existing trees. This is to stop the Democratree service being abused.
-                </p> 
-        <br/>
-        <a id="helpsignup"><h2>Signing Up</h2></a>
-            <h4>Signing up for a Democratree account</h4>
-                <p>
-                    Signing up for a Democratree account is very easy; from the Login page click the 'Sign up' button and simply enter your name, email address, desired username and desired password. If those details have not already been used to set up another account, your account will be created. Enter your new login details on the Login page to access Democratree with your new account.
-                </p>
-                <p>
-                    When you sign up with Democratree, you will receive an email asking you to verify your account by clicking a verification link. We ask you to do this to make sure that the account is linked to your real email address, and prevents a single user making unnecessary multiple accounts. Accounts not verified within 31 days of the account being created will be deleted, and all data connected to that account lost.
-                </p>
-            <h4> Signing up with a social media account</h4>
-                <p>
-                    This is not necessary! Simply log in with your existing social media details and you will be able to use the full range of Democratree features without having to sign up.
-                </p>  
-        <br/>
-        <a id="helpmap"><h2>Using the Map</h2></a>
-            <h4>Placing a new tree</h4>
-                <p>
-                    TBC
-                </p>
-            <h4>Placement restrictions</h4>
-                <h5>Within the Bristol Area</h5>
+                    <h4>Using your Democratree account</h4>
+                    <p>
+                        By entering your username and password on the Login page, you will be logged into your Democratree account. From there you will be taken to the Map page where you can use the full range of features that Democratree has to offer. To sign up for a Democratree account, consult the Signing Up section of this guide.
+                    </p>
+                    <h4>Using your social media account</h4>
+                    <p>
+                        If you do not wish to sign up for a Democratree account, you can easily log in to Democratree using your Facebook, Twitter or Google+ account details. Simply press the button of the type of account you wish to log in with on the Login page, enter your details in the popup and you will be logged into Democratree and taken to the Map page where you can use the full range of features that Democratree has to offer.
+                    </p>
+                    <p>
+                        Whilst logged in to your social media account, any trees you plant or any votes you cast will be saved to the database using the email address of your social media account. This means that all your accounts, providing you used the same email address for each, will be linked together and changes made when logged into one account will automatically apply to the others.
+                    </p>
+                    <h4>Logging in as a Guest</h4>
+                    <p>
+                        If you do not wish log into Democratree, or simply want to see what services it has to offer before you sign up, you can log in as a Guest. This will allow you access to the system, where you can view the Map and other features. However while logged in as a Guest, some features will be blocked such as placing a new tree, or voting on existing trees. This is to stop the Democratree service being abused.
+                    </p>
+                    <br/>
+                    <a id="helpsignup"><h2>Signing Up</h2></a>
+                    <h4>Signing up for a Democratree account</h4>
+                    <p>
+                        Signing up for a Democratree account is very easy; from the Login page click the 'Sign up' button and simply enter your name, email address, desired username and desired password. If those details have not already been used to set up another account, your account will be created. Enter your new login details on the Login page to access Democratree with your new account.
+                    </p>
+                    <p>
+                        When you sign up with Democratree, you will receive an email asking you to verify your account by clicking a verification link. We ask you to do this to make sure that the account is linked to your real email address, and prevents a single user making unnecessary multiple accounts. Accounts not verified within 31 days of the account being created will be deleted, and all data connected to that account lost.
+                    </p>
+                    <h4> Signing up with a social media account</h4>
+                    <p>
+                        This is not necessary! Simply log in with your existing social media details and you will be able to use the full range of Democratree features without having to sign up.
+                    </p>
+                    <br/>
+                    <a id="helpmap"><h2>Using the Map</h2></a>
+                    <h4>Placing a new tree</h4>
+                    <p>
+                        TBC
+                    </p>
+                    <h4>Placement restrictions</h4>
+                    <h5>Within the Bristol Area</h5>
                     <p>
                         As Democratree is sourcing locations for new trees to be planted in the Bristol area, the map is limited to the bounds of the BS postcode.
                     </p>
-                <h5>Zoom level</h5>
+                    <h5>Zoom level</h5>
                     <p>
                         To ensure that trees are placed with care, you must be zoomed in to a certain zoom level before you are able to place a tree.
                     </p>
-                <h5>Tree proximity</h5>
+                    <h5>Tree proximity</h5>
                     <p>
                         You are not able to place a tree within a certain distance of an existing proposed tree.
                     </p>
-                <h5>Unsuitable locations</h5>
+                    <h5>Unsuitable locations</h5>
                     <p>
                         There are many obvious unsuitable locations where you are not allowed to place trees, such as roads, bodies of water, on top of buildings and in privately owned land masses like golf courses.
                     </p>
-            <h4>Voting on an existing tree</h4>
+                    <h4>Voting on an existing tree</h4>
+                    <p>
+                        If you see a tree placed by another user that you like the look of, you can give their tree a vote making it more likely to be included in the 1000 chosen to be planted in Bristol. To vote on a tree, simply click on the tree's icon and information about the tree and the user who placed it will pop up. In that window you will see a 'Vote Up' button; click that button and the vote count for that tree will be incremented by one.
+                    </p>
+                    <p>
+                        To keep things fair, there are a couple of restrictions on the voting system. You are only allowed to vote on each tree once, and when placed that vote cannot be retracted. You are also unable to vote on your own tree!
+                    </p>
+                    <h4>Sharing a tree on social media</h4>
+                    <p>
+                        We encourage you to share yours and other people's trees to your friends on social media! Simply click on the tree you wish to share and look for the social media share icons at the bottom of the popup - click on one of these to post a link to this tree on your social media account so that your friends can be taken to this tree and get involved themselves. The more involved your circle of friends is, the more interactive and fun Democratree becomes.
+                    </p>
+                    <h4>Location services</h4>
+                    <p>
+                        Democratree uses location services to show your current position on the map when it is loaded to make it easier to explore trees placed in your local area. However because of the privacy implications of tracking your location, this service cannot be set up automatically and needs your permission to run.
+                    </p>
+                    <p>
+                        When you first log into Democratree, there should be an alert displayed telling you that Democratree wants to use your computer's location. To allow your location to be used, click 'Allow'. If you don't want to use the current location feature of Democratree, click 'Deny'. Once you have selected one of these options, your web browser will save your choice and apply it automatically on your subsequent visits to Democratree.
+                    </p>
+                    <p>
+                        If the alert is not displayed, it could be due to a number of reasons. You may have already saved location service permission preferences on your web browser, in which case the location services will be automatically allowed or blocked. To change this, you will need to go into your browser's settings. Another reason is that location services may not be available in your browser.
+                    </p>
+                    <br/>
+                    <a id="helpleaderboard"><h2>The Leaderboard</h2></a>
+                    <p>
+                        The leaderboard displays the trees with the most votes cast on them subject to the filter at the top of the screen. These filters include trees planted in the last day/week/month, 'hot' trees which have had activity in the last 30 minutes, and an overall list of all trees ever placed. It is the top 1000 entries on the Overall list that the locations of the trees to be planted around the Bristol area will be taken.
+                    </p>
+                    <p>
+                        The left hand column of the table shows how many votes the tree has got; the right hand column shows the name that was entered when the tree was placed. If you click on the name of a certain tree, you will be taken to its location on the Map.
+                    </p>
+                    <br/>
+                    <a id="helpprofile"><h2>Your Profile</h2></a>
+                    <p>
+                        This page contains information about the account that you are logged in to. It shows your name, email address and your display picture, as well as all the trees that you have placed on this account. To view one of your trees on the Map, simply click on it.
+                    </p>
+                    <p>
+                        If you are logged in as a guest, you are unable to use this page.
+                    </p>
+                    <br/>
+                    <a id="helpsettings"><h2>Your Account Settings</h2></a>
+                    <p>
+                        This is where you can control certain aspects of your Democratree account, including changing your password and allowing Democratree to use your profile picture taken from a linked social media login.
+                    </p>
+                    <br/>
+                    <a id="helplogout"><h2>Logging Out</h2></a>
+                    <p>
+                        Click the 'Log Out' button to be logged out of your account and taken back to the Login page. Note that closing your browser while logged into Democratree will automatically log you out.
+                    </p>
+        </div>
+        <!-- /content -->
+        <div data-role="panel" id="settings_left_panel">
+            <ul data-role="listview">
+                <li><a href="#map" class="ui-icon-grid">Map</a>
+                </li>
+                <li><a href="#leaderboard" class="ui-icon-bullets" onclick="updateLeaderboard()">Leaderboard</a>
+                </li>
+                <li><a href="#profile" class="ui-icon-user">My Profile</a>
+                </li>
+                <li><a href="#settings" class="ui-icon-gear">Account Settings</a>
+                </li>
+                <li><a href="#help" class="ui-icon-info">Help</a>
+                </li>
+                <li><a href="#about" class="ui-icon-edit">About</a>
+                </li>
+                <li><a class="ui-icon-power logoutButton">Log Out</a>
+                </li>
+            </ul>
+        </div>
+        <!-- /panel -->
+    </div>
+    <!-- /page -->
+    <!-- Start of add tree page -->
+    <div data-role="page" id="add_tree">
+        <div data-role="header" data-position="fixed" data-id="fixed_header">
+            <a data-icon="arrow-l" href="javascript:window.history.back();" data-iconpos="notext">Back</a>
+            <h1>Add Tree</h1>
+        </div>
+        <!-- /header -->
+        <div role="main" class="ui-content">
+            <p>
+                <fieldset data-role="controlgroup" id="chosenTree">
+                    <legend>Choose the type of tree you wish to place:</legend>
+                    <input name="treeRadio" value="Common Ash" checked="checked" type="radio" id="treeChoice1">
+                    <label for="treeChoice1">Common Ash</label>
+                    <input name="treeRadio" value="Silver Birch" type="radio" id="treeChoice2">
+                    <label for="treeChoice2">Silver Birch</label>
+                    <input name="treeRadio" value="Pedunculate Oak" type="radio" id="treeChoice3">
+                    <label for="treeChoice3">Pedunculate Oak</label>
+                    <input name="treeRadio" value="Common Juniper" type="radio" id="treeChoice4">
+                    <label for="treeChoice4">Common Juniper</label>
+                    <input name="treeRadio" value="Wych Elm" type="radio" id="treeChoice5">
+                    <label for="treeChoice5">Wych Elm</label>
+                    <input name="treeRadio" value="European Beech" type="radio" id="treeChoice6">
+                    <label for="treeChoice6">European Beech</label>
+                </fieldset>
+                <a href="#plant" class="ui-btn" onclick="addTree1();">Continue</a>
+            </p>
+        </div>
+        <!-- /content -->
+    </div>
+    <!-- /page -->
+    <!-- Start of plant tree page -->
+    <div data-role="page" id="plant">
+        <div data-role="header" data-position="fixed" data-id="fixed_header">
+            <a data-icon="arrow-l" href="javascript:window.history.back();" data-iconpos="notext">Back</a>
+            <h1>Tell us more</h1>
+        </div>
+        <!-- /header -->
+        <div role="main" class="ui-content">
+            <form>
                 <p>
-                    If you see a tree placed by another user that you like the look of, you can give their tree a vote making it more likely to be included in the 1000 chosen to be planted in Bristol. To vote on a tree, simply click on the tree's icon and information about the tree and the user who placed it will pop up. In that window you will see a 'Vote Up' button; click that button and the vote count for that tree will be incremented by one.
+                    <label for="tree-label">Enter a Label for your new tree:</label>
+                    <input name="tree-label" id="tree-label" placeholder="My favourite tree" value="" type="text">
                 </p>
                 <p>
-                    To keep things fair, there are a couple of restrictions on the voting system. You are only allowed to vote on each tree once, and when placed that vote cannot be retracted. You are also unable to vote on your own tree!
-                </p> 
-            <h4>Sharing a tree on social media</h4>
-                <p>
-                    We encourage you to share yours and other people's trees to your friends on social media! Simply click on the tree you wish to share and look for the social media share icons at the bottom of the popup - click on one of these to post a link to this tree on your social media account so that your friends can be taken to this tree and get involved themselves. The more involved your circle of friends is, the more interactive and fun Democratree becomes.
+                    <label for="tree-story">Add a story to your tree:</label>
+                    <textarea cols="40" rows="50" name="tree-story" id="tree-story"></textarea>
+                    <a href="#" class="ui-btn ui-btn-inline ui-icon-camera ui-btn-icon-left" onclick="attachPhoto1();">Attach photo from camera</a><a href="#" class="ui-btn ui-btn-inline ui-icon-camera ui-btn-icon-left" onclick="attachPhoto2();">Attach photo from gallery</a>
+                    <br />
+                    <img id="myImage" style="width:100%" />
+                    <a href="#plantconfirm" class="ui-btn" onclick="addTree2();">Continue</a>
                 </p>
-            <h4>Location services</h4>
-                <p>
-                    Democratree uses location services to show your current position on the map when it is loaded to make it easier to explore trees placed in your local area. However because of the privacy implications of tracking your location, this service cannot be set up automatically and needs your permission to run.
-                </p>
-                <p>
-                    When you first log into Democratree, there should be an alert displayed telling you that Democratree wants to use your computer's location. To allow your location to be used, click 'Allow'. If you don't want to use the current location feature of Democratree, click 'Deny'. Once you have selected one of these options, your web browser will save your choice and apply it automatically on your subsequent visits to Democratree.
-                </p>
-                <p>
-                    If the alert is not displayed, it could be due to a number of reasons. You may have already saved location service permission preferences on your web browser, in which case the location services will be automatically allowed or blocked. To change this, you will need to go into your browser's settings. Another reason is that location services may not be available in your browser.
-                </p>
-        <br/>       
-        <a id="helpleaderboard"><h2>The Leaderboard</h2></a>
+            </form>
+        </div>
+        <!-- /content -->
+    </div>
+    <!-- /page -->
+    <!-- Start of plant tree confirmation page -->
+    <div data-role="page" id="plantconfirm">
+        <div data-role="header" data-position="fixed" data-id="fixed_header">
+            <a data-icon="arrow-l" href="javascript:window.history.back();" data-iconpos="notext">Back</a>
+            <h1>Check out your tree</h1>
+        </div>
+        <!-- /header -->
+        <div role="main" class="ui-content">
             <p>
-                The leaderboard displays the trees with the most votes cast on them subject to the filter at the top of the screen. These filters include trees planted in the last day/week/month, 'hot' trees which have had activity in the last 30 minutes, and an overall list of all trees ever placed. It is the top 1000 entries on the Overall list that the locations of the trees to be planted around the Bristol area will be taken.
+                <div id="confirmTitle"></div>
+                <div id="confirmType"></div>
+                <div>
+                    <img id="confirmImg"></img>
+                </div>
+                <div id="confirmStory"></div>
+                <a href="javascript:void(window.location='#map');placeMarker(newLatLng, map);" class="ui-btn">Plant it!</a>
             </p>
-            <p>
-                The left hand column of the table shows how many votes the tree has got; the right hand column shows the name that was entered when the tree was placed. If you click on the name of a certain tree, you will be taken to its location on the Map.
-            </p>
-        <br/>
-        <a id="helpprofile"><h2>Your Profile</h2></a>
-            <p>
-                This page contains information about the account that you are logged in to. It shows your name, email address and your display picture, as well as all the trees that you have placed on this account. To view one of your trees on the Map, simply click on it.
-            </p>
-            <p>
-                If you are logged in as a guest, you are unable to use this page.
-            </p>
-        <br/>
-        <a id="helpsettings"><h2>Your Account Settings</h2></a>
-            <p>
-                This is where you can control certain aspects of your Democratree account, including changing your password and allowing Democratree to use your profile picture taken from a linked social media login.
-            </p>
-        <br/>
-        <a id="helplogout"><h2>Logging Out</h2></a>
-            <p>
-                Click the 'Log Out' button to be logged out of your account and taken back to the Login page. Note that closing your browser while logged into Democratree will automatically log you out.
-            </p>
-    </div><!-- /content -->
-            
-    <div data-role="panel" id="settings_left_panel">
-        <ul data-role="listview">
-            <li><a href="#map" class="ui-icon-grid">Map</a></li>
-            <li><a href="#leaderboard" class="ui-icon-bullets" onclick="updateLeaderboard()">Leaderboard</a></li>
-            <li><a href="#profile" class="ui-icon-user">My Profile</a></li>
-            <li><a href="#settings" class="ui-icon-gear">Account Settings</a></li>
-            <li><a href="#help" class="ui-icon-info">Help</a></li>
-            <li><a href="#about" class="ui-icon-edit">About</a></li>
-            <li><a class="ui-icon-power logoutButton">Log Out</a></li>
-        </ul>
-        
-    </div><!-- /panel -->
-</div><!-- /page -->
-
-
-<!-- Start of add tree page -->
-<div data-role="page" id="add_tree">
-
-    <div data-role="header" data-position="fixed" data-id="fixed_header">
-        <a data-icon="arrow-l" href="javascript:window.history.back();" data-iconpos="notext">Back</a>
-        <h1>Add Tree</h1>
-    </div><!-- /header -->
-
-    <div role="main" class="ui-content">
-        <p>
-            <fieldset data-role="controlgroup" id="chosenTree">
-                <legend>Choose the type of tree you wish to place:</legend>
-                <input name="treeRadio" value="Common Ash" checked="checked" type="radio" id="treeChoice1">
-                <label for="treeChoice1">Common Ash</label>
-                <input name="treeRadio" value="Silver Birch" type="radio" id="treeChoice2">
-                <label for="treeChoice2">Silver Birch</label>
-                <input name="treeRadio" value="Pedunculate Oak" type="radio" id="treeChoice3">
-                <label for="treeChoice3">Pedunculate Oak</label>
-                <input name="treeRadio" value="Common Juniper" type="radio" id="treeChoice4">
-                <label for="treeChoice4">Common Juniper</label>
-                <input name="treeRadio" value="Wych Elm" type="radio" id="treeChoice5">
-                <label for="treeChoice5">Wych Elm</label>
-                <input name="treeRadio" value="European Beech" type="radio" id="treeChoice6">
-                <label for="treeChoice6">European Beech</label>
-            </fieldset>
-            <a href="#plant" class="ui-btn" onclick="addTree1();">Continue</a>
-        </p>
-    </div><!-- /content -->
-</div><!-- /page -->
-
-<!-- Start of plant tree page -->
-<div data-role="page" id="plant">
-
-    <div data-role="header" data-position="fixed" data-id="fixed_header">
-        <a data-icon="arrow-l" href="javascript:window.history.back();" data-iconpos="notext">Back</a>
-        <h1>Tell us more</h1>
-    </div><!-- /header -->
-
-    <div role="main" class="ui-content">
-        <form>
-            <p>
-                <label for="tree-label">Enter a Label for your new tree:</label>
-                <input name="tree-label" id="tree-label" placeholder="My favourite tree" value="" type="text">
-            </p>
-            <p>
-                <label for="tree-story">Add a story to your tree:</label>
-                <textarea cols="40" rows="50" name="tree-story" id="tree-story"></textarea>
-                <a href="#" class="ui-btn ui-btn-inline ui-icon-camera ui-btn-icon-left" onclick="attachPhoto1();">Attach photo from camera</a><a href="#" class="ui-btn ui-btn-inline ui-icon-camera ui-btn-icon-left" onclick="attachPhoto2();">Attach photo from gallery</a><br /> <img id="myImage" style="width:100%" />
-                <a href="#plantconfirm" class="ui-btn" onclick="addTree2();">Continue</a>
-            </p>
-        </form>
-    </div><!-- /content -->
-</div><!-- /page -->
-
-<!-- Start of plant tree confirmation page -->
-<div data-role="page" id="plantconfirm">
-
-    <div data-role="header" data-position="fixed" data-id="fixed_header">
-        <a data-icon="arrow-l" href="javascript:window.history.back();" data-iconpos="notext">Back</a>
-        <h1>Check out your tree</h1>
-    </div><!-- /header -->
-
-    <div role="main" class="ui-content">
-        <p>
-            <div id="confirmTitle"></div>
-            <div id="confirmType"></div>
-            <div><img id="confirmImg"></img></div>
-            <div id="confirmStory"></div>
-            <a href="javascript:void(window.location='#map');placeMarker(newLatLng, map);" class="ui-btn">Plant it!</a>
-        </p>
-        <script type="text/javascript">
-            $("body").on( "pagecontainershow", function( event, ui ) {
-                //console.log(ui);
-                $("#confirmTitle").html("<h2>" + newTreeLabel + "</h2>");
-                $("#confirmType").html(newChosenTree);
-                $("#confirmImg").src = "data:image/jpeg;base64," + newTreeImg;
-                $("#confirmStory").html(newTreeStory);
-            } );
-            
-        </script>
-    </div><!-- /content -->
-</div><!-- /page -->
-
-
-
+            <script type="text/javascript">
+                $("body").on("pagecontainershow", function (event, ui) {
+                    //console.log(ui);
+                    $("#confirmTitle").html("<h2>" + newTreeLabel + "</h2>");
+                    $("#confirmType").html(newChosenTree);
+                    $("#confirmImg").src = "data:image/jpeg;base64," + newTreeImg;
+                    $("#confirmStory").html(newTreeStory);
+                });
+            </script>
+        </div>
+        <!-- /content -->
+    </div>
+    <!-- /page -->
 </body>
 </html>
