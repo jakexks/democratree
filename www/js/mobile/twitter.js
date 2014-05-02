@@ -24,6 +24,28 @@ var Twitter = {
             twOauth.get('https://api.twitter.com/1.1/account/verify_credentials.json?skip_status=true',
                 function(data) {
                     var entry = JSON.parse(data.text);
+                    var query = new Parse.Query("socialMediaUsers");
+                    query.equalTo("twitter", entry.id_str);
+                    query.first({
+                        success: function(socialMediaUser) {
+                            // If there's no current entry, add it, otherwise just set the current users to it
+                            if (socialMediaUser == undefined) {
+                                var socialMediaUsers = Parse.Object.extend("socialMediaUsers");
+                                var socialMediaUser = new socialMediaUsers();
+                                // There is no way to access a users email with the twitter API
+                                socialMediaUser.set('twitter', entry.id_str);
+                                socialMediaUser.set('name', entry.name);
+                                socialMediaUser.set('votedOn', []);
+                                socialMediaUser.save();
+                                socialMediaUserID = entry.id_str;
+                            } else {
+                                socialMediaUserID = entry.id_str;
+                            }
+                        },
+                        error: function(error) {
+                            console.log(error)
+                        }
+                    });
                     loginStatus = 'twitter';
                     openMapPage();
                 },
@@ -68,6 +90,7 @@ var Twitter = {
                     verifier = y[1];
                 }
             }
+            inappbrowser.close()
             // Here we are going to change token for request with token for access
              
             /*
@@ -96,7 +119,28 @@ var Twitter = {
                     function(data) {
                         var entry = JSON.parse(data.text);
                         // Find a way to close the browser faster to prevent user seeing page not found
-                        inappbrowser.close();
+                        var query = new Parse.Query("socialMediaUsers");
+                        query.equalTo("twitter", entry.id_str);
+                        query.first({
+                            success: function(socialMediaUser) {
+                                // If there's no current entry, add it, otherwise just set the current users to it
+                                if (socialMediaUser == undefined) {
+                                    var socialMediaUsers = Parse.Object.extend("socialMediaUsers");
+                                    var socialMediaUser = new socialMediaUsers();
+                                    // There is no way to access a users email with the twitter API
+                                    socialMediaUser.set('twitter', entry.id_str);
+                                    socialMediaUser.set('name', entry.name);
+                                    socialMediaUser.set('votedOn', []);
+                                    socialMediaUser.save();
+                                    socialMediaUserID = entry.id_str;
+                                } else {
+                                    socialMediaUserID = entry.id_str;
+                                }
+                            },
+                            error: function(error) {
+                                console.log(error)
+                            }
+                        });
                         loginStatus = 'twitter';
                         // Configuring Apps LOCAL_STORAGE
                         localStorage.setItem(twitterKey, JSON.stringify(accessData));

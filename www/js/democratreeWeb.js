@@ -221,7 +221,7 @@ function logout(){
     }
     $('#myTreeList').empty();
     loginStatus = 'none';
-    currentUser = undefined;
+    socialMediaUserID = undefined;
     ignoreHashChange = true;
     window.location.hash = '#login'
     // For some reason this fires off two hash changes - the second #'s to window.location.pathname

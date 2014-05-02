@@ -1,3 +1,5 @@
+var socialMediaUserID;
+
 function initializeLogin() {
     var gOAuth = liquid.helper.oauth;
     if (window.location.hash != '#login' && window.location.hash != '') {
@@ -18,7 +20,6 @@ function initializeLogin() {
             success: function(user) {
                 document.getElementById('login-username').value = "";
                 document.getElementById('login-pwd').value = "";
-                currUser = Parse.User.current();
                 if(user.get("emailVerified"))
                 {
                     openMapPage();
@@ -88,6 +89,72 @@ function initializeLogin() {
         }
         event.preventDefault();
     });
+    $('#facebookSigninButton').bind('click', function(){
+        FB.getLoginStatus(function(response) {
+            if (response.status === 'connected') {
+                FB.api('/me', function(userInfo) {
+                    var query = new Parse.Query("socialMediaUsers");
+                    query.equalTo("facebook", userInfo.id);
+                    query.first({
+                        success: function(socialMediaUser) {
+                            // If there's no current entry, add it, otherwise just set the current users to it
+                            if (socialMediaUser == undefined) {
+                                var socialMediaUsers = Parse.Object.extend("socialMediaUsers");
+                                var socialMediaUser = new socialMediaUsers();
+                                socialMediaUser.set('email', userInfo.email);
+                                socialMediaUser.set('facebook', userInfo.id);
+                                socialMediaUser.set('name', userInfo.name);
+                                socialMediaUser.set('votedOn', []);
+                                socialMediaUser.save();
+                                socialMediaUserID = userInfo.id;
+                            } else {
+                                socialMediaUserID = userInfo.id;
+                            }
+                        },
+                        error: function(error) {
+                            console.log(error)
+                        }
+                    });
+                });
+                loginStatus = 'facebook';
+                openMapPage();
+            } else {
+                FB.login(function(response) {
+                    if (response.authResponse) {
+                        loginStatus = 'facebook';
+                        openMapPage();
+                        FB.api('/me', function(userInfo) {
+                            var query = new Parse.Query("socialMediaUsers");
+                            query.equalTo("facebook", userInfo.id);
+                            query.first({
+                                success: function(socialMediaUser) {
+                                    // If there's no current entry, add it, otherwise just set the current users to it
+                                    if (socialMediaUser == undefined) {
+                                        var socialMediaUsers = Parse.Object.extend("socialMediaUsers");
+                                        var socialMediaUser = new socialMediaUsers();
+                                        socialMediaUser.set('email', userInfo.email);
+                                        socialMediaUser.set('facebook', userInfo.id);
+                                        socialMediaUser.set('name', userInfo.name);
+                                        socialMediaUser.set('votedOn', []);
+                                        socialMediaUser.save();
+                                        socialMediaUserID = userInfo.id;
+                                    } else {
+                                        socialMediaUserID = userInfo.id;
+                                    }
+                                },
+                                error: function(error) {
+                                    console.log(error)
+                                }
+                            });
+                        });
+                    }
+                    else {
+                        console.log(response);
+                    }
+                }, {scope: 'email'});
+            }
+        }, true);
+    });
     $('#twitterSigninButton').bind('click', function(event) {
         Twitter.init();
     });
@@ -125,9 +192,39 @@ function loadGapi() {
                 expires_in      : tokenObj.expires_in,
                 scope           : liquid.config.gapi.scope 
             });
-            if (!gOAuth.isGapiLoaded) { 
-                gapi.client.load('plus','v1', function(){ gOAuth.isGapiLoaded = true; });
-            }
+            gapi.client.load('plus','v1', function(){ 
+                gOAuth.isGapiLoaded = true; 
+                var request = gapi.client.plus.people.get( {'userId' : 'me'} );
+                request.execute( function(userInfo) {
+                    var query = new Parse.Query("socialMediaUsers");
+                    // Filter emails to find primary account
+                    var email = userInfo['emails'].filter(function(v) {
+                        return v.type === 'account'; // Filter out the primary email
+                    })[0].value;
+                    var query = new Parse.Query("socialMediaUsers");
+                    query.equalTo("googleplus", userInfo.id);
+                    query.first({
+                        success: function(socialMediaUser) {
+                            // If there's no current entry, add it, otherwise just set the current users to it
+                            if (socialMediaUser == undefined) {
+                                var socialMediaUsers = Parse.Object.extend("socialMediaUsers");
+                                var socialMediaUser = new socialMediaUsers();
+                                socialMediaUser.set('email', email);
+                                socialMediaUser.set('googleplus', userInfo.id);
+                                socialMediaUser.set('name', userInfo.displayName);
+                                socialMediaUser.set('votedOn', []);
+                                socialMediaUser.save();
+                                socialMediaUserID = userInfo.id;
+                            } else {
+                                socialMediaUserID = userInfo.id;
+                            }
+                        },
+                        error: function(error) {
+                            alert(error)
+                        }
+                    });
+                });
+            });
             loginStatus = 'googleplus';
             openMapPage();
         } else {
@@ -154,7 +251,7 @@ function logout(){
     }
     $('#myTreeList').empty();
     loginStatus = 'none';
-    currUser = undefined;
+    socialMediaUserID = undefined;
     ignoreHashChange = true;
     window.location.hash = 'login'
     // For some reason this fires off two hash changes - the second #'s to window.location.pathname
@@ -194,9 +291,15 @@ function hashChangedProfile(){
         $('#profile_username').append(user.getUsername());
     }
     if(loginStatus != 'guest') {
-        var user = currUser;
+        var userid;
+        if (loginStatus == 'democratree') {
+            userid = user.get('username');
+        } else {
+            userid = socialMediaUserID;
+        }
         var query = new Parse.Query("Tree");
-        query.equalTo('username', user.get('username'));
+        query.equalTo('username', userid);
+        query.equalTo('userType', loginStatus);
         query.find({
             success: function(trees) {
                 $('#myTreeList').empty();
@@ -205,19 +308,19 @@ function hashChangedProfile(){
                     if(i == 0) { 
                         $('#myTreeList').append('<li class="ui-first-child">' +
                             '<a onclick="window.location.href=\'#map\'; map.setCenter(new google.maps.LatLng('+t.lat+','+t.lng+')); map.setZoom(18);" class="ui-btn ui-btn-icon-right ui-icon-carat-r">' 
-                            + t.story + ' : ' + t.votes +
+                            + t.name + ' : ' + t.votes +
                             '</a></li>'
                         );
                     } else if(i == trees.length && i != 0) {
                         $('#myTreeList').append('<li class="ui-last-child">' +
                             '<a onclick="window.location.href=\'#map\'; map.setCenter(new google.maps.LatLng('+t.lat+','+t.lng+')); map.setZoom(18);" class="ui-btn ui-btn-icon-right ui-icon-carat-r">' 
-                            + t.story + ' : ' + t.votes +
+                            + t.name + ' : ' + t.votes +
                             '</a></li>'
                         );
                     } else {
                         $('#myTreeList').append('<li>' +
                             '<a onclick="window.location.href=\'#map\'; map.setCenter(new google.maps.LatLng('+t.lat+','+t.lng+')); map.setZoom(18);" class="ui-btn ui-btn-icon-right ui-icon-carat-r">' 
-                            + t.story + ' : ' + t.votes +
+                            + t.name + ' : ' + t.votes +
                             '</a></li>'
                         );
                     }
