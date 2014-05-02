@@ -336,9 +336,9 @@ function onSignInCallback(authResult) {
                             socialMediaUser.set('name', userInfo.displayName);
                             socialMediaUser.set('votedOn', []);
                             socialMediaUser.save();
-                            currentUser = socialMediaUser;
+                            socialMediaUserID = userInfo.id;
                         } else {
-                            currentUser = socialMediaUser;
+                            socialMediaUserID = userInfo.id;
                         }
                     },
                     error: function(error) {

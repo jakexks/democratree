@@ -374,10 +374,15 @@ function placeMarker(location, map) {
     var treesPerDay = 3;
     var Tree = Parse.Object.extend("Tree");
     var query = new Parse.Query("Tree");
-    var user = Parse.User.current();
-    var currentUser = user.get("username");
+    var user, currentUser;
+    if (loginStatus == 'democratree') {
+        user = Parse.User.current();
+        currentUsername = user.get("username");
+    } else {
+        currentUsername = socialMediaUserID;
+    }
     var plantAllowed = true;
-    query.equalTo("username", currentUser);
+    query.equalTo("username", currentUsername);
     query.descending("createdAt");
     query.limit(treesPerDay);
     showLoader();
@@ -404,15 +409,16 @@ function placeMarker(location, map) {
                             animation: google.maps.Animation.DROP,
                             icon: 'img/tree1.png'
                         });
-                        var currentUser = Parse.User.current();
                         var Tree = Parse.Object.extend("Tree");
                         var tree = new Tree();
                         tree.set("lat", location.lat());
                         tree.set("lng", location.lng());
                         tree.set("type", "default");
-                        tree.set("username", currentUser.get("username"));
+                        tree.set("username", currentUsername);
+                        tree.set("userType", loginStatus);
                         tree.set("votes", 0);
                         tree.set("story", "none");
+                        tree.set("name", "none");
                         tree.save(null, {
                             success: function (tree) {
                                 objectId = tree.id;
@@ -468,17 +474,19 @@ function voteUp(objectId, infowindow) {
     query.equalTo("objectId", objectId);
     query.first({
         success: function (tree) {
-            var currentUser = Parse.User.current();
-            currentUser.add("votedOn", tree.id)
-            currentUser.save();
-            if (tree.get("username") == currentUser.get("username")) {
-                openPopupInMap("You cannot vote on your own tree!");
-            } else {
-                var score = tree.get("votes");
-                tree.set("votes", score + 1);
-                tree.save();
-                infowindow.setContent('<p>User Name: ' + tree.get("username") + '<p>Tree Story: ' + tree.get("story") + '<p><p>Votes: ' + tree.get("votes") + '<p><button id="btnVoteUp' + tree.id + '">Vote Up</button>');
-            }
+            var currentUser;
+            getCurrentUserObj().done(function(userObj) {
+                currentUser.add("votedOn", tree.id)
+                currentUser.save();
+                if (tree.get("username") == currentUser.get("username")) {
+                    openPopupInMap("You cannot vote on your own tree!");
+                } else {
+                    var score = tree.get("votes");
+                    tree.set("votes", score + 1);
+                    tree.save();
+                    infowindow.setContent('<p>User Name: ' + tree.get("username") + '<p>Tree Story: ' + tree.get("story") + '<p><p>Votes: ' + tree.get("votes") + '<p><button id="btnVoteUp' + tree.id + '">Vote Up</button>');
+                }
+            });
         },
         error: function (error) {
             alert("voteup error");
@@ -488,6 +496,7 @@ function voteUp(objectId, infowindow) {
 
 function addNewTree() {
     var fStory = document.forms["myForm"]["Story"].value;
+    var fName = document.forms["myForm"]["Name"].value;
     var Tree = Parse.Object.extend("Tree");
     var tree = new Tree();
     var query = new Parse.Query("Tree");
@@ -495,10 +504,11 @@ function addNewTree() {
     query.first({
         success: function (tree) {
             tree.set("story", fStory);
+            tree.set("name", fName);
             tree.save();
             infoWindowArray[treeCount].close();
             infoWindowArray[treeCount].setContent('Tree submitted.<p>User Name: ' + tree.get("username") + '<p>Tree Story: ' + fStory + '<p><p>Votes: 0<p><button id="btnVoteUp' + tree.id + '">Vote Up</button>');
-            openPopupPlant('Tree submitted.<p>User Name: ' + tree.get("username") + '<p>Tree Story: ' + fStory + '<p><p>Votes: 0');
+            openPopupPlant('Tree submitted.<p>User Name: ' + tree.get("username") + '<p>Tree Name: ' + fName + '<p>Tree Story: ' + fStory + '<p><p>Votes: 0');
             treeArray.push(tree);
             treeCount++;
         },
@@ -511,19 +521,23 @@ function addNewTree() {
 
 // Attaches infowindow to each marker
 function attachMessage(marker, map, tree) {
-    var contentString = '<p id="textInfoWindow"><b>New Tree Placed</b><p><form id="myForm"> Story: <input type="text" name="Story"><br></form><p><button id="btnSubmitTree" onclick="return addNewTree()">Submit</button><button id="btnCancelTree" onclick="return cancelTree(markerCount-1)">Cancel</button></p>'
+    var contentString = '<p id="textInfoWindow"><b>New Tree Placed</b><p><form id="myForm"> Name: <input type="text" name="Name"><br>Story: <input type="text" name="Story"><br></form><p><button id="btnSubmitTree" onclick="return addNewTree()">Submit</button><button id="btnCancelTree" onclick="return cancelTree(markerCount-1)">Cancel</button></p>'
     var infowindow = new google.maps.InfoWindow({
         content: contentString
     });
     infoWindowArray.push(infowindow);
     infowindow.open(map, marker);
     google.maps.event.addListener(marker, 'click', function () {
-        //infowindow.open(map,marker);
-        showTree(event, tree);
-
+        // Workaround until new tree wizard is pushed
+        if (infowindow.content.slice(0,5) == '<p id') {
+            // Haven't confirmed yet
+            infowindow.open(map,marker);
+        } else {
+            showTree(event, tree);
+        }
     });
     google.maps.event.addListener(infowindow, 'domready', function () {
-        var contentStr = '<p id="textInfoWindow"><b>New Tree Placed</b><p><form id="myForm"> Story: <input type="text" name="Story"><br></form><p><button id="btnSubmitTree" onclick="return addNewTree()">Submit</button><button id="btnCancelTree" onclick="return cancelTree(markerCount-1)">Cancel</button></p>'
+        var contentStr = '<p id="textInfoWindow"><b>New Tree Placed</b><p><form id="myForm"> Name: <input type="text" name="Name"><br>Story: <input type="text" name="Story"><br></form><p><button id="btnSubmitTree" onclick="return addNewTree()">Submit</button><button id="btnCancelTree" onclick="return cancelTree(markerCount-1)">Cancel</button></p>'
             // Check to make sure it has been submitted
         if (infowindow.content == contentStr) {} else {
             var str = infowindow.content;
@@ -540,92 +554,104 @@ function attachMessage(marker, map, tree) {
 function showTree(event, tree) {
     // msg = "";
     $('#popupMsg').html('');
-    var treeName = tree.get("name");
-    var treeUser = tree.get("username");
-    var treeStory = tree.get("story");
-    if (tree.get("story") == "none") {
-        tree.set("story", treeArray[treeArray.length - 1].get("story"));
-        tree.save();
-    }
-    treeStory = tree.get("story");
-    var treeVote = tree.get("votes");
-    $("#popupTreeName").val(treeName);
-    $("#popupTreeUser").val(treeUser);
-    $("#popupTreeStory").val(treeStory);
-    $("#popupTreeVote").val(treeVote);
-    if (event == null) {
-        var xpos = $('#map-canvas').offset().left + ($('#map-canvas').width() / 2);
-        var ypos = $('#map-canvas').offset().top + ($('#map-canvas').height() / 2);
-        $("#treepopup").popup("open", {
-            x: xpos,
-            y: ypos
-        });
-    } else {
-        $("#treepopup").popup("open", {
-            x: event.pageX,
-            y: event.pageY
-        });
-    }
-    $("#twitter-button").html('<a href="https://twitter.com/share" class="twitter-share-button" data-url="http://democratree.jakexks.com?id=' + tree.id + '" data-text="I just planted a tree!" data-via="democratreeuk" data-hashtags="1000Trees">Tweet</a>');
-    $("#fb-button").html('<fb:share-button href="http://democratree.jakexks.com?id=' + tree.id + '" type="button_count"></fb:share-button>');
-    FB.XFBML.parse();
-    twttr.widgets.load();
-    gapi.plus.render("google-button", {
-        "action": "share",
-        "href": "http://democratree.jakexks.com?id=" + tree.id,
-        "width": "200",
-        "height": "20"
-    });
-    $("#popupBtnVote").on('tap', function () {
-
-        console.log("pressed vote");
-
-        if (loginStatus != "guest") {
-            var user = Parse.User.current();
-            var votedOn = user.get("votedOn");
-            console.log(votedOn.indexOf(1));
-            if (votedOn.indexOf(tree.id) == -1) {
-                console.log("didnt vote on this tree");
-                objectId = tree.id;
-                var Tree = Parse.Object.extend("Tree");
-                var query = new Parse.Query("Tree");
-                query.equalTo("objectId", objectId);
-                query.first({
-                    success: function (tree) {
-                        var currentUser = Parse.User.current();
-                        currentUser.add("votedOn", tree.id)
-                        currentUser.save();
-                        if (tree.get("username") == currentUser.get("username")) {
-                            $('#popupMsg').html('<p style="color:red;">You cannot vote on your own tree!</p>');
-                        } else {
-                            console.log(treeUser);
-                            var score = tree.get("votes") + 1;
-                            tree.set("votes", score);
-                            tree.save();
-                            $("#popupTreeVote").val(score);
-                            console.log(tree.get("votes"));
-                            // update the infowindow
-                            $('#popupMsg').html('Thank you for voting!');
-                        }
-                    },
-                    error: function (error) {
-                        $('#popupMsg').html('<p style="color:red;">Failed to retrieve data from the server.</p>');
-                    }
-                });
-
-            } else {
-                // not sure why this appears first before the thank you msg
-                // msg = '<p style="color:red;">You have already voted on this tree!</p>';
-                $('#popupMsg').html('<p style="color:red;">You have already voted on this tree!</p>');
+    // This is essentially a locally cached version of the tree, not the actual tree in the Parse database
+    var query = new Parse.Query("Tree");
+    query.equalTo("objectId", tree.id);
+    query.first({
+        success: function(tree) {
+            var treeName = tree.get("name");
+            var treeUser = tree.get("username");
+            var treeStory = tree.get("story");
+            if (tree.get("story") == "none") {
+                tree.set("story", treeArray[treeArray.length - 1].get("story"));
+                tree.set("name", treeArray[treeArray.length - 1].get("name"));
+                tree.save();
             }
-        } else $('#popupMsg').html('<p style="color:red;">You must be logged in to vote.</p>');
+            treeStory = tree.get("story");
+            treeName = tree.get("name");
+            var treeVote = tree.get("votes");
+            console.log("Tree votes:" + treeVote);
+            $("#popupTreeName").val(treeName);
+            $("#popupTreeUser").val(treeUser);
+            $("#popupTreeStory").val(treeStory);
+            $("#popupTreeVote").val(treeVote);
+            if (event == null) {
+                var xpos = $('#map-canvas').offset().left + ($('#map-canvas').width() / 2);
+                var ypos = $('#map-canvas').offset().top + ($('#map-canvas').height() / 2);
+                $("#treepopup").popup("open", {
+                    x: xpos,
+                    y: ypos
+                });
+            } else {
+                $("#treepopup").popup("open", {
+                    x: event.pageX,
+                    y: event.pageY
+                });
+            }
+            $("#twitter-button").html('<a href="https://twitter.com/share" class="twitter-share-button" data-url="http://democratree.jakexks.com?id=' + tree.id + '" data-text="I just planted a tree!" data-via="democratreeuk" data-hashtags="1000Trees">Tweet</a>');
+            $("#fb-button").html('<fb:share-button href="http://democratree.jakexks.com?id=' + tree.id + '" type="button_count"></fb:share-button>');
+            FB.XFBML.parse();
+            twttr.widgets.load();
+            gapi.plus.render("google-button", {
+                "action": "share",
+                "href": "http://democratree.jakexks.com?id=" + tree.id,
+                "width": "200",
+                "height": "20"
+            });
+            // Remove functions left over from previous windows.
+            $("#popupBtnVote").off();
+            $("#popupBtnVote").on('tap', function () {
+                // Each time a tree window is opened, this function is attached to the vote button,
+                // as the button does not have a uniquely formed ID
+                // I.e if you open view 3 trees, and click vote on the 3rd, it will run this function for ALL 3 trees viewed
+                // Unless all previous event handlers are removed before attaching the correct one.
+                console.log("pressed vote");
 
-        // console.log("hi");
-        // console.log(msg);
-        // $('#popupMsg').html(msg);
+                if (loginStatus != "guest") {
+                    var currentUser;
+                    getCurrentUserObj().done(function(userObj) {
+                        currentUser = userObj;
+                        var votedOn = currentUser.get("votedOn");
+                        console.log(votedOn.indexOf(1));
+                        if (votedOn.indexOf(tree.id) == -1) {
+                            console.log("didnt vote on this tree");
+                            objectId = tree.id;
+                            var currentUsername;
+                            if (loginStatus == 'democratree') {
+                                currentUsername = currentUser.get("username");
+                            } else {
+                                currentUsername = socialMediaUserID;
+                            }
+                            if (tree.get("username") == currentUsername) {
+                                $('#popupMsg').html('<p style="color:red;">You cannot vote on your own tree!</p>');
+                            } else {
+                                currentUser.add("votedOn", tree.id)
+                                currentUser.save();
+                                console.log(treeUser);
+                                var score = tree.get("votes") + 1;
+                                tree.set("votes", score);
+                                tree.save();
+                                $("#popupTreeVote").val(score);
+                                console.log(tree.get("votes"));
+                                // update the infowindow
+                                $('#popupMsg').html('Thank you for voting!');
+                            }
+                        } else {
+                            $('#popupMsg').html('<p style="color:red;">You have already voted on this tree!</p>');
+                        }
+                    });
+                } else $('#popupMsg').html('<p style="color:red;">You must be logged in to vote.</p>');
 
+                // console.log("hi");
+                // console.log(msg);
+                // $('#popupMsg').html(msg);
+
+            });
+        },
+        error: function(e) {
+            console.log("Error retrieving tree from database: " + e);
+        }
     });
-
 }
 
 // Create infoWindows when loading from Parse Cloud
@@ -786,6 +812,25 @@ function settingsPage() {
     });
 }
 
+function getCurrentUserObj() {
+    var dfd = $.Deferred();
+    if (loginStatus == 'democratree') {
+        dfd.resolve(Parse.User.current());
+    } else {
+        var query = new Parse.Query("socialMediaUsers");
+        query.equalTo(loginStatus, socialMediaUserID);
+        query.first({
+            success: function(user) {
+                dfd.resolve(user);
+            },
+            error: function(e) {
+                console.log("Error querying current user: " + e);
+            }
+        });
+    }
+    return dfd.promise();
+}
+        
 function start() {
     initializeLogin();
     settingsPage();
