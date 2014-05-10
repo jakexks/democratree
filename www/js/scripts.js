@@ -630,7 +630,7 @@ function showTree(event, tree) {
                                 $("#popupTreeVote").val(score);
                                 console.log(tree.get("votes"));
                                 // update the infowindow
-                                $('#popupMsg').html('Thank you for voting!');
+                                $('#popupMsg').html('<p>Thank you for voting!</p>');
                             }
                         } else {
                             $('#popupMsg').html('<p style="color:red;">You have already voted on this tree!</p>');
