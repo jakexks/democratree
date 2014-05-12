@@ -817,7 +817,7 @@
                     </td>
                     <td rowspan="6" class="layout_contentmain">
                         <!-- CONTENT -->
-                        <div class="layout_leaderboarddropdown">
+                        <div class="layout_addtreepage" style="padding-top:75px">
                             <form>
                                 Select tree species:
                                 <select id="treeFilter">
@@ -835,8 +835,9 @@
                     			</p>
                     			<p>
                     				Add a story for why your tree should be placed here:
-                    				<textarea cols="40" rows="50" id="tree-story"></textarea>
+                    				<textarea id="tree-story" style="height:50px"></textarea>
                     			</p>
+                    			<br/>
                     			<p>
                     				<table align=center>
                                 		<tr>
@@ -859,27 +860,27 @@
                     </td>
                 </tr>
                 <tr>
-                    <td class="layout_menu" onclick="updateLeaderboard();window.location.href='#leaderboard'">
+                    <td class="layout_menu" onclick="clearAddTreeText();updateLeaderboard();window.location.href='#leaderboard'">
                         Leaderboard
                     </td>
                 </tr>
                 <tr>
-                    <td class="layout_menu" onclick="window.location.href='#profile'">
+                    <td class="layout_menu" onclick="clearAddTreeText();window.location.href='#profile'">
                         My Profile
                     </td>
                 </tr>
                 <tr>
-                    <td class="layout_menu" onclick="window.location.href='#settings'">
+                    <td class="layout_menu" onclick="clearAddTreeText();window.location.href='#settings'">
                         Account Settings
                     </td>
                 </tr>
                 <tr>
-                    <td id="helpSync" class="layout_menu" onclick="window.location.href='#help'">
+                    <td id="helpSync" class="layout_menu" onclick="clearAddTreeText();window.location.href='#help'">
                         Help
                     </td>
                 </tr>
                 <tr>
-                    <td class="layout_menu logoutButton">
+                    <td class="layout_menu logoutButton" onclick="clearAddTreeText()">
                         Log Out
                     </td>
                 </tr>
