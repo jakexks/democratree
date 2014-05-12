@@ -803,89 +803,100 @@
     </div>
     <!-- /page -->
     <!-- Start of add tree page -->
-    <div data-role="page" id="add_tree">
-        <div data-role="header" data-position="fixed" data-id="fixed_header">
-            <a data-icon="arrow-l" href="javascript:window.history.back();" data-iconpos="notext">Back</a>
-            <h1>Add Tree</h1>
+    <div data-role="page" id="addTree">
+        <div align=center>
+            <table width="1100">
+                <tr>
+                    <td id="mapDiv" colspan="2" class="layout_header">
+                        Place New Tree
+                    </td>
+                </tr>
+                <tr>
+                    <td class="layout_selectedmenu">
+                        Map
+                    </td>
+                    <td rowspan="6" class="layout_contentmain">
+                        <!-- CONTENT -->
+                        <div class="layout_leaderboarddropdown">
+                            <form>
+                                Select tree species:
+                                <select id="treeFilter">
+                                    <option>Common Ash</option>
+                                    <option>Silver Birch</option>
+                                    <option>Pedunculate Oak</option>
+                                    <option>Common Juniper</option>
+                                    <option>Wych Elm</option>
+                                    <option>European Beech</option>
+                                </select>
+                                <br/>
+                                <p>
+                                	Enter a label for your new tree:
+                    				<input id="tree-label" value="" type="text">
+                    			</p>
+                    			<p>
+                    				Add a story for why your tree should be placed here:
+                    				<textarea cols="40" rows="50" id="tree-story"></textarea>
+                    			</p>
+                    			<p>
+                    				<table align=center>
+                                		<tr>
+                                    		<td class="layout_helpcontents" onclick="window.location.href='#map';placeTree()">
+                                        		Place tree
+                                    		</td>
+                                		</tr>
+                                		<tr>
+                                    		<td class="layout_helpcontents" onclick="clearAddTreeText();window.location.href='#map'">
+                                        		Cancel
+                                    		</td>
+                                		</tr>
+                                	</table>
+                    				<!--<button id="confirmTreeBtn" onclick="window.location.href='#map';placeTree()">Place tree</button>
+                    				<button id="cancelTreeBtn" class="ui-btn ui-shadow ui-corner-all" onclick="window.location.href='#map'">Cancel</button>-->
+                    				</p>
+                            </form>
+                        </div>
+                        <!-- CONTENT -->
+                    </td>
+                </tr>
+                <tr>
+                    <td class="layout_menu" onclick="updateLeaderboard();window.location.href='#leaderboard'">
+                        Leaderboard
+                    </td>
+                </tr>
+                <tr>
+                    <td class="layout_menu" onclick="window.location.href='#profile'">
+                        My Profile
+                    </td>
+                </tr>
+                <tr>
+                    <td class="layout_menu" onclick="window.location.href='#settings'">
+                        Account Settings
+                    </td>
+                </tr>
+                <tr>
+                    <td id="helpSync" class="layout_menu" onclick="window.location.href='#help'">
+                        Help
+                    </td>
+                </tr>
+                <tr>
+                    <td class="layout_menu logoutButton">
+                        Log Out
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2" class="layout_footer">
+                        © Democratree v1.1
+                    </td>
+                </tr>
+            </table>
         </div>
-        <!-- /header -->
-        <div role="main" class="ui-content">
-            <p>
-                <fieldset data-role="controlgroup" id="chosenTree">
-                    <legend>Choose the type of tree you wish to place:</legend>
-                    <input name="treeRadio" value="Common Ash" checked="checked" type="radio" id="treeChoice1">
-                    <label for="treeChoice1">Common Ash</label>
-                    <input name="treeRadio" value="Silver Birch" type="radio" id="treeChoice2">
-                    <label for="treeChoice2">Silver Birch</label>
-                    <input name="treeRadio" value="Pedunculate Oak" type="radio" id="treeChoice3">
-                    <label for="treeChoice3">Pedunculate Oak</label>
-                    <input name="treeRadio" value="Common Juniper" type="radio" id="treeChoice4">
-                    <label for="treeChoice4">Common Juniper</label>
-                    <input name="treeRadio" value="Wych Elm" type="radio" id="treeChoice5">
-                    <label for="treeChoice5">Wych Elm</label>
-                    <input name="treeRadio" value="European Beech" type="radio" id="treeChoice6">
-                    <label for="treeChoice6">European Beech</label>
-                </fieldset>
-                <a href="#plant" class="ui-btn" onclick="addTree1();">Continue</a>
-            </p>
-        </div>
-        <!-- /content -->
+        <!--<li><a href="#add_tree">Add Tree TODO</a></li>-->
     </div>
-    <!-- /page -->
-    <!-- Start of plant tree page -->
-    <div data-role="page" id="plant">
-        <div data-role="header" data-position="fixed" data-id="fixed_header">
-            <a data-icon="arrow-l" href="javascript:window.history.back();" data-iconpos="notext">Back</a>
-            <h1>Tell us more</h1>
-        </div>
-        <!-- /header -->
-        <div role="main" class="ui-content">
-            <form>
-                <p>
-                    <label for="tree-label">Enter a Label for your new tree:</label>
-                    <input name="tree-label" id="tree-label" placeholder="My favourite tree" value="" type="text">
-                </p>
-                <p>
-                    <label for="tree-story">Add a story to your tree:</label>
-                    <textarea cols="40" rows="50" name="tree-story" id="tree-story"></textarea>
-                    <a href="#" class="ui-btn ui-btn-inline ui-icon-camera ui-btn-icon-left" onclick="attachPhoto1();">Attach photo from camera</a><a href="#" class="ui-btn ui-btn-inline ui-icon-camera ui-btn-icon-left" onclick="attachPhoto2();">Attach photo from gallery</a>
-                    <br />
-                    <img id="myImage" style="width:100%" />
-                    <a href="#plantconfirm" class="ui-btn" onclick="addTree2();">Continue</a>
-                </p>
-            </form>
-        </div>
-        <!-- /content -->
-    </div>
-    <!-- /page -->
-    <!-- Start of plant tree confirmation page -->
-    <div data-role="page" id="plantconfirm">
-        <div data-role="header" data-position="fixed" data-id="fixed_header">
-            <a data-icon="arrow-l" href="javascript:window.history.back();" data-iconpos="notext">Back</a>
-            <h1>Check out your tree</h1>
-        </div>
-        <!-- /header -->
-        <div role="main" class="ui-content">
-            <p>
-                <div id="confirmTitle"></div>
-                <div id="confirmType"></div>
-                <div>
-                    <img id="confirmImg"></img>
-                </div>
-                <div id="confirmStory"></div>
-            </p>
-            <script type="text/javascript">
-                $("body").on("pagecontainershow", function (event, ui) {
-                    console.log(ui);
-                    $("#confirmTitle").html("<h2>" + newTreeLabel + "</h2>");
-                    $("#confirmType").html(newChosenTree);
-                    $("#confirmImg").src = "data:image/jpeg;base64," + newTreeImg;
-                    $("#confirmStory").html(newTreeStory);
-                });
-            </script>
-        </div>
-        <!-- /content -->
-    </div>
-    <!-- /page -->
+
+
+
+
+
+    
 </body>
 </html>

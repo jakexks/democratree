@@ -17,6 +17,7 @@ var map = undefined;
 var ignoreHashChange = false;
 var gpsLat;
 var gpsLng;
+var positionClicked;
 
 var clusterStyles = [{
     url: 'img/cluster1.png',
@@ -167,13 +168,14 @@ function initializeMap() {
         if (loginStatus == "guest") {
             openPopupInMap("Please log in to place a new tree.");
         } else if (map.getZoom() > 15) {
-            if (markerCount != treeCount) {
-                if (warning.getMap() == null) warning.open(map);
-                warning.setPosition(event.latLng);
-            } else {
+            //if (markerCount != treeCount) {
+            //    if (warning.getMap() == null) warning.open(map);
+            //    warning.setPosition(event.latLng);
+            //} else {
                 populateMap(map);
-                placeMarker(event.latLng, map);
-            }
+                positionClicked = event.latLng;
+                placeMarker(event.latLng, map);  
+            //}
         } else {
             openPopupInMap("Please zoom in to place a new tree more accurately.");
         }
@@ -402,36 +404,7 @@ function placeMarker(location, map) {
                 $.get("http://pecan.jakexks.com/democratree/plantable.php?lat=" + location.lat() + "&long=" + location.lng(), function (data) {
                     hideLoader();
                     if (data == "true") {
-                        var marker = new google.maps.Marker({
-                            position: location,
-                            map: map,
-                            title: "" + markerCount,
-                            animation: google.maps.Animation.DROP,
-                            icon: 'img/tree1.png'
-                        });
-                        var Tree = Parse.Object.extend("Tree");
-                        var tree = new Tree();
-                        tree.set("lat", location.lat());
-                        tree.set("lng", location.lng());
-                        tree.set("type", "default");
-                        tree.set("username", currentUsername);
-                        tree.set("userType", loginStatus);
-                        tree.set("votes", 0);
-                        tree.set("story", "none");
-                        tree.set("name", "none");
-                        tree.save(null, {
-                            success: function (tree) {
-                                objectId = tree.id;
-                                lastTreeSynced = tree.createdAt;
-                                markerCount++;
-                                gmarkers.push(marker);
-                                map.panTo(location);
-                                attachMessage(marker, map, tree);
-                            },
-                            error: function (error) {
-                                alert("error");
-                            }
-                        });
+                        window.location = '#addTree';
                     } else {
                         openPopupInMap("That area is not plantable (according to our heuristic)<p>Try planting somewhere else!");
                     }
@@ -448,6 +421,51 @@ function placeMarker(location, map) {
             alert("error");
         }
     });
+}
+
+function placeTree() {
+    var chosenType = $('#treeFilter').val();
+    var chosenLabel = $('#tree-label').val();
+    var chosenStory = $('#tree-story').val();
+    //$('#tree-label').val("");
+    //$('#tree-story').val("");
+    clearAddTreeText();
+    var marker = new google.maps.Marker({
+        position: positionClicked,
+        map: map,
+        title: "" + markerCount,
+        animation: google.maps.Animation.DROP,
+        icon: 'img/tree1.png'
+    });
+    var Tree = Parse.Object.extend("Tree");
+    var tree = new Tree();
+    tree.set("lat", positionClicked.lat());
+    tree.set("lng", positionClicked.lng());
+    tree.set("type", chosenType);
+    tree.set("username", currentUsername);
+    tree.set("userType", loginStatus);
+    tree.set("votes", 0);
+    tree.set("story", chosenStory);
+    tree.set("name", chosenLabel);
+    tree.save(null, {
+        success: function (tree) {
+            objectId = tree.id;
+            lastTreeSynced = tree.createdAt;
+            markerCount++;
+            gmarkers.push(marker);
+            map.panTo(positionClicked);
+            attachMessage(marker, map, tree);
+            showTree(null, tree);
+        },
+        error: function (error) {
+            alert("error");
+        }
+    });
+}
+
+function clearAddTreeText () {
+    $('#tree-label').val("");
+    $('#tree-story').val("");  
 }
 
 function cancelTree(i) {
@@ -526,15 +544,15 @@ function attachMessage(marker, map, tree) {
         content: contentString
     });
     infoWindowArray.push(infowindow);
-    infowindow.open(map, marker);
+    //infowindow.open(map, marker);
     google.maps.event.addListener(marker, 'click', function () {
         // Workaround until new tree wizard is pushed
-        if (infowindow.content.slice(0,5) == '<p id') {
-            // Haven't confirmed yet
-            infowindow.open(map,marker);
-        } else {
+        //if (infowindow.content.slice(0,5) == '<p id') {
+            //Haven't confirmed yet
+        //    infowindow.open(map,marker);
+        //} else {
             showTree(event, tree);
-        }
+        //}
     });
     google.maps.event.addListener(infowindow, 'domready', function () {
         var contentStr = '<p id="textInfoWindow"><b>New Tree Placed</b><p><form id="myForm"> Name: <input type="text" name="Name"><br>Story: <input type="text" name="Story"><br></form><p><button id="btnSubmitTree" onclick="return addNewTree()">Submit</button><button id="btnCancelTree" onclick="return cancelTree(markerCount-1)">Cancel</button></p>'
