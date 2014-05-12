@@ -261,8 +261,15 @@ function hashChangedProfile(){
         user = Parse.User.current();
         $('#profile_name').append(user.get('name'));
         $('#profile_username').append(user.getUsername());
+        $('#profile_picture').append($('<img src="img/anonuser.png">'))
     }
-    if(loginStatus != 'guest') {
+    if (loginStatus == 'guest') {
+        clearProfile();
+        $('#profile_name').append('Currently logged in as a guest');
+        $('#profile_picture').append($('<img src="img/anonuser.png">'))
+    }
+    //if(loginStatus != 'guest') {
+    else {
         var userid;
         if (loginStatus == 'democratree') {
             userid = user.get('username');
@@ -276,23 +283,23 @@ function hashChangedProfile(){
             success: function(trees) {
                 $('#myTreeList').empty();
                 for (var i = 0; i < trees.length; i++) {
-                    var t = trees[i].attributes
+                    var t = trees[i].attributes;
                     if(i == 0) { 
                         $('#myTreeList').append('<li class="ui-first-child">' +
                             '<a onclick="window.location.href=\'#map\'; map.setCenter(new google.maps.LatLng('+t.lat+','+t.lng+')); map.setZoom(18);" class="ui-btn ui-btn-icon-right ui-icon-carat-r">' 
-                            + t.name + ' : ' + t.votes +
+                            + t.votes + ' - ' + t.name +
                             '</a></li>'
                         );
                     } else if(i == trees.length && i != 0) {
                         $('#myTreeList').append('<li class="ui-last-child">' +
                             '<a onclick="window.location.href=\'#map\'; map.setCenter(new google.maps.LatLng('+t.lat+','+t.lng+')); map.setZoom(18);" class="ui-btn ui-btn-icon-right ui-icon-carat-r">' 
-                            + t.name + ' : ' + t.votes +
+                            + t.votes + ' - ' + t.name +
                             '</a></li>'
                         );
                     } else {
                         $('#myTreeList').append('<li>' +
                             '<a onclick="window.location.href=\'#map\'; map.setCenter(new google.maps.LatLng('+t.lat+','+t.lng+')); map.setZoom(18);" class="ui-btn ui-btn-icon-right ui-icon-carat-r">' 
-                            + t.name + ' : ' + t.votes +
+                            + t.votes + ' - ' + t.name +
                             '</a></li>'
                         );
                     }
@@ -303,9 +310,9 @@ function hashChangedProfile(){
             }
         });
     }
-    else {
-        $('#profile_name').append('Currently logged in as a guest');
-    }
+    //else {
+    //    $('#profile_name').append('Currently logged in as a guest');
+    //}
 }
 
 // G+ callback
