@@ -284,13 +284,35 @@ function populateMap(map) {
             if (results.length > 0) {
                 for (var i = 0; i < results.length; i++) {
                     var tree = results[i];
+
+                    var iconpath = 'img/';
+                    var treeType = tree.get("type");
+                    if (treeType == 'Common Ash') {
+                        iconpath += 'treeash.png';
+                    }
+                    else if (treeType == 'Silver Birch') {
+                        iconpath += 'treebirch.png';
+                    }
+                    else if (treeType == 'Pedunculate Oak') {
+                        iconpath += 'treeoak.png';
+                    }
+                    else if (treeType == 'Common Juniper') {
+                        iconpath += 'treejuniper.png';
+                    }
+                    else if (treeType == 'Wych Elm') {
+                        iconpath += 'treeelm.png';
+                    }
+                    else {
+                        iconpath += 'treebeech.png';
+                    }
+
                     var latlng = new google.maps.LatLng(tree.get("lat"), tree.get("lng"));
                     var marker = new google.maps.Marker({
                         position: latlng,
                         map: map,
                         title: "" + i,
                         animation: google.maps.Animation.DROP,
-                        icon: 'img/tree1.png'
+                        icon: iconpath//'img/tree1.png'
                     });
                     gmarkers.push(marker);
                     attachMessageInit(marker, map, tree);
@@ -424,18 +446,39 @@ function placeMarker(location, map) {
 }
 
 function placeTree() {
+    var iconpath = 'img/';
     var chosenType = $('#treeFilter').val();
     var chosenLabel = $('#tree-label').val();
     var chosenStory = $('#tree-story').val();
     //$('#tree-label').val("");
     //$('#tree-story').val("");
     clearAddTreeText();
+
+    if (chosenType == 'Common Ash') {
+        iconpath += 'treeash.png';
+    }
+    else if (chosenType == 'Silver Birch') {
+        iconpath += 'treebirch.png';
+    }
+    else if (chosenType == 'Pedunculate Oak') {
+        iconpath += 'treeoak.png';
+    }
+    else if (chosenType == 'Common Juniper') {
+        iconpath += 'treejuniper.png';
+    }
+    else if (chosenType == 'Wych Elm') {
+        iconpath += 'treeelm.png';
+    }
+    else {//if (chosenType == 'Pedunculate Oak') {
+        iconpath += 'treebeech.png';
+    }
+
     var marker = new google.maps.Marker({
         position: positionClicked,
         map: map,
         title: "" + markerCount,
         animation: google.maps.Animation.DROP,
-        icon: 'img/tree1.png'
+        icon: iconpath//'img/tree1.png'
     });
     var Tree = Parse.Object.extend("Tree");
     var tree = new Tree();
