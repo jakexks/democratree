@@ -269,7 +269,6 @@ function initializeMap() {
     initializeArrays(map);
     return map;
 }
-
 function populateMap(map) {
     var Tree = Parse.Object.extend("Tree");
     var query = new Parse.Query("Tree");
@@ -282,13 +281,35 @@ function populateMap(map) {
             if (results.length > 0) {
                 for (var i = 0; i < results.length; i++) {
                     var tree = results[i];
+
+                    var iconpath = 'img/';
+                    var treeType = tree.get("type");
+                    if (treeType == 'Common Ash') {
+                        iconpath += 'treeash.png';
+                    }
+                    else if (treeType == 'Silver Birch') {
+                        iconpath += 'treebirch.png';
+                    }
+                    else if (treeType == 'Pedunculate Oak') {
+                        iconpath += 'treeoak.png';
+                    }
+                    else if (treeType == 'Common Juniper') {
+                        iconpath += 'treejuniper.png';
+                    }
+                    else if (treeType == 'Wych Elm') {
+                        iconpath += 'treeelm.png';
+                    }
+                    else {
+                        iconpath += 'treebeech.png';
+                    }
+
                     var latlng = new google.maps.LatLng(tree.get("lat"), tree.get("lng"));
                     var marker = new google.maps.Marker({
                         position: latlng,
                         map: map,
                         title: "" + i,
                         animation: google.maps.Animation.DROP,
-                        icon: 'img/tree1.png'
+                        icon: iconpath//'img/tree1.png'
                     });
                     gmarkers.push(marker);
                     attachMessageInit(marker, map, tree);
