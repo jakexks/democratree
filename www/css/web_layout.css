@@ -155,4 +155,22 @@
     background-size: 18px 18px;
 }
 
+.layout_addtreepage {
+	width:600px;
+	margin-left:auto;
+	margin-right:auto;
+}
+
+.layout_profilepage {
+	background-color:#CEF7C3;
+	height:600px;
+	width:850px;
+	padding:100px 150px;
+	color:#000000;
+	font:20px roboto,sans-serif;
+	font-weight:lighter;
+	vertical-align:top;
+	text-align:center;
+}
+
 #map-canvas { height: 100%}

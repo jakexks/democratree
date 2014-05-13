@@ -303,7 +303,9 @@
 			   if (!data.error) {
 				  // @TODO: make another method saveToken to abstract the storing of token
 			      window.localStorage.setItem($this.tokenKey, data.refresh_token);
-			   } else { alert("Data error: "+data.error); alert("Data message: "+data.message); alert("Data access: "+data.access_token); }
+			   } else { 
+               //alert("Data error: "+data.error); alert("Data message: "+data.message); alert("Data access: "+data.access_token); 
+               }
 
 			   callback(data);
 		   });
