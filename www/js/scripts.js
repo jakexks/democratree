@@ -631,12 +631,14 @@ function showTree(event, tree) {
             }
             treeStory = tree.get("story");
             treeName = tree.get("name");
+            treeUser= tree.get("username");
             var treeVote = tree.get("votes");
             console.log("Tree votes:" + treeVote);
             $("#popupTreeName").val(treeName);
             $("#popupTreeType").val(treeType);
             $("#popupTreeStory").val(treeStory);
             $("#popupTreeVote").val(treeVote);
+            $("#popupTreeUser").val(treeUser);
             if (event == null) {
                 var xpos = $('#map-canvas').offset().left + ($('#map-canvas').width() / 2);
                 var ypos = $('#map-canvas').offset().top + ($('#map-canvas').height() / 2);

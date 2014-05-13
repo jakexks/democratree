@@ -588,12 +588,14 @@ function showTree(event, tree) {
                 tree.set("name", treeArray[treeArray.length - 1].get("name"));
                 tree.save();
             }
+            treeType = tree.get("type");
             treeStory = tree.get("story");
             treeName = tree.get("name");
             var treeVote = tree.get("votes");
             console.log("Tree votes:" + treeVote);
             $("#popupTreeName").val(treeName);
             $("#popupTreeUser").val(treeUser);
+            $("#popupTreeType").val(treeType);
             $("#popupTreeStory").val(treeStory);
             $("#popupTreeVote").val(treeVote);
             if (event == null) {
