@@ -410,7 +410,7 @@
                     }
                     if(dayCount == treesPerDay)
                     {
-                        plantAllowed = false;
+                        //plantAllowed = false;
                     }
                 }
                 if(checkLocation(location) && plantAllowed)
