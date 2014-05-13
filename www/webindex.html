@@ -178,12 +178,12 @@
                 <form>
                     <label for="popupTreeName">Tree name:</label>
                     <input type="text" disabled="disabled" name="popupTreeName" id="popupTreeName" value="">
-                    <label for="popupTreeVote">Votes:</label>
-                    <input type="text" disabled="disabled" name="popupTreeVote" id="popupTreeVote" value="">
-                    <label for="popupTreeUser">Tree planted by:</label>
-                    <input type="text" disabled="disabled" name="popupTreeUser" id="popupTreeUser" value="">
                     <label for="popupTreeStory">Tree story:</label>
                     <textarea disabled="disabled" cols="40" rows="8" name="popupTreeStory" id="popupTreeStory"></textarea>
+                    <label for="popupTreeType">Tree type:</label>
+                    <input type="text" disabled="disabled" name="popupTreeType" id="popupTreeType" value="">
+                    <label for="popupTreeVote">Votes:</label>
+                    <input type="text" disabled="disabled" name="popupTreeVote" id="popupTreeVote" value="">
                 </form>
                 <a class="ui-btn ui-shadow ui-corner-all ui-btn-b" id="popupBtnVote">Vote up</a>
                 <div id="twitter-button">
@@ -817,10 +817,36 @@
                     </td>
                     <td rowspan="6" class="layout_contentmain">
                         <!-- CONTENT -->
-                        <div class="layout_addtreepage" style="padding-top:75px">
+                        <div class="layout_addtreepage" style="padding-top:50px">
+                        	<p>
+                        	<div align=center>
+            					<table>
+                					<tr>
+                    					<td id="tree1">
+                        					<img src="img/treeash.png">
+                    					</td>
+                    					<td id="tree2">
+                        					<img src="img/treebirch.png">
+                    					</td>
+                    					<td id="tree3">
+                        					<img src="img/treeoak.png">
+                    					</td>
+                    					<td id="tree4">
+                        					<img src="img/treejuniper.png">
+                    					</td>
+                    					<td id="tree5">
+                        					<img src="img/treeelm.png">
+                    					</td>
+                    					<td id="tree6">
+                        					<img src="img/treebeech.png">
+                    					</td>
+                					</tr>
+                				</table>
+                			</div>
+                			</p>
                             <form>
                                 Select tree species:
-                                <select id="treeFilter">
+                                <select id="treeFilter" onchange="changeTreePic()">
                                     <option>Common Ash</option>
                                     <option>Silver Birch</option>
                                     <option>Pedunculate Oak</option>

@@ -223,7 +223,8 @@ function logout(){
     loginStatus = 'none';
     socialMediaUserID = undefined;
     ignoreHashChange = true;
-    window.location.hash = '#login'
+    window.open("http://localhost/webindex.html","_self");
+    //window.location.hash = '#login'
     // For some reason this fires off two hash changes - the second #'s to window.location.pathname
 }
 

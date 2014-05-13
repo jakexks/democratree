@@ -849,5 +849,53 @@ background-image: linear-gradient(top , #5de100, #3d9200 66.0%);">
         <!-- /content -->
     </div>
     <!-- /page -->
+
+    <div data-role="page" id="addTree">
+        <div data-role="header" data-position="fixed" data-id="fixed_header">
+            <a data-icon="arrow-l" href="javascript:window.history.back();" data-iconpos="notext">Back</a>
+            <h1>Place your tree</h1>
+        </div>
+        <!-- /header -->
+        <div role="main" class="ui-content">
+            <form>
+                Select tree species:
+                <select id="treeFilter">
+                    <option>Common Ash</option>
+                    <option>Silver Birch</option>
+                    <option>Pedunculate Oak</option>
+                    <option>Common Juniper</option>
+                    <option>Wych Elm</option>
+                    <option>European Beech</option>
+                </select>
+                <br/>
+                <p>
+                    Enter a label for your new tree:
+                    <input id="tree-label" value="" type="text">
+                </p>
+                <p>
+                    Add a story for why your tree should be placed here:
+                    <textarea id="tree-story" style="height:50px"></textarea>
+                </p>
+                <br/>
+                <p>
+                    <table align=center>
+                        <tr>
+                            <td class="layout_helpcontents" onclick="window.location.href='#map';placeTree()">
+                                Place tree
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="layout_helpcontents" onclick="clearAddTreeText();window.location.href='#map'">
+                                Cancel
+                            </td>
+                        </tr>
+                    </table>
+                </p>
+            </form>
+        </div>
+        <!-- /content -->
+    </div>
+
+
 </body>
 </html>

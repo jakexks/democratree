@@ -1,5 +1,3 @@
-#map-canvas { height: 100%}
-
 .layout_leaderboardno {
 	background-color:#98E882;
 	width:20%;
@@ -21,6 +19,19 @@
 	background-color:#DEFDDE;
 }
 
+
+.layout_helpcontents {
+	background-color:#98E882;
+	width:80%;
+	padding:6px;
+	text-align:center;
+	font-weight:lighter;
+}
+
+.layout_helpcontents:active {
+	background-color:#DEFDDE;
+}
+
 .ui-icon-gpicon:after {
     background-image: url("../img/gplus.png");
     /* Make your icon fit */
@@ -37,14 +48,4 @@
     background-size: 18px 18px;
 }
 
-.layout_helpcontents {
-	background-color:#98E882;
-	width:80%;
-	padding:6px;
-	text-align:center;
-	font-weight:lighter;
-}
-
-.layout_helpcontents:active {
-	background-color:#DEFDDE;
-}
+#map-canvas { height: 100%}

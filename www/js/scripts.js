@@ -427,6 +427,7 @@ function placeMarker(location, map) {
                     hideLoader();
                     if (data == "true") {
                         window.location = '#addTree';
+                        changeTreePic();
                     } else {
                         openPopupInMap("That area is not plantable (according to our heuristic)<p>Try planting somewhere else!");
                     }
@@ -621,7 +622,7 @@ function showTree(event, tree) {
     query.first({
         success: function(tree) {
             var treeName = tree.get("name");
-            var treeUser = tree.get("username");
+            var treeType = tree.get("type");
             var treeStory = tree.get("story");
             if (tree.get("story") == "none") {
                 tree.set("story", treeArray[treeArray.length - 1].get("story"));
@@ -633,7 +634,7 @@ function showTree(event, tree) {
             var treeVote = tree.get("votes");
             console.log("Tree votes:" + treeVote);
             $("#popupTreeName").val(treeName);
-            $("#popupTreeUser").val(treeUser);
+            $("#popupTreeType").val(treeType);
             $("#popupTreeStory").val(treeStory);
             $("#popupTreeVote").val(treeVote);
             if (event == null) {
@@ -684,7 +685,7 @@ function showTree(event, tree) {
                             } else {
                                 currentUser.add("votedOn", tree.id)
                                 currentUser.save();
-                                console.log(treeUser);
+                                console.log(treeType);
                                 var score = tree.get("votes") + 1;
                                 tree.set("votes", score);
                                 tree.save();
@@ -891,6 +892,59 @@ function getCurrentUserObj() {
 function start() {
     initializeLogin();
     settingsPage();
+}
+
+function changeTreePic() {
+    var chosenType = $('#treeFilter').val();
+    if (chosenType == 'Common Ash') {
+        $('#tree1').css("background-color", "#FF6262");
+        $('#tree2').css("background-color", "#CEF7C3");
+        $('#tree3').css("background-color", "#CEF7C3");
+        $('#tree4').css("background-color", "#CEF7C3");
+        $('#tree5').css("background-color", "#CEF7C3");
+        $('#tree6').css("background-color", "#CEF7C3");
+    }
+    else if (chosenType == 'Silver Birch') {
+        //iconpath += 'treebirch.png';
+        $('#tree2').css("background-color", "#FF6262");
+        $('#tree1').css("background-color", "#CEF7C3");
+        $('#tree3').css("background-color", "#CEF7C3");
+        $('#tree4').css("background-color", "#CEF7C3");
+        $('#tree5').css("background-color", "#CEF7C3");
+        $('#tree6').css("background-color", "#CEF7C3");
+    }
+    else if (chosenType == 'Pedunculate Oak') {
+        $('#tree3').css("background-color", "#FF6262");
+        $('#tree2').css("background-color", "#CEF7C3");
+        $('#tree1').css("background-color", "#CEF7C3");
+        $('#tree4').css("background-color", "#CEF7C3");
+        $('#tree5').css("background-color", "#CEF7C3");
+        $('#tree6').css("background-color", "#CEF7C3");
+    }
+    else if (chosenType == 'Common Juniper') {
+        $('#tree4').css("background-color", "#FF6262");
+        $('#tree2').css("background-color", "#CEF7C3");
+        $('#tree3').css("background-color", "#CEF7C3");
+        $('#tree1').css("background-color", "#CEF7C3");
+        $('#tree5').css("background-color", "#CEF7C3");
+        $('#tree6').css("background-color", "#CEF7C3");
+    }
+    else if (chosenType == 'Wych Elm') {
+        $('#tree5').css("background-color", "#FF6262");
+        $('#tree2').css("background-color", "#CEF7C3");
+        $('#tree3').css("background-color", "#CEF7C3");
+        $('#tree4').css("background-color", "#CEF7C3");
+        $('#tree1').css("background-color", "#CEF7C3");
+        $('#tree6').css("background-color", "#CEF7C3");
+    }
+    else {
+        $('#tree6').css("background-color", "#FF6262");
+        $('#tree2').css("background-color", "#CEF7C3");
+        $('#tree3').css("background-color", "#CEF7C3");
+        $('#tree4').css("background-color", "#CEF7C3");
+        $('#tree5').css("background-color", "#CEF7C3");
+        $('#tree1').css("background-color", "#CEF7C3");
+    }
 }
 
 google.maps.event.addDomListener(window, 'load', start);
