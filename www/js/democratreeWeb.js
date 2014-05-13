@@ -27,7 +27,7 @@ function initializeLogin() {
                 document.getElementById('login-pwd').value = "";
                 if(user.get("emailVerified"))
                 {
-                    openMapPage();
+                    setTimeout(openMapPage(), 9000);
                 }
                 else
                 {

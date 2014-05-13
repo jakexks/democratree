@@ -428,7 +428,7 @@ function placeMarker(location, map) {
                             map: map,
                             title: "" + markerCount,
                             animation: google.maps.Animation.DROP,
-                            icon: 'img/tree1.png'
+                            icon: 'img/treeash.png'
                         });
                         var Tree = Parse.Object.extend("Tree");
                         var tree = new Tree();
